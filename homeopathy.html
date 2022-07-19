@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>HomeoPathy Medicines</title>
+</head>
+<style>
+	:focus, :active{
+		outline: none;
+	}
+	*{
+		box-sizing: border-box;
+		font-family: sans-serif;
+	}
+	body{
+		margin:  0;
+	}
+	nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 8px;
+		width: 100%;
+		height: 75px;
+		background-color: #eeefff;
+		z-index: 5;
+	}
+	nav #medicineSearch {
+		position: relative;
+		border: none;
+		background-color: #fff;
+		padding: 1em;
+		height: 80%;
+		width: 100%;
+		letter-spacing: 1px;
+		border-radius: 8px;
+		font-size: 1.25em;
+		transition: all .25s ease-in;
+		box-shadow: 0 1px 9px rgba(0, 0, 0, .34);
+	}
+	nav #medicineSearch:focus{
+		outline: none;
+		background-color: #fffaee;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, .34);
+	}
+	.box-holder {
+		position: relative;
+		height: 100%;
+		width: 100%;
+		padding: 12px;
+		top: 75px;
+		z-index: 2;
+		/* overflow: hidden; */
+	}
+	.box-holder .boxes {
+		position: relative;
+		padding: 8px;
+		margin-top: 10px;
+		margin-left: 30px;
+		top: -3px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 125px;
+		height: 125px;
+		border-radius: 8px;
+		font-weight: bold;
+		font-size: 1.25rem;
+		box-shadow: 0 0 18px 6px rgba(0, 0, 0, .3);
+		transition: all .15s ease-in;
+		color: #fff;
+	}
+	.box-holder .boxes:hover{
+		box-shadow: 0 1px 2px rgba(0, 0, 0, .24);
+	}
+	.box-holder .boxes:nth-child(1) {
+		background: #C6FFDD;
+		background: -webkit-linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);
+		background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);
+	}
+	.box-holder .boxes:nth-child(2) {
+		background: #373B44;
+		background: -webkit-linear-gradient(to left, #4286f4, #373B44);
+		background: linear-gradient(to left, #4286f4, #373B44);
+	}
+	.box-holder .boxes:nth-child(3) {
+		background: #b92b27;
+		background: -webkit-linear-gradient(to left, #1565C0, #b92b27);
+		background: linear-gradient(to left, #1565C0, #b92b27);
+	}
+	.box-holder .boxes:nth-child(4) {
+		background: #1f4037;
+		background: -webkit-linear-gradient(to left, #99f2c8, #1f4037);
+		background: linear-gradient(to left, #99f2c8, #1f4037);
+	}
+	.box-holder .boxes:nth-child(5) {
+		background: #659999;
+		background: -webkit-linear-gradient(to left, #f4791f, #659999);
+		background: linear-gradient(to left, #f4791f, #659999);
+	}
+	.box-holder .boxes:nth-child(6) {
+		background: #544a7d;
+		background: -webkit-linear-gradient(to left, #ffd452, #544a7d);
+		background: linear-gradient(to left, #ffd452, #544a7d);
+	}
+	.box-holder .boxes:nth-child(7) {
+		background: #59C173;
+		background: -webkit-linear-gradient(to right, #5D26C1, #a17fe0, #59C173);
+		background: linear-gradient(to right, #5D26C1, #a17fe0, #59C173);
+	}
+
+	.box-holder .boxes .box-number{
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		width: 50px;
+		height: 50px;
+		background-color: transparent;
+		color: #fff;
+		border: 4px dashed #fff;
+	}
+
+	.box-holder .box-modal, .box-holder .all-medicines-lists {
+		position: absolute;
+		display: none;
+		justify-content: center;
+		opacity: 0;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		padding: 12px;
+		transform: translateY(100%);
+		background-color: #fff;
+		transition: all .25s ease-in;
+		z-index: -1;
+	}
+	.box-holder .all-medicines-lists {
+		z-index: 0;
+	}
+	.box-holder .all-medicines-lists #allList{
+		position: relative;
+		top: 8%;
+		left: 5%;
+		/* overflow-y: scroll; */
+		overflow-x: visible;
+		height: 600px;
+	}
+
+	.box-holder .all-medicines-lists #nothingFound {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-weight: bold;
+		font-size: 1.35rem;
+	}
+	.box-holder .box-modal.visible, .box-holder .all-medicines-lists.visible{
+		opacity: 1;
+		z-index: 1;
+		display: flex;
+		transform: translateY(0px);
+	}
+	.box-holder .all-medicines-lists.visible{
+		z-index: 2;
+	}
+	.box-holder .go-back-btn {
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		padding: 8px;
+		font-weight: bold;
+		border: none;
+		border-radius: 35px;
+		background-color: #1a8cff;
+		color: #fff;
+	}
+
+	.box-holder .go-back-btn:hover {
+		background-color: #1a7cff;
+	}
+	.box-holder .box-modal ol {
+		position: relative;
+		top: 5%;
+	}
+	.box-holder .box-modal ol li, .box-holder .all-medicines-lists .md-name {
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: 235px;
+		padding: 8px;
+		font-weight: bold;
+		margin-top: 6px;
+		background-color: #fff;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, .23);
+		border-radius: 5px;
+		transform: scaleY(0);
+		animation-name: scale;
+		animation-duration: .25s;
+		animation-fill-mode: forwards;
+		animation-timing-function: ease-in-out;
+	}
+
+	.box-holder .all-medicines-lists .md-name.show{
+		display: flex;
+	}
+
+	.box-holder .all-medicines-lists .md-name.hidden{
+		display: none;
+	}
+
+	@keyframes scale {
+		100%{
+			transform: scaleY(1);
+		}
+	}
+
+	.box-holder .all-medicines-lists .md-name .small-box-number {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		left: -12%;
+		top: 50%;
+		transform: translateY(-50%);
+		height: 24px;
+		width: 24px;
+		padding: 4px;
+		border-radius: 50%;
+		background-color: #1a8cff;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, .23);
+		color: #fff;
+	}
+
+	.space{
+		position: relative;
+		height: 2px;
+		width: 100%;
+		background-color: #333;
+		margin: 12px 0 12px 0;
+	}
+
+	.box-holder .box-modal::-webkit-scrollbar {
+	    display: none;
+	}
+
+</style>
+<body>
+
+<nav>
+	<input type="text" id="medicineSearch" placeholder="Search Medicines . . ." 	 autocomplete="off" name="search_medicines">
+</nav>
+
+<div class="box-holder" id="boxHolder">
+	<div class="boxes">
+		<div class="box-number">1</div>
+	</div>
+	<div class="boxes">
+		<div class="box-number">2</div>
+	</div>
+	<div class="boxes">
+		<div class="box-number">3</div>
+	</div>
+	<div class="boxes">
+		<div class="box-number">4</div>
+	</div>
+	<div class="boxes">
+		<div class="box-number">5</div>
+	</div>
+	<div class="boxes">
+		<div class="box-number">6</div>
+	</div>
+	<div class="boxes">
+		<div class="box-number">7</div>
+	</div>
+
+	<div class="all-medicines-lists" id="allMedicinesLists">
+		<button class="go-back-btn" id="goBackList">◀ Go Back</button>
+		<div id="allList"></div>
+		<div id="nothingFound">Nothing Found...</div>
+	</div>
+
+	<div class="box-modal" id="modalBox">
+		<button class="go-back-btn" id="goBack">◀ Go Back</button>
+		<ol id="orderedList"></ol>
+	</div>
+</div>
+
+<script>
+
+let medicineSearch = document.getElementById("medicineSearch");
+let nothingFound = document.getElementById("nothingFound");
+
+let allMedicinesListsDiv = document.getElementById("allMedicinesLists");
+let allList = document.getElementById("allList");
+let goBackBtnList = document.getElementById("goBackList");
+
+let boxesHolder = document.getElementById("boxHolder");
+
+let boxModal = document.getElementById("modalBox");
+let goBackBtn = document.getElementById("goBack");
+let orderedList = document.getElementById("orderedList");
+
+let boxesCls = document.getElementsByClassName("boxes");
+let boxesClsLen = boxesCls.length;
+
+let medicineBox = {
+
+	'medicinesInBox1': ["COLCHICUM", "ACONITE NAP", "APIS MEL", "CAPSICUM", "STAPHYSAGRIA", "ACONITE - N", "RHUS TOX", "HYPERICUM", "ARNICA", "IPECAC", "ALLIUM CEPA"],
+
+	'medicinesInBox2': ["TABACUM", "NUX VOM", "PHOSPHORUS", "GUAICUM CM", "KALI PHOS", "NAJA", "EUPHRASIA", "ARUNM MET", "ARS ALB", "EUPHRASIA OFF", "CARBO VEG", "LITHIUM CARB", "SILICEA", "LEDUM PAL", "SLONINE", "ARALIA RACEMOSA", "NAT MUR"],
+
+	'medicinesInBox3': ["CACTUS", "BELLADONNA", "ARUNDO MAVRI", "DROSERA", "ARS / ALB", "STANNUM MET", "SENEGA", "RUMAX C", "ALLUM SAT", "ANTIM FUR", "CINNA MAR", "BARYTA MUR", "BELLADONNA", "BENZA ACID", "AMYLE NRT", "KALI BITCH", "PULSATILLA", "HEPAR SULPH", "CALADIUM SEG", "SPONGIA", "NAT MUR", "CACTUS-CACTI", "CRATAEGUS OXY", "BRYONIA ALB"],
+
+	'medicinesInBox4': ["LACHESIS", "CALC PHOS", "FERRUM MET", "URTICA URENS", "GELSEMIUM", "ABROMA AUG", "ALOE SOC", "SECALE CORN", "IGNATIA AM", "PHOS ACID", "SYZYGIUM JAMBULUM", "CONIUM MAC", "ANACARDIUM" , "ZINCUM MET", "RHODODENDRONS", "RUTA GRVO", "GRAPHITES", "CALC CARB", "CONIUM MAC", "IGNATIA MM", "AGNUS CAST", "CLEMATIS ERTICA", "MEDORRHINUM C", "TRILLIUM PENDULUM", "SABINA", "GLONOINE", "CONUM MAC", "SEPIA" , "KALI BICH", "LACHESIS", "THLASPI B.P", "BORAX", "USTILAGO", "BARYTA CARB", "CALC CARB", "GYMNEMA SYLIM", "MERC SOL", "CICUTA VIR", "SULFUR", "CROTON TIG", "MAG PHOS", "SILICEA", "STRAMONIUM", "CHAMOMILLA", "CALADIUM SEG", "HYOSCYAMUS N", "LAC CANINUM", "ROBINIA", "CAUSTICUM", "STAPHYSAGRIA", "CALC FLUOR", "MARK SOL", "CALC PHOS"],
+
+	'medicinesInBox5': ["LYCOPODIUM", "LEGNA MINUR", "RHUS TOX   1M", "PETRO", "ARNICA", "ALUMINUM SILICA", "EPIPHEGUS VIRGINIA", "HAMAMELIS VIRGINIA", "PALLADIUM", "ASAFOETICA", "AMBROSIA", "THUJA   1 CM 10 CM", "NITRIC ACID", "SULPHURIC ACID", "CAULOPHYLLUM", "CIMICIFUGA RACEMOSA", "NUPHAR LUTEUM", "RHUS TOX   10 M", "RHUS TOX   200", "CHELIDONIUM MAJUS", "CARDUUS MARIANUS"],
+
+	'medicinesInBox6': ["NUX VOMICA", "SANG CAN", "KALI PHOS" , "PLANTAGO", "ARNICA", "FERRUM MET", "CASTOR EQ", "PLUMBUM MET", "VERBASCUM T", "EUPAT PERF", "CHENOPODIUM", "PODOPHYLLUM", "OPIUM", "MEZEREUM", "DULCAMARA", "SOLIDAGO V", "SYMPHYTUM", "ACTEA SPI", "PURRANNOVA", "STELLARIA", "TUCCA F", "URTICA", "MED RRHH UNUM CM", "MERC SOL", "KALU MUR", "AGAAPHIS NUTIM", "GUAIACUM"],
+
+	'medicinesInBox7': ["BUFO RANA" ,"KALI IOD" ,"BRAYAT IOD" ,"CALC IOD" ,"ALFALFA" ,"BARBARIES AQ" ,"LYCOPODIUM" ,"CHININ SULPH" ,"CHENOPODIUM" ,"BERBERIS VUL" ,"ARGEN NIT" ,"CANTHARIS" ,"CHAMOMILLA" ,"SINAPIS NIG" ,"AGRAPHIS NUT" ,"BOVISTA" ,"ACID CARB" ,"HELLICA LAVA" ,"COLOCYNTHIS" ,"HEPAR SULPH" ,"BELLADONNA 1M" ,"ANTIM CRUD"],
+};
+
+
+function removeChilds(parent) {
+    while(parent.firstChild){
+        parent.firstChild.remove();
+    }
+}
+
+function searchMedicines(searchValue) {
+	let medicineName = document.getElementsByClassName("md-name");
+	let medicineNameLen = medicineName.length;
+	let searchValueLowerCase = searchValue.toString().toLowerCase();
+
+	for(let i = 0; i < medicineNameLen; ++i) {
+		let medicineNameText = medicineName[i].innerText.toLowerCase();
+		if(medicineNameText.indexOf(searchValueLowerCase) > -1) {
+			medicineName[i].classList.add("show");
+			medicineName[i].classList.remove("hidden");
+			nothingFound.style.display = "none";
+		} else {
+			medicineName[i].classList.add("hidden");
+			medicineName[i].classList.remove("show");
+			if(document.getElementsByClassName("show").length === 0) nothingFound.style.display = "block";
+		}
+	}
+}
+
+medicineSearch.addEventListener("keyup", function() {
+	allMedicinesLists.classList.add("visible");
+	searchMedicines(this.value);
+});
+
+for (let i = 0; i < boxesClsLen; ++i) {
+	const medicineBoxStr = `medicinesInBox${i+1}`;
+	const medicineBoxContainer = medicineBox[medicineBoxStr];
+	const medicineBoxContainerLen = medicineBoxContainer.length;
+
+
+	for (let j = 0; j < medicineBoxContainerLen; ++j) {
+
+		let mdName = document.createElement("div");
+		let smallBoxNum = document.createElement("div");
+
+		mdName.classList.add("md-name");
+		smallBoxNum.classList.add("small-box-number");
+
+		smallBoxNum.innerText = `${i+1}`;
+		mdName.innerText = `${((j+1)<10)?`0${j+1}`:j+1}.  ${medicineBox[medicineBoxStr][j]}`;
+
+		mdName.appendChild(smallBoxNum);
+
+		allList.appendChild(mdName);
+	}
+
+	// let horizontalLine = document.createElement("div");
+	// horizontalLine.classList.add("space");
+	// allList.appendChild(horizontalLine);
+}
+
+for (let i = 0; i < boxesClsLen; ++i) {
+	boxesCls[i].setAttribute("id", `medicinesInBox${i+1}`);
+
+	boxesCls[i].addEventListener("click", function() {
+
+		const boxesId = boxesCls[i].id;
+
+		boxModal.classList.add("visible");
+		removeChilds(orderedList);
+
+		for(let j = 0; j < medicineBox[boxesId].length; ++j) {
+			let li = document.createElement("li");
+
+			li.innerText = `${((j+1)<10)?`0${j+1}`:j+1}. ${medicineBox[boxesId][j]}`;
+
+			orderedList.appendChild(li);
+		}
+	});
+}
+
+goBackBtn.addEventListener("click", function() {
+	boxModal.classList.remove("visible");
+});
+
+goBackBtnList.addEventListener("click", function() {
+	allMedicinesLists.classList.remove("visible");
+});
+
+</script>
+</body>
+</html>
