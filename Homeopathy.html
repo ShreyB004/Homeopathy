@@ -7,12 +7,32 @@
 	<link rel="icon" href="https://t4.ftcdn.net/jpg/01/29/07/99/360_F_129079911_rgjzs0I5F2nBSrmm10UT5AGYCCWSXKNE.jpg">
 	<link rel="stylesheet" type="text/css" href="Homeopathy.css">
 </head>
+
 <body>
 
-<nav>
-	<input type="text" id="medicineSearch" placeholder="Search Medicines . . ." 	 autocomplete="off" name="search_medicines">
+<nav class="top-nav">
+	<input type="text" id="medicineSearch" placeholder="Search Medicines . . ." autofocus autocomplete="off" name="search_medicines">
 </nav>
 
+
+<nav class="bottom-nav">
+	<button class="bottom-nav-btns">
+		<svg height="25" width="25" viewBox="0 0 16 16">
+			<path d="M15.709 6.203l-5.91-5.909c-0.226-0.227-0.528-0.314-0.824-0.289h-1.951c-0.296-0.024-0.598 0.063-0.824 0.289l-1.2 1.2v-1.489h-2.999v4.489l-1.711 1.71c-0.227 0.226-0.313 0.529-0.289 0.824v1.975c0 0.552 0.447 1 1 1h1v4.999c0 0.552 0.447 1 1 1h9.998c0.553 0 1-0.448 1-1v-4.999h1c0.553 0 1-0.448 1-1v-1.975c0.024-0.295-0.062-0.598-0.289-0.824zM13.998 8.002h-1.999v5.998h-1.999v-3.999h-3.999v3.999h-2v-5.998h-2v-0.555l5.444-5.444h1.109l5.444 5.444v0.555z"></path>
+		</svg>
+	</button>
+	<button class="bottom-nav-btns default-btn">
+		<svg height="25" width="25" viewBox="0 0 24 24">
+			<path d="M20.016 6h-4.031v-2.016q0-0.797-0.586-1.383t-1.383-0.586h-4.031q-0.797 0-1.383 0.586t-0.586 1.383v2.016h-4.031q-0.797 0-1.383 0.586t-0.586 1.43v12q0 0.797 0.586 1.383t1.383 0.586h16.031q0.797 0 1.383-0.586t0.586-1.383v-12q0-0.844-0.586-1.43t-1.383-0.586zM9.984 3.984h4.031v2.016h-4.031v-2.016zM15.984 15h-3v3h-1.969v-3h-3v-2.016h3v-3h1.969v3h3v2.016z"></path>
+		</svg>
+	</button>
+	<button class="bottom-nav-btns">
+		<svg height="25" width="25" viewBox="0 0 24 24">
+			<path d="M17 9c0-1.381-0.56-2.631-1.464-3.535s-2.155-1.465-3.536-1.465-2.631 0.56-3.536 1.465c-0.904 0.904-1.464 2.154-1.464 3.535s0.56 2.631 1.464 3.535c0.905 0.905 2.155 1.465 3.536 1.465s2.631-0.56 3.536-1.465c0.904-0.904 1.464-2.154 1.464-3.535z"></path>
+			<path d="M6 19c0 1 2.25 2 6 2 3.518 0 6-1 6-2 0-2-2.354-4-6-4-3.75 0-6 2-6 4z"></path>
+		</svg>
+	</button>
+</nav>
 <div class="box-holder" id="boxHolder">
 	<div class="boxes">
 		<div class="box-number">1</div>
@@ -37,13 +57,12 @@
 	</div>
 
 	<div class="all-medicines-lists" id="allMedicinesLists">
-		<button class="go-back-btn" id="goBackList">◀ Go Back</button>
+		<button class="go-back-btn" id="goBackList">Go Back</button>
 		<div id="allList"></div>
-		<div id="nothingFound">Nothing Found...</div>
 	</div>
 
 	<div class="box-modal" id="modalBox">
-		<button class="go-back-btn" id="goBack">◀ Go Back</button>
+		<button class="go-back-btn" id="goBack">Go Back</button>
 		<ol id="orderedList"></ol>
 	</div>
 </div>
