@@ -1,5 +1,5 @@
+
 let medicineSearch = document.getElementById("medicineSearch");
-let nothingFound = document.getElementById("nothingFound");
 
 let allMedicinesListsDiv = document.getElementById("allMedicinesLists");
 let allList = document.getElementById("allList");
@@ -48,11 +48,9 @@ function searchMedicines(searchValue) {
 		if(medicineNameText.indexOf(searchValueLowerCase) > -1) {
 			medicineName[i].classList.add("show");
 			medicineName[i].classList.remove("hidden");
-			nothingFound.style.display = "none";
 		} else {
 			medicineName[i].classList.add("hidden");
 			medicineName[i].classList.remove("show");
-			if(document.getElementsByClassName("show").length === 0) nothingFound.style.display = "block";
 		}
 	}
 }
@@ -67,6 +65,10 @@ for (let i = 0; i < boxesClsLen; ++i) {
 	const medicineBoxContainer = medicineBox[medicineBoxStr];
 	const medicineBoxContainerLen = medicineBoxContainer.length;
 
+	let horizontalLine = document.createElement("div");
+	horizontalLine.classList.add("space");
+	horizontalLine.innerText = `Box ${i+1}`;
+	allList.appendChild(horizontalLine);
 
 	for (let j = 0; j < medicineBoxContainerLen; ++j) {
 
@@ -76,17 +78,14 @@ for (let i = 0; i < boxesClsLen; ++i) {
 		mdName.classList.add("md-name");
 		smallBoxNum.classList.add("small-box-number");
 
-		smallBoxNum.innerText = `${i+1}`;
-		mdName.innerText = `${((j+1)<10)?`0${j+1}`:j+1}.  ${medicineBox[medicineBoxStr][j]}`;
+		smallBoxNum.innerText = `${j+1}`;
+		mdName.innerText = `${medicineBox[medicineBoxStr][j]}`;
 
 		mdName.appendChild(smallBoxNum);
 
 		allList.appendChild(mdName);
 	}
 
-	// let horizontalLine = document.createElement("div");
-	// horizontalLine.classList.add("space");
-	// allList.appendChild(horizontalLine);
 }
 
 for (let i = 0; i < boxesClsLen; ++i) {
@@ -108,11 +107,9 @@ for (let i = 0; i < boxesClsLen; ++i) {
 		}
 	});
 }
-
 goBackBtn.addEventListener("click", function() {
 	boxModal.classList.remove("visible");
 });
-
 goBackBtnList.addEventListener("click", function() {
 	allMedicinesLists.classList.remove("visible");
 });
