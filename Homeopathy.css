@@ -1,6 +1,24 @@
 :focus, :active{
 	outline: none;
 }
+@keyframes RiseUp {
+	100%{
+		opacity: 1;
+		transform: translateY(0px);
+	}
+}
+@keyframes ScaleIn {
+	100%{
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+@keyframes GelatineBounce {
+  from, to { transform: scale(1, 1); }
+  25% { transform: scale(0.9, 1.1); }
+  50% { transform: scale(1.1, 0.9); }
+  75% { transform: scale(0.95, 1.05); }
+}
 *{
 	box-sizing: border-box;
 	font-family: sans-serif;
@@ -11,6 +29,20 @@ body{
 	width: 100vw;
 	overflow: hidden;
 }
+
+.medicine-section {
+	position: relative;
+	display: none;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.medicine-section.active-tab {
+	display: block;
+}
+
 .top-nav {
 	position: fixed;
 	top: 0;
@@ -20,27 +52,50 @@ body{
 	justify-content: center;
 	padding: 8px;
 	width: 100%;
-	height: 75px;
+	height: 50px;
 	background-color: #fff;
 	border-bottom: 1px solid #eee;
 	z-index: 5;
 }
-.top-nav #medicineSearch {
+.top-nav button {
+	position: relative;
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	background-color: #fff;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, .34);
+	padding: 8px;
+	border: none;
+	margin-right: 5px;
+}
+.top-nav button .button-svg {
+	position: relative;
+	display: none;
+	transform: scale(0);
+	animation-name: ScaleIn;
+	animation-duration: .15s;
+	animation-timing-function: ease-in-out;
+	animation-fill-mode: forwards;
+}
+
+.top-nav .button-svg.active-btn{
+	display: flex;
+}
+
+.top-nav input {
 	position: relative;
 	border: none;
 	background-color: #fff;
 	padding: 1em;
 	height: 80%;
 	width: 100%;
-	letter-spacing: 1px;
 	border-radius: 8px;
 	font-size: 1.25em;
 	transition: all .25s ease-in;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
 }
-.top-nav #medicineSearch:focus{
+.top-nav input:focus{
 	outline: none;
-	background-color: #eee;
+	background-color: #eeffff;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .34);
 }
 .box-holder {
@@ -55,10 +110,221 @@ body{
 	overflow-y: auto;
 }
 
+.box-holder .boxes {
+	position: relative;
+	padding: 8px;
+	margin-top: 10px;
+	margin-left: 15px;
+	background-color: #fff;
+	top: -10px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	height: 90px;
+	border-radius: 8px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	transition: all .15s ease-in;
+}
+.box-holder .boxes:hover{
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .24);
+}
+
+.box-holder .boxes:hover .box-number{
+	background-color: #0f9d58bb;
+	box-shadow: 0 0 1px rgba(0, 0, 0, .24);
+}
+
+.box-holder .boxes .box-number{
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	background-color: rgba(15, 157, 88, .45);
+	font-weight: bold;
+	font-size: 1.25rem;
+	color: #fff;
+	border: 4px double #fff;
+	box-shadow: 0 0 2px rgba(0, 0, 0, .52);
+	transition: all .15s ease-in;
+}
+
+.box-modal, .all-medicines-lists {
+	position: absolute;
+	justify-content: center;
+	align-items: flex-start;
+	top: 0;
+	left: 0;
+	height: calc(100% - 4px);
+	max-height: calc(100% - 4px);
+	width: 100%;
+	padding: 12px;
+	background-color: #fff;
+	transition: all .25s ease-in;
+	overflow-y: auto;
+	display: none;
+	opacity: 0;
+	transform: translateY(100%);
+	z-index: -1;
+}
+.all-medicines-lists {
+	z-index: 9;
+	height: 100%;
+}
+.all-medicines-lists #allList{
+	position: relative;
+	align-items: flex-start;
+	overflow-x: visible;
+	height: 600px;
+}
+.box-modal.visible, .all-medicines-lists.visible{
+	opacity: 1;
+	z-index: 1;
+	display: flex;
+	transform: translateY(0px);
+}
+.all-medicines-lists.visible{
+	z-index: 2;
+}
+.box-modal ol {
+	position: relative;
+}
+.md-name {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 235px;
+	padding: 8px;
+	font-weight: lighter;
+	margin-top: 6px;
+	color: #085731;
+	background-color: #fff;
+	box-shadow: 0 0 2px rgba(0, 0, 0, .4);
+	border-radius: 12px;
+	opacity: 0;
+	transform: translateY(5px);
+	transition: all .15s;
+	animation-name: RiseUp;
+	animation-duration: .15s;
+	animation-fill-mode: forwards;
+	animation-timing-function: ease-in-out;
+	z-index: 1;
+}
+
+.md-name:hover {
+	background-color: rgba(15, 157, 88, .2);
+}
+
+.md-name.show {
+	display: flex;
+}
+
+.md-name.hidden {
+	display: none;
+}
+
+.md-name .small-box-number {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	left: -15%;
+	top: 50%;
+	transform: translateY(-50%);
+	height: 24px;
+	width: 24px;
+	padding: 4px;
+	border-radius: 8px;
+	background-color: #0f9d58bb;
+	color: #fff;
+	font-weight: lighter;
+}
+
+.md-name .small-box-number::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: -12px;
+	width: 13px;
+	height: 10px;
+	background-color: #0f9d58bb;
+	z-index: -1;
+}
+
+.space{
+	position: relative;
+	display: flex;
+	width: fit-content;
+	left: 50%;
+	transform: translateX(-50%);
+	justify-content: center;
+	font-weight: bold;
+	background-color: #0f9d5855;
+	margin: 12px 0 12px 0;
+	color: #0f9d58;
+	padding: 8px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+	border-radius: 12px;
+}
+
+.box-modal::-webkit-scrollbar {
+    display: none;
+}
+
+.patients-lists {
+	position: relative;
+	padding: 12px;
+	top: 50px;
+	height: 80%;
+	max-height: 80%;
+	width: 100%;
+}
+
+.patients-lists .patient-names-div {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+
+.patients-lists .patient-names-div .patients-name {
+	position: relative;
+	display: flex;
+	padding: 8px;
+	align-items: center;
+	background-color: #fff;
+	margin-top: 6px;
+	font-weight: bold;
+	text-transform: capitalize;
+	border-radius: 8px;
+	box-shadow: 0 0 3px rgba(0, 0, 0, .4);
+}
+
+.patients-lists .add-patient {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	bottom: 0px;
+	right: 12px;
+	border-radius: 50%;
+	padding: 8px;
+	background-color: #0f9d58;
+	color: #fff;
+	box-shadow: 0 0 8px 0 #0f9d5888;
+	border: none;
+}
+
 .bottom-nav {
 	position: fixed;
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	bottom: 0;
 	left: 0;
 	margin: 0;
@@ -84,177 +350,17 @@ body{
 }
 
 .bottom-nav .bottom-nav-btns svg {
-	fill: #222;
+	fill: #444;
 }
 
 .bottom-nav .bottom-nav-btns.default-btn {
-	background-color: rgba(63, 133, 244, .32);
-	box-shadow: 0 0 8px 1px rgba(63, 133, 244, .32);
-}
-
-.bottom-nav .bottom-nav-btns.default-btn svg{
-	fill: #1a8cff;
-}
-
-.box-holder .boxes {
-	position: relative;
-	padding: 8px;
-	margin-top: 10px;
-	margin-left: 30px;
-	background-color: #fff;
-	top: -3px;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 125px;
-	height: 100px;
-	border-radius: 8px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
-	transition: all .15s ease-in;
-}
-.box-holder .boxes:hover{
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .24);
-}
-
-.box-holder .boxes .box-number{
-	position: absolute;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
-	width: 50px;
-	height: 50px;
-	background-color: rgba(15, 157, 88, .45);
-	font-weight: bold;
-	font-size: 1.25rem;
-	color: #fff;
-	border: 4px double #fff;
-}
-
-.box-modal, .all-medicines-lists {
-	position: absolute;
-	display: none;
-	justify-content: center;
-	opacity: 0;
-	top: 0;
-	left: 0;
-	height: calc(100% - 4px);
-	max-height: calc(100% - 4px);
-	width: 100%;
-	padding: 12px;
-	transform: translateY(100%);
-	background-color: #fff;
-	transition: all .25s ease-in;
-	overflow-y: auto;
-	z-index: -1;
-}
-.all-medicines-lists {
-	z-index: 9;
-	height: 100%;
-}
-.all-medicines-lists #allList{
-	position: relative;
-	top: 8%;
-	left: 5%;
-	overflow-x: visible;
-	height: 600px;
-}
-.box-modal.visible, .all-medicines-lists.visible{
-	opacity: 1;
-	z-index: 1;
-	display: flex;
-	transform: translateY(0px);
-}
-.all-medicines-lists.visible{
-	z-index: 0;
-}
-.go-back-btn {
-	position: absolute;
-	top: 8px;
-	left: 8px;
-	padding: 8px;
-	font-weight: bold;
-	border: none;
-	border-radius: 35px;
-	background-color: #1a8cff;
-	color: #fff;
-}
-
-.go-back-btn:hover {
-	background-color: #1a7cff;
-}
-.box-modal ol {
-	position: relative;
-	top: 5%;
-}
-.box-modal ol li, .all-medicines-lists .md-name {
-	position: relative;
-	display: flex;
-	align-items: center;
-	width: 235px;
-	padding: 8px;
-	font-weight: bold;
-	margin-top: 6px;
-	background-color: #fff;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .23);
-	border-radius: 5px;
-	opacity: 0;
-	transform: translateY(5px);
-	animation-name: RiseUp;
-	animation-duration: .15s;
-	animation-fill-mode: forwards;
+	background-color: #0f9d5866;
+	box-shadow: 0 0 8px 1px #0f9d58bb;
+	animation-name: GelatineBounce;
+	animation-duration: .25s;
 	animation-timing-function: ease-in-out;
 }
 
-.all-medicines-lists .md-name.show{
-	display: flex;
-}
-
-.all-medicines-lists .md-name.hidden{
-	display: none;
-}
-
-@keyframes RiseUp {
-	100%{
-		opacity: 1;
-		transform: translateY(0px);
-	}
-}
-
-.all-medicines-lists .md-name .small-box-number {
-	position: absolute;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	left: -12%;
-	top: 50%;
-	transform: translateY(-50%);
-	height: 24px;
-	width: 24px;
-	padding: 4px;
-	border-radius: 5px;
-	background-color: #1a8cff;
-	/* box-shadow: 0 1px 2px rgba(0, 0, 0, .23); */
-	color: #fff;
-	font-weight: lighter;
-}
-
-.space{
-	position: relative;
-	display: flex;
-	width: fit-content;
-	left: 50%;
-	transform: translateX(-50%);
-	justify-content: center;
-	font-weight: bold;
-	background-color: rgba(63, 133, 244, .25);
-	margin: 12px 0 12px 0;
-	color: #1a8cff;
-	padding: 8px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
-	border-radius: 12px;
-}
-
-.box-modal::-webkit-scrollbar {
-    display: none;
+.bottom-nav .bottom-nav-btns.default-btn svg{
+	fill: #0f9d58;
 }
