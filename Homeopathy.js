@@ -163,8 +163,7 @@ const boxesCls = document.getElementsByClassName("boxes");
 		boxesCls[i].addEventListener("click", function() {
 			boxModal.classList.add("visible");
 			showButton(1);
-			orderedList.replaceChildren();
-			medicineSearch.value = "visible";
+			orderedList.innerHTML = '';
 			const boxesId = boxesCls[i].id;
 			const medicineBoxId = medicineBox[boxesId];
 
