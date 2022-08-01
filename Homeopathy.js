@@ -1,13 +1,3 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyARejpzHPxZKdwuKL_JAemDB_ZKCmAJ05g",
-  authDomain: "homeopathy-medicine-webapp.firebaseapp.com",
-  projectId: "homeopathy-medicine-webapp",
-  storageBucket: "homeopathy-medicine-webapp.appspot.com",
-  messagingSenderId: "720452945745",
-  appId: "1:720452945745:web:74d2ab83061133f8407570",
-  measurementId: "G-E0GXS6V491"
-};
-
 const medicineSearch = document.getElementById("medicineSearch");
 
 const allMedicinesListsDiv = document.getElementById("allMedicinesLists");
@@ -22,7 +12,7 @@ const orderedList = document.getElementById("orderedList");
 const medicineSections = document.querySelectorAll(".medicine-section");
 const tabButtons = document.querySelectorAll(".bottom-nav-btns");
 
-const maxBoxes = 7;
+const maxBoxes = 8;
 
 const medicineBox = {
 
@@ -39,6 +29,8 @@ const medicineBox = {
 	'MedicineBox-6': ["NUX VOMICA", "SANG CAN", "KALI PHOS" , "PLANTAGO", "ARNICA", "FERRUM MET", "CASTOR EQ", "PLUMBUM MET", "VERBASCUM T", "EUPAT PERF", "CHENOPODIUM", "PODOPHYLLUM", "OPIUM", "MEZEREUM", "DULCAMARA", "SOLIDAGO V", "SYMPHYTUM", "ACTEA SPI", "PURRANNOVA", "STELLARIA", "TUCCA F", "URTICA", "MED RRHH UNUM CM", "MERC SOL", "KALU MUR", "AGAAPHIS NUTIM", "GUAIACUM"],
 
 	'MedicineBox-7': ["BUFO RANA" ,"KALI IOD" ,"BRAYAT IOD" ,"CALC IOD" ,"ALFALFA" ,"BARBARIES AQ" ,"LYCOPODIUM" ,"CHININ SULPH" ,"CHENOPODIUM" ,"BERBERIS VUL" ,"ARGEN NIT" ,"CANTHARIS" ,"CHAMOMILLA" ,"SINAPIS NIG" ,"AGRAPHIS NUT" ,"BOVISTA" ,"ACID CARB" ,"HELLICA LAVA" ,"COLOCYNTHIS" ,"HEPAR SULPH" ,"BELLADONNA 1M" ,"ANTIM CRUD"],
+
+	'MedicineBox-8': ["PASSIFLORA IN", "HYOSCYAMUS", "ABROMA RAD", "VERBASCUM T", "TABACUM", "HYDRENGEA ARB", "CHOLESTRINUM", "GNAPHALLIUM", "COLLINSONIA", "JANOSIA ASH", "KALI NIT", "CHELIDONIUM M", "ANITM CRUD", "LUPULUS", "AESCULUS HIP", "AMBRA GRE", "SARSAPARILLA", "EUCALYPTUS", "OLEUM JAC AS", "COFFEA CRUD"]
 };
 
 Object.freeze(medicineBox);
