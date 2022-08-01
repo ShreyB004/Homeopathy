@@ -169,7 +169,6 @@ body{
 	opacity: 0;
 	transform: translateY(100%);
 	z-index: -1;
-	scroll-behavior: smooth;
 }
 .all-medicines-lists {
 	z-index: 2;
@@ -180,19 +179,17 @@ body{
 	align-items: flex-start;
 	overflow-x: visible;
 	height: 600px;
-	scroll-behavior: smooth;
 }
 .box-modal.visible, .all-medicines-lists.visible{
 	opacity: 1;
-	z-index: 3;
 	display: flex;
 	transform: translateY(0px);
 }
 .all-medicines-lists.visible{
 	z-index: 3;
 }
-.box-modal ol {
-	position: absolute;
+.box-modal.visible{
+	z-index: 11;
 }
 .md-name {
 	position: relative;
@@ -356,13 +353,13 @@ body{
 }
 
 .bottom-nav .bottom-nav-btns.default-btn {
-	background-color: #111bbbb;
-	box-shadow: 0 0 8px 1px #111bbbb;
+	background-color: #0f9d5866;
+	box-shadow: 0 0 8px 1px #0f9d58bb;
 	animation-name: GelatineBounce;
 	animation-duration: .25s;
 	animation-timing-function: ease-in-out;
 }
 
 .bottom-nav .bottom-nav-btns.default-btn svg{
-	fill: #111;
+	fill: #0f9d58;
 }
