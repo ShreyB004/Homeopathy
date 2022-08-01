@@ -161,10 +161,10 @@ const boxesCls = document.getElementsByClassName("boxes");
 	for (let i = 0; i < maxBoxes; ++i) {
 		boxesCls[i].setAttribute("id", `MedicineBox-${i+1}`);
 		boxesCls[i].addEventListener("click", function() {
+			boxModal.classList.add("visible");
 			showButton(1);
 			orderedList.replaceChildren();
 			medicineSearch.value = "visible";
-			boxModal.classList.add("visible");
 			const boxesId = boxesCls[i].id;
 			const medicineBoxId = medicineBox[boxesId];
 
