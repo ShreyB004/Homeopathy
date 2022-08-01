@@ -163,17 +163,14 @@ const boxesCls = document.getElementsByClassName("boxes");
 		boxesCls[i].addEventListener("click", function() {
 			showButton(1);
 			orderedList.replaceChildren();
-			
+			medicineSearch.value = "visible";
+			boxModal.classList.add("visible");
 			const boxesId = boxesCls[i].id;
 			const medicineBoxId = medicineBox[boxesId];
 
 			for(let j = 0; j < medicineBoxId.length; ++j) {
 				createPills((j+1), medicineBoxId[j], orderedList);
-			}
-
-			boxModal.classList.add("visible");
-			alert(boxModal.classList.contains("visible"));
-			alert("added");
+			};
 		});
 	}
 })();
