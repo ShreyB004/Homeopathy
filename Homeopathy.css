@@ -356,7 +356,7 @@ body{
 }
 
 .bottom-nav .bottom-nav-btns.default-btn {
-	background-color: #0f9d5866;
+	background-color: #db443766;
 	box-shadow: 0 0 8px 1px #0f9d58bb;
 	animation-name: GelatineBounce;
 	animation-duration: .25s;
@@ -364,5 +364,5 @@ body{
 }
 
 .bottom-nav .bottom-nav-btns.default-btn svg{
-	fill: #0f9d58;
+	fill: #db4437;
 }
