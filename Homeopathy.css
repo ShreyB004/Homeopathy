@@ -164,12 +164,12 @@ body{
 	padding: 12px;
 	background-color: #fff;
 	transition: all .25s ease-in;
-	overflow-y: auto;
 	display: none;
 	opacity: 0;
 	transform: translateY(100%);
 	z-index: -1;
-	scroll-behavior: smooth;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 }
 .all-medicines-lists {
 	z-index: 9;
@@ -184,12 +184,12 @@ body{
 }
 .box-modal.visible, .all-medicines-lists.visible{
 	opacity: 1;
-	z-index: 1;
+	z-index: 8;
 	display: flex;
 	transform: translateY(0px);
 }
 .all-medicines-lists.visible{
-	z-index: 2;
+	z-index: 9;
 }
 .box-modal ol {
 	position: relative;
