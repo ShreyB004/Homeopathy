@@ -172,6 +172,7 @@ const boxesCls = document.getElementsByClassName("boxes");
 			}
 
 			boxModal.classList.add("visible");
+			alert("added");
 		});
 	}
 })();
