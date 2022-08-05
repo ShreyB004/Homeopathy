@@ -1,3 +1,13 @@
+const firebaseConfig = {
+  apiKey: "AIzaSyARejpzHPxZKdwuKL_JAemDB_ZKCmAJ05g",
+  authDomain: "homeopathy-medicine-webapp.firebaseapp.com",
+  projectId: "homeopathy-medicine-webapp",
+  storageBucket: "homeopathy-medicine-webapp.appspot.com",
+  messagingSenderId: "720452945745",
+  appId: "1:720452945745:web:74d2ab83061133f8407570",
+  measurementId: "G-E0GXS6V491"
+};
+
 const medicineSearch = document.getElementById("medicineSearch");
 
 const allMedicinesListsDiv = document.getElementById("allMedicinesLists");
@@ -20,13 +30,13 @@ const medicineBox = {
 
 	'MedicineBox-2': ["TABACUM", "NUX VOM", "PHOSPHORUS", "GUAICUM CM", "KALI PHOS", "NAJA", "EUPHRASIA", "ARUNM MET", "ARS ALB", "EUPHRASIA OFF", "CARBO VEG", "LITHIUM CARB", "SILICEA", "LEDUM PAL", "SLONINE", "ARALIA RACEMOSA", "NAT MUR"],
 
-	'MedicineBox-3': ["CACTUS", "BELLADONNA", "ARUNDO MAVRI", "DROSERA", "ARS ALB", "STANNUM MET", "SENEGA", "RUMAX C", "ALLUM SAT", "ANTIM FUR", "CINNA MAR", "BARYTA MUR", "BELLADONNA", "BENZA ACID", "AMYLE NRT", "KALI BITCH", "PULSATILLA", "HEPAR SULPH", "CALADIUM SEG", "SPONGIA", "NAT MUR", "CACTUS-CACTI", "CRATAEGUS OXY", "BRYONIA ALB"],
+	'MedicineBox-3': ["CACTUS", "BELLADONNA", "ARUNDO MAVRI", "DROSERA", "ARS ALB", "STANNUM MET", "SENEGA", "RUMAX C", "ALLUM SAT", "ANTIM FUR", "CINNA MAR", "BARYTA MUR", "BELLADONNA", "BENZA ACID", "AMYLE NRT", "KALI BICH", "PULSATILLA", "HEPAR SULPH", "CALADIUM SEG", "SPONGIA", "NAT MUR", "CACTUS-CACTI", "CRATAEGUS OXY", "BRYONIA ALB"],
 
-	'MedicineBox-4': ["LACHESIS", "CALC PHOS", "FERRUM MET", "URTICA URENS", "GELSEMIUM", "ABROMA AUG", "ALOE SOC", "SECALE CORN", "IGNATIA AM", "PHOS ACID", "SYZYGIUM JAMBULUM", "CONIUM MAC", "ANACARDIUM" , "ZINCUM MET", "RHODODENDRONS", "RUTA GRVO", "GRAPHITES", "CALC CARB", "CONIUM MAC", "IGNATIA MM", "AGNUS CAST", "CLEMATIS ERTICA", "MEDORRHINUM C", "TRILLIUM PENDULUM", "SABINA", "GLONOINE", "CONUM MAC", "SEPIA" , "KALI BICH", "LACHESIS", "THLASPI B.P", "BORAX", "USTILAGO", "BARYTA CARB", "CALC CARB", "GYMNEMA SYLIM", "MERC SOL", "CICUTA VIR", "SULFUR", "CROTON TIG", "MAG PHOS", "SILICEA", "STRAMONIUM", "CHAMOMILLA", "CALADIUM SEG", "HYOSCYAMUS N", "LAC CANINUM", "ROBINIA", "CAUSTICUM", "STAPHYSAGRIA", "CALC FLUOR", "MARK SOL", "CALC PHOS"],
+	'MedicineBox-4': ["LACHESIS", "CALC PHOS", "FERRUM MET", "URTICA URENS", "GELSEMIUM", "ABROMA AUG", "ALOE SOC", "SECALE CORN", "IGNATIA", "PHOS ACID", "SYZYGIUM JAMBULUM", "CONIUM MAC", "ANACARDIUM" , "ZINCUM MET", "RHODODENDRONS", "RUTA GRVO", "GRAPHITES", "CALC CARB", "CONIUM MAC", "IGNATIA MM", "AGNUS CAST", "CLEMATIS ERTICA", "MEDORRHINUM C", "TRILLIUM PENDULUM", "SABINA", "GLONOINE", "CONUM MAC", "SEPIA" , "KALI BICH", "LACHESIS", "THLASPI B.P", "BORAX", "USTILAGO", "BARYTA CARB", "CALC CARB", "GYMNEMA SYLIM", "MERC SOL", "CICUTA VIR", "SULFUR", "CROTON TIG", "MAG PHOS", "SILICEA", "STRAMONIUM", "CHAMOMILLA", "CALADIUM SEG", "HYOSCYAMUS N", "LAC CANINUM", "ROBINIA", "CAUSTICUM", "STAPHYSAGRIA", "CALC FLUOR", "MARK SOL", "CALC PHOS"],
 
 	'MedicineBox-5': ["LYCOPODIUM", "LEGNA MINUR", "RHUS TOX   1M", "PETRO", "ARNICA", "ALUMINA SILICA", "EPIPHEGUS VIRGINIA", "HAMAMELIS VIRGINIA", "PALLADIUM", "ASAFOETICA", "AMBROSIA", "THUJA   1 CM 10 CM", "NITRIC ACID", "SULPHURIC ACID", "CAULOPHYLLUM", "CIMICIFUGA RACEMOSA", "NUPHAR LUTEUM", "RHUS TOX   10 M", "RHUS TOX   200", "CHELIDONIUM MAJUS", "CARDUUS MARIANUS"],
 
-	'MedicineBox-6': ["NUX VOMICA", "SANG CAN", "KALI PHOS" , "PLANTAGO", "ARNICA", "FERRUM MET", "CASTOR EQ", "PLUMBUM MET", "VERBASCUM T", "EUPAT PERF", "CHENOPODIUM", "PODOPHYLLUM", "OPIUM", "MEZEREUM", "DULCAMARA", "SOLIDAGO V", "SYMPHYTUM", "ACTEA SPI", "PURRANNOVA", "STELLARIA", "TUCCA F", "URTICA", "MED RRHH UNUM CM", "MERC SOL", "KALU MUR", "AGAAPHIS NUTIM", "GUAIACUM"],
+	'MedicineBox-6': ["NUX VOMICA", "SANG CAN", "KALI PHOS" , "PLANTAGO", "ARNICA", "FERRUM MET", "CASTOR EQ", "PLUMBUM MET", "VERBASCUM T", "EUPAT PERF", "CHENOPODIUM", "PODOPHYLLUM", "OPIUM", "MEZEREUM", "DULCAMARA", "SOLIDAGO V", "SYMPHYTUM", "ACTEA SPI", "PURRANNOVA", "STELLARIA", "TUCCA F", "URTICA", "MED RRHH UNUM CM", "MERC SOL", "KALI MUR", "AGAAPHIS NUTIM", "GUAIACUM"],
 
 	'MedicineBox-7': ["BUFO RANA" ,"KALI IOD" ,"BRAYAT IOD" ,"CALC IOD" ,"ALFALFA" ,"BARBARIES AQ" ,"LYCOPODIUM" ,"CHININ SULPH" ,"CHENOPODIUM" ,"BERBERIS VUL" ,"ARGEN NIT" ,"CANTHARIS" ,"CHAMOMILLA" ,"SINAPIS NIG" ,"AGRAPHIS NUT" ,"BOVISTA" ,"ACID CARB" ,"HELLICA LAVA" ,"COLOCYNTHIS" ,"HEPAR SULPH" ,"BELLADONNA 1M" ,"ANTIM CRUD"],
 
@@ -109,11 +119,21 @@ function searchMedicines(searchValue) {
 	const medicineName = document.getElementsByClassName("md-name");
 	const medicineNameLen = medicineName.length;
 
-	const searchValueLowerCase = searchValue.toLowerCase();
+	const searchValueUpperCase = searchValue.toUpperCase();
+
 
 	for(let i = 0; i < medicineNameLen; ++i) {		
-		const medicineNameText = medicineName[i].innerText;
-		if(medicineNameText.toLowerCase().indexOf(searchValueLowerCase) > -1) {
+		const medicineNameSpans = medicineName[i].querySelector("span");
+		
+		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replaceAll('<b>', '').replaceAll('</b>', '');
+		
+		const medicineNameText = medicineNameSpans.innerHTML;
+
+		const medicineNameTextReplaced = medicineNameText.replaceAll('<b>', '').replaceAll('</b>', ''); 
+		
+		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replace(searchValueUpperCase, `<b>${searchValueUpperCase}</b>`);
+
+		if(medicineNameTextReplaced.toUpperCase().indexOf(searchValueUpperCase) > -1) {
 			medicineName[i].classList.add("show");
 			medicineName[i].classList.remove("hidden");
 		} else {
@@ -161,15 +181,16 @@ const boxesCls = document.getElementsByClassName("boxes");
 	for (let i = 0; i < maxBoxes; ++i) {
 		boxesCls[i].setAttribute("id", `MedicineBox-${i+1}`);
 		boxesCls[i].addEventListener("click", function() {
-			boxModal.classList.add("visible");
 			showButton(1);
 			orderedList.innerHTML = '';
+			boxModal.classList.add("visible");
 			const boxesId = boxesCls[i].id;
 			const medicineBoxId = medicineBox[boxesId];
 
 			for(let j = 0; j < medicineBoxId.length; ++j) {
 				createPills((j+1), medicineBoxId[j], orderedList);
-			};
+			}
+
 		});
 	}
 })();
@@ -195,6 +216,5 @@ tabButtons.forEach(function(btn, index){
 	});
 });
 
-medicineSearch.addEventListener("focus", searchMedicinesSection)
 medicineSearch.addEventListener("keyup", searchMedicinesOnKeyup);
 topNavBtn.addEventListener("click", goBack);
