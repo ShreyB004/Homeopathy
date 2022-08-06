@@ -125,15 +125,15 @@ function searchMedicines(searchValue) {
 	for(let i = 0; i < medicineNameLen; ++i) {		
 		const medicineNameSpans = medicineName[i].querySelector("span");
 		
-		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replaceAll('<b>', '').replaceAll('</b>', '');
+// 		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replaceAll('<b>', '').replaceAll('</b>', '');
 		
-		const medicineNameText = medicineNameSpans.innerHTML;
+		const medicineNameText = medicineNameSpans.innerText;
 
-		const medicineNameTextReplaced = medicineNameText.replaceAll('<b>', '').replaceAll('</b>', ''); 
+// 		const medicineNameTextReplaced = medicineNameText.replaceAll('<b>', '').replaceAll('</b>', ''); 
 		
-		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replace(searchValueUpperCase, `<b>${searchValueUpperCase}</b>`);
+// 		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replace(searchValueUpperCase, `<b>${searchValueUpperCase}</b>`);
 
-		if(medicineNameTextReplaced.toUpperCase().indexOf(searchValueUpperCase) > -1) {
+		if(medicineNameText.toUpperCase().indexOf(searchValueUpperCase) > -1) {
 			medicineName[i].classList.add("show");
 			medicineName[i].classList.remove("hidden");
 		} else {
