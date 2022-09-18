@@ -249,7 +249,13 @@ const goBack = () => {
 		allMedicinesLists.classList.remove("visible");
 	}
 
-	if(!pillsInBoxesDiv.classList.contains("visible") || !allMedicinesLists.classList.contains("visible")) {
+	if(patientDetailsDiv.classList.contains("visible")) {
+		patientDetailsDiv.classList.remove("visible")
+	}
+
+	if(!pillsInBoxesDiv.classList.contains("visible") 
+		|| !allMedicinesLists.classList.contains("visible")
+		|| !patientDetailsDiv.classList.contains("visible")) {
 		showButton(0);
 	}
 };
