@@ -417,6 +417,9 @@ body.dark-mode {
 
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section{
 	position: relative;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 	background-color: transparent;
 	height: fit-content;
 	text-align: center;
