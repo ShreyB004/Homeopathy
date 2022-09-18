@@ -406,10 +406,6 @@ body.dark-mode {
 
 .medicine-section .box-holder .history-box .main-history-box{
 	position: relative;	
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
 	height: 105px;
 	width: 300px;
 	border-radius: 25px;
@@ -420,6 +416,10 @@ body.dark-mode {
 
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section{
 	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 	padding: 12px;
 	background-color: transparent;
 	height: fit-content;
