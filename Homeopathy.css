@@ -405,10 +405,13 @@ body.dark-mode {
 }
 
 .medicine-section .box-holder .history-box .main-history-box{
-	position: relative;
+	position: relative;	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 	height: 105px;
 	width: 300px;
-	padding: 12px;
 	border-radius: 25px;
 	background-color: var(--theme-color);
 	transition: background-color .15s ease-in-out;
@@ -417,9 +420,7 @@ body.dark-mode {
 
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section{
 	position: relative;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+	padding: 12px;
 	background-color: transparent;
 	height: fit-content;
 	text-align: center;
