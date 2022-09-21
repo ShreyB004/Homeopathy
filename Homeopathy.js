@@ -21,15 +21,18 @@ String.prototype.toTitleCase = function() {
 };
 
 
-const captureHistory = function(patientName, nameOfPill, pillBoxNum, time) {
+const captureHistory = function(patientName, nameOfPill, pillBoxNum, getTime) {
 	const dbPath = database.ref('MedicineHistory');
 	const historyObject = {
 		Patient: `${patientName}`,
 		PillName: `${nameOfPill}`,
 		PillBox: `${pillBoxNum}`,
-		TimeStamp: `${time}`
+		TimeStamp: {
+			Date: getTime.date,
+			Time: getTime.time
+		}
 	};
-	dbPath.push(historyObject)
+	dbPath.push(historyObject);
 }
 
 const createTimeStamp = function() {
@@ -43,10 +46,22 @@ const createTimeStamp = function() {
 	const currYear = getCurrDate.getFullYear();
 	
 	const currDayName = weekNames[getCurrDate.getDay()];
+	
+	let currHour = getCurrDate.getHours();
+	let currMins = getCurrDate.getMinutes();
+
+	let median = (currHour > 12)?'pm':'am';
+
+	currHour = (((currHour > 12)?(currHour-12):currHour) < 10)?`0${currHour}`:currHour;
+	currMins = (currMins < 10)?`0${currMins}`:currMins;
 
 	const createdDate = `${currDate} ${currMonName} ${currYear}`;
+	const createdTime = `${currHour} : ${currMins} ${median}`;
 
-	return createdDate;
+	return {
+		date: createdDate,
+		time: createdTime
+	};
 };
 
 const patientHistoryHolder = document.getElementById("patientHistoryDiv");
@@ -56,7 +71,8 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	const gPatientNameDB = await medicineObjValue.Patient;
 	const gMedicineNameDB = await medicineObjValue.PillName;
 	const gMedicineBoxDB = await medicineObjValue.PillBox;
-	const medicineTime = await (medicineObjValue.TimeStamp).split(' ');
+	const medicineDate = await (medicineObjValue.TimeStamp.Date).split(' ');
+	const medicineTime = await (medicineObjValue.TimeStamp?.Time);
 
 	const patientNamesHistory = document.createElement('div'); 
 	const patientHistoryDiv = document.createElement('div');
@@ -64,7 +80,8 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	const gArrow = document.createElement('span');
 	const gPatientName = document.createElement('span');
 
-	const gMedicineTime = document.createElement('div');
+	const gMedicineTimeSpan = document.createElement("time");
+	const gMedicineDate = document.createElement('div');
 
 	patientNamesHistory.classList.add('patients-name');
 	patientHistoryDiv.classList.add('patients-history-details');
@@ -72,17 +89,22 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	gMedicineName.classList.add('given-medicine-name');
 	gArrow.classList.add('material-icons', 'arrow');
 	gPatientName.classList.add('given-patient-name');
-	gMedicineTime.classList.add('patient-medicine-time-div');
+	gMedicineDate.classList.add('patient-medicine-time-div');
 
 	gMedicineName.innerText = `${gMedicineNameDB}`;
 	gArrow.innerText = 'arrow_forward'
 	gPatientName.innerText = `${gPatientNameDB}`;
 
-	for (let i = 0; i < medicineTime.length; ++i) {
+	gMedicineTimeSpan.innerText = `${medicineTime}`;
+
+	for (let i = 0; i < medicineDate.length; ++i) {
 		const dateSpans = document.createElement('span');
-		dateSpans.innerText = `${medicineTime[i]}`;
-		gMedicineTime.appendChild(dateSpans);
+		dateSpans.innerText = `${medicineDate[i]}`;
+		gMedicineDate.appendChild(dateSpans);
 	}
+	gMedicineDate.appendChild(gMedicineTimeSpan);
+
+	if(gMedicineTimeSpan.innerText === 'undefined') gMedicineTimeSpan.remove(); 
 
 	patientHistoryDiv.addEventListener('click', function(){
 		const medicineBoxesHolder = document.getElementById('MedicineBoxesHolder');
@@ -95,7 +117,7 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	patientHistoryDiv.appendChild(gPatientName);
 
 	patientNamesHistory.appendChild(patientHistoryDiv);
-	patientNamesHistory.appendChild(gMedicineTime);
+	patientNamesHistory.appendChild(gMedicineDate);
 	patientHistoryHolder.appendChild(patientNamesHistory);
 });
 
@@ -286,32 +308,35 @@ const searchMedicinesOnKeyup = (eventKey) => {
 	}
 }
 
+function boldSearchedText(element, textToReplace) {
+	element.innerHTML = element.innerHTML.replace(/<b>/g, '').replace(/<\/b>/g, '');
+	element.innerHTML = element.innerHTML.replace(textToReplace, `<b>${textToReplace}</b>`);
+}
+
 function searchMedicines(searchValue) {
 	const medicineName = document.getElementsByClassName("md-name");
 	const medicineNameLen = medicineName.length;
 
 	const searchValueUpperCase = searchValue.toUpperCase();
 
+	let timeout = null;
+
 	for(let i = 0; i < medicineNameLen; ++i) {		
-		const medicineNameSpans = medicineName[i].querySelector("span");
-		
-		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replace(/<b>/g, '').replace(/<\/b>/g, '');
-		
-		const medicineNameText = medicineNameSpans.innerText;
+		timeout = setTimeout(function() {
+			const medicineNameSpans = medicineName[i].querySelector("span");
 
-		const medicineNameTextReplaced = medicineNameText.replace(/<b>/g, '').replace(/<\/b>/g, ''); 
-		
-		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replace(searchValueUpperCase, `<b>${searchValueUpperCase}</b>`);
+			boldSearchedText(medicineNameSpans, searchValueUpperCase);
 
-		if(medicineNameText.toUpperCase().indexOf(searchValueUpperCase) >= 0) {
-			medicineName[i].classList.add("show");
-			medicineName[i].classList.remove("hidden");
-		} else {
-			medicineName[i].classList.add("hidden");
-			medicineName[i].classList.remove("show");
-		}
-
+			if(medicineNameSpans.innerText.toUpperCase().indexOf(searchValueUpperCase) >= 0) {
+				medicineName[i].classList.add("show");
+				medicineName[i].classList.remove("hidden");
+			} else {
+				medicineName[i].classList.add("hidden");
+				medicineName[i].classList.remove("show");
+			}
+		}, 50); 
 	}
+	clearTimeout(timeout);
 }
 
 (function() {
