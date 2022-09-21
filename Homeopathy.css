@@ -145,6 +145,7 @@ body.dark-mode {
 	display: block;
 	height: 100%;
 	width: 100%;
+	overflow-y: auto;
 }
 
 .medicine-section .patients-lists .patient-names-div .patients-name {
@@ -179,6 +180,7 @@ body.dark-mode {
 	background-color: var(--theme-color);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .43);
 	border-radius: 12px;
+	text-transform: capitalize;
 }
 
 .medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details .arrow{
@@ -215,7 +217,8 @@ body.dark-mode {
 	font-size: .9em;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div span{
+.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div span,
+.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div time{
 	position: relative;
 	padding: 2px 4px;
 	margin-left: 5px;
@@ -225,6 +228,10 @@ body.dark-mode {
 	color: var(--theme-text-color);
 	text-transform: capitalize;
 	font-size: .7rem;
+}
+
+.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div time{
+	text-transform: lowercase;
 }
 
 .medicine-section .box-holder .boxes {
