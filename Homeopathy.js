@@ -21,12 +21,12 @@ String.prototype.toTitleCase = function() {
 };
 
 
-const captureHistory = function(patientName, nameOfPill, pillBoxNum, getTime) {
+const captureHistory = function(nameOfPill, patientName, medicineFor, getTime) {
 	const dbPath = database.ref('MedicineHistory');
 	const historyObject = {
 		Patient: `${patientName}`,
 		PillName: `${nameOfPill}`,
-		PillBox: `${pillBoxNum}`,
+		MedicinePillFor: `${medicineFor}`,
 		TimeStamp: {
 			Date: getTime.date,
 			Time: getTime.time
@@ -70,8 +70,8 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	const medicineObjValue = medicineSnap.val();
 	const gPatientNameDB = await medicineObjValue.Patient;
 	const gMedicineNameDB = await medicineObjValue.PillName;
-	const gMedicineBoxDB = await medicineObjValue.PillBox;
-	const medicineDate = await (medicineObjValue.TimeStamp.Date).split(' ');
+	const gMedicineFor = await medicineObjValue.MedicinePillFor;
+	const medicineDate = await (medicineObjValue.TimeStamp?.Date).split(' ');
 	const medicineTime = await (medicineObjValue.TimeStamp?.Time);
 
 	const patientNamesHistory = document.createElement('div'); 
@@ -79,6 +79,7 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	const gMedicineName = document.createElement('span');
 	const gArrow = document.createElement('span');
 	const gPatientName = document.createElement('span');
+	const gMedicineForSpan =  document.createElement('div');
 
 	const gMedicineTimeSpan = document.createElement("time");
 	const gMedicineDate = document.createElement('div');
@@ -92,8 +93,10 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	gMedicineDate.classList.add('patient-medicine-time-div');
 
 	gMedicineName.innerText = `${gMedicineNameDB}`;
-	gArrow.innerText = 'arrow_forward'
+	gArrow.innerText = 'arrow_forward';
 	gPatientName.innerText = `${gPatientNameDB}`;
+
+	gMedicineForSpan.classList.add('medicine-for');
 
 	gMedicineTimeSpan.innerText = `${medicineTime}`;
 
@@ -106,19 +109,21 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 
 	if(gMedicineTimeSpan.innerText === 'undefined') gMedicineTimeSpan.remove(); 
 
-	patientHistoryDiv.addEventListener('click', function(){
-		const medicineBoxesHolder = document.getElementById('MedicineBoxesHolder');
-		medicineBoxesHolder.click();
-		openMedineBoxList(gMedicineBoxDB);	
-	});
-
 	patientHistoryDiv.appendChild(gMedicineName);
 	patientHistoryDiv.appendChild(gArrow);
 	patientHistoryDiv.appendChild(gPatientName);
 
+	if(gMedicineFor !== undefined){
+		gMedicineForSpan.innerText = `${gMedicineFor}`;
+	} else{
+		gMedicineForSpan.innerText = 'Other';
+	}
+
+	patientHistoryDiv.appendChild(gMedicineForSpan);
+
 	patientNamesHistory.appendChild(patientHistoryDiv);
 	patientNamesHistory.appendChild(gMedicineDate);
-	patientHistoryHolder.appendChild(patientNamesHistory);
+	patientHistoryHolder.prepend(patientNamesHistory);
 });
 
 const darkModeBtn = document.getElementById("darkMode");
@@ -164,15 +169,13 @@ const pillsList = document.getElementById("pillsListInBoxes");
 
 const addHistoryButton = document.getElementById("addHistoryBtn");
 const patientNameInput = document.getElementById("patientName");
-const patientMedicineBoxNum = document.getElementById("MedicineBoxNum");
+const givenMedicineFor = document.getElementById("MedicineFor");
 
 const patientDetailsDiv = document.getElementById("captureHistoryModal");
 const patientMedicineName = document.getElementById("patientMedicineName");
 
 const medicineSections = document.querySelectorAll(".medicine-section");
 const tabButtons = document.querySelectorAll(".bottom-nav-btns");
-
-const maxBoxes = 8;
 
 const medicineBox = {
 
@@ -192,6 +195,8 @@ const medicineBox = {
 
 	'MedicineBox-8': ["PASSIFLORA IN", "HYOSCYAMUS", "ABROMA RAD", "VERBASCUM T", "TABACUM", "HYDRENGEA ARB", "CHOLESTRINUM", "GNAPHALLIUM", "COLLINSONIA", "JANOSIA ASH", "KALI NIT", "CHELIDONIUM M", "ANITM CRUD", "LUPULUS", "AESCULUS HIP", "AMBRA GRE", "SARSAPARILLA", "EUCALYPTUS", "OLEUM JAC AS", "COFFEA CRUD"]
 };
+
+const maxBoxes = Object.keys(medicineBox).length;
 
 Object.freeze(medicineBox);
 
@@ -216,7 +221,7 @@ const createHorizontalLine = (boxNumber) => {
 	listSearchedMedicines.appendChild(horizontalLine);	
 }
 	
-const createPills = (pillNumber, pillName, boxNum, parent) => {
+const createPills = (pillNumber, pillName, parent) => {
 	const mdNameDiv = document.createElement("li");
 	const smallBoxNum = document.createElement("div");
 	const mdNameSpn = document.createElement("span");
@@ -224,16 +229,12 @@ const createPills = (pillNumber, pillName, boxNum, parent) => {
 	mdNameDiv.classList.add("md-name");
 	smallBoxNum.classList.add("small-box-number");
 
-	mdNameDiv.id = `${pillName}`;
-	mdNameDiv.dataset.boxNumber = `${boxNum}`;
-
 	smallBoxNum.innerText = `${pillNumber}`;
 	mdNameSpn.innerText = `${pillName}`;
 
 	mdNameDiv.addEventListener('click', function() {
 		patientDetailsDiv.classList.add("visible");
 		patientMedicineName.innerText = pillName.toTitleCase();
-		patientMedicineBoxNum.value = mdNameDiv.dataset.boxNumber;
 	});
 
 	mdNameDiv.appendChild(smallBoxNum);
@@ -249,9 +250,9 @@ const createHistory = () => {
 	} else{
 		errInfoSpn.classList.remove('show-error');
 		captureHistory(
-			patientNameInput.value, 
 			patientMedicineName.innerText,
-			patientMedicineBoxNum.value,
+			patientNameInput.value, 
+			givenMedicineFor.value,
 			createTimeStamp()
 		);
 		patientDetailsDiv.classList.remove("visible");
@@ -367,7 +368,7 @@ const boxesCls = document.getElementsByClassName("boxes");
 		createHorizontalLine(boxNum);
 
 		for (let j = 0; j < medicineBoxContainerLen; ++j) {
-			createPills((j+1), medicineBoxContainer[j], boxNum, listSearchedMedicines);
+			createPills((j+1), medicineBoxContainer[j], listSearchedMedicines);
 		}
 	}
 })();
@@ -383,7 +384,7 @@ function openMedineBoxList(boxNum) {
 	const medicineBoxId = medicineBox[boxesId];
 
 	for(let j = 0; j < medicineBoxId.length; ++j) {
-		createPills((j+1), medicineBoxId[j], boxNum, pillsList);
+		createPills((j+1), medicineBoxId[j], pillsList);
 	}
 }
 
