@@ -8,6 +8,30 @@ const firebaseConfig = {
   measurementId: "G-E0GXS6V491"
 };
 
+const tabButtons = document.querySelectorAll(".bottom-nav-btns");
+const medicineSections = document.querySelectorAll(".medicine-section");
+
+const openTab = function(btnTarget, tabId) {
+	const activeTab = document.getElementById(`${tabId}`);
+
+	medicineSections.forEach((section)=>{
+		section.classList.remove("active-tab");
+	});
+	tabButtons.forEach((tabBtn)=>{
+		tabBtn.classList.remove("default-btn");
+	})
+	activeTab.classList.add("active-tab");
+	btnTarget.classList.add("default-btn");
+}
+
+const tabIds = ["medicineHomeSection", "medicineSearchSection", "medicinePatientsSection"];
+
+tabButtons.forEach(function(btn, index){
+	btn.addEventListener("click", function() {
+		openTab(this, tabIds[index]);
+	});
+});
+
 window.addEventListener("error", function(e){
 	document.getElementById('debug').innerText = `${e.message}`;
 	console.log(e);
@@ -25,7 +49,6 @@ String.prototype.toTitleCase = function() {
 	}
 	return splitStr.join(' '); 
 };
-
 
 const captureHistory = function(nameOfPill, patientName, medicineFor, getTime) {
 	const dbPath = database.ref('MedicineHistory');
@@ -150,6 +173,8 @@ const setDarkMode = () => {
 	dbPathDarkMode.update(themeObj);
 };
 
+console.log('hihihihi');
+
 const applyDarkMode = (theme) => {
 	if(theme === 'dark') document.body.classList.add('dark-mode');
 	else document.body.classList.remove('dark-mode');
@@ -180,8 +205,6 @@ const givenMedicineFor = document.getElementById("MedicineFor");
 const patientDetailsDiv = document.getElementById("captureHistoryModal");
 const patientMedicineName = document.getElementById("patientMedicineName");
 
-const medicineSections = document.querySelectorAll(".medicine-section");
-const tabButtons = document.querySelectorAll(".bottom-nav-btns");
 
 const medicineBox = {
 
@@ -403,26 +426,6 @@ function openMedineBoxList(boxNum) {
 	}
 })();
 
-const openTab = function(btnTarget, tabId) {
-	const activeTab = document.getElementById(`${tabId}`);
-
-	medicineSections.forEach((section)=>{
-		section.classList.remove("active-tab");
-	});
-	tabButtons.forEach((tabBtn)=>{
-		tabBtn.classList.remove("default-btn");
-	})
-	activeTab.classList.add("active-tab");
-	btnTarget.classList.add("default-btn");
-}
-
-const tabIds = ["medicineHomeSection", "medicineSearchSection", "medicinePatientsSection"];
-
-tabButtons.forEach(function(btn, index){
-	btn.addEventListener("click", function() {
-		openTab(this, tabIds[index]);
-	});
-});
 
 medicineSearch.addEventListener("keyup", searchMedicinesOnKeyup);
 topNavBtn.addEventListener("click", goBack);
