@@ -72,7 +72,7 @@ const createTimeStamp = function() {
 
 const patientHistoryHolder = document.getElementById("patientHistoryDiv");
 
-database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
+database.ref('MedicineHistory').limitToLast(3).on("child_added", async function(medicineSnap){
 	const medicineObjValue = medicineSnap.val();
 	const gPatientNameDB = await medicineObjValue.Patient;
 	const gMedicineNameDB = await medicineObjValue.PillName;
