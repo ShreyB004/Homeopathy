@@ -8,36 +8,6 @@ const firebaseConfig = {
   measurementId: "G-E0GXS6V491"
 };
 
-const tabButtons = document.querySelectorAll(".bottom-nav-btns");
-const medicineSections = document.querySelectorAll(".medicine-section");
-
-const openTab = function(btnTarget, tabId) {
-	const activeTab = document.getElementById(`${tabId}`);
-
-	medicineSections.forEach((section)=>{
-		section.classList.remove("active-tab");
-	});
-	tabButtons.forEach((tabBtn)=>{
-		tabBtn.classList.remove("default-btn");
-	})
-	activeTab.classList.add("active-tab");
-	btnTarget.classList.add("default-btn");
-}
-
-const tabIds = ["medicineHomeSection", "medicineSearchSection", "medicinePatientsSection"];
-
-tabButtons.forEach(function(btn, index){
-	btn.addEventListener("click", function() {
-		openTab(this, tabIds[index]);
-	});
-});
-
-window.addEventListener("error", function(e){
-	document.getElementById('debug').innerText = `${e.message}`;
-	console.log(e);
-});
-
-
 const fireBaseInit = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 // const cldStorage = firebase.storage();
@@ -50,18 +20,16 @@ String.prototype.toTitleCase = function() {
 	return splitStr.join(' '); 
 };
 
-const captureHistory = function(nameOfPill, patientName, medicineFor, getTime) {
+
+const captureHistory = function(patientName, nameOfPill, pillBoxNum, time) {
 	const dbPath = database.ref('MedicineHistory');
 	const historyObject = {
 		Patient: `${patientName}`,
 		PillName: `${nameOfPill}`,
-		MedicinePillFor: `${medicineFor}`,
-		TimeStamp: {
-			Date: getTime.date,
-			Time: getTime.time
-		}
+		PillBox: `${pillBoxNum}`,
+		TimeStamp: `${time}`
 	};
-	dbPath.push(historyObject);
+	dbPath.push(historyObject)
 }
 
 const createTimeStamp = function() {
@@ -75,43 +43,28 @@ const createTimeStamp = function() {
 	const currYear = getCurrDate.getFullYear();
 	
 	const currDayName = weekNames[getCurrDate.getDay()];
-	
-	let currHour = getCurrDate.getHours();
-	let currMins = getCurrDate.getMinutes();
-
-	let median = (currHour > 12)?'pm':'am';
-
-	currHour = (((currHour > 12)?(currHour-12):currHour) < 10)?`0${currHour}`:currHour;
-	currMins = (currMins < 10)?`0${currMins}`:currMins;
 
 	const createdDate = `${currDate} ${currMonName} ${currYear}`;
-	const createdTime = `${currHour} : ${currMins} ${median}`;
 
-	return {
-		date: createdDate,
-		time: createdTime
-	};
+	return createdDate;
 };
 
 const patientHistoryHolder = document.getElementById("patientHistoryDiv");
 
-database.ref('MedicineHistory').limitToLast(3).on("child_added", async function(medicineSnap){
+database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	const medicineObjValue = medicineSnap.val();
 	const gPatientNameDB = await medicineObjValue.Patient;
 	const gMedicineNameDB = await medicineObjValue.PillName;
-	const gMedicineFor = await medicineObjValue.MedicinePillFor;
-	const medicineDate = await (medicineObjValue.TimeStamp?.Date).split(' ');
-	const medicineTime = await (medicineObjValue.TimeStamp?.Time);
+	const gMedicineBoxDB = await medicineObjValue.PillBox;
+	const medicineTime = await (medicineObjValue.TimeStamp).split(' ');
 
 	const patientNamesHistory = document.createElement('div'); 
 	const patientHistoryDiv = document.createElement('div');
 	const gMedicineName = document.createElement('span');
 	const gArrow = document.createElement('span');
 	const gPatientName = document.createElement('span');
-	const gMedicineForSpan =  document.createElement('div');
 
-	const gMedicineTimeSpan = document.createElement("time");
-	const gMedicineDate = document.createElement('div');
+	const gMedicineTime = document.createElement('div');
 
 	patientNamesHistory.classList.add('patients-name');
 	patientHistoryDiv.classList.add('patients-history-details');
@@ -119,40 +72,31 @@ database.ref('MedicineHistory').limitToLast(3).on("child_added", async function(
 	gMedicineName.classList.add('given-medicine-name');
 	gArrow.classList.add('material-icons', 'arrow');
 	gPatientName.classList.add('given-patient-name');
-	gMedicineDate.classList.add('patient-medicine-time-div');
+	gMedicineTime.classList.add('patient-medicine-time-div');
 
 	gMedicineName.innerText = `${gMedicineNameDB}`;
-	gArrow.innerText = 'arrow_forward';
+	gArrow.innerText = 'arrow_forward'
 	gPatientName.innerText = `${gPatientNameDB}`;
 
-	gMedicineForSpan.classList.add('medicine-for');
-
-	gMedicineTimeSpan.innerText = `${medicineTime}`;
-
-	for (let i = 0; i < medicineDate.length; ++i) {
+	for (let i = 0; i < medicineTime.length; ++i) {
 		const dateSpans = document.createElement('span');
-		dateSpans.innerText = `${medicineDate[i]}`;
-		gMedicineDate.appendChild(dateSpans);
+		dateSpans.innerText = `${medicineTime[i]}`;
+		gMedicineTime.appendChild(dateSpans);
 	}
-	gMedicineDate.appendChild(gMedicineTimeSpan);
 
-	if(gMedicineTimeSpan.innerText === 'undefined') gMedicineTimeSpan.remove(); 
+	patientHistoryDiv.addEventListener('click', function(){
+		const medicineBoxesHolder = document.getElementById('MedicineBoxesHolder');
+		medicineBoxesHolder.click();
+		openMedineBoxList(gMedicineBoxDB);	
+	});
 
 	patientHistoryDiv.appendChild(gMedicineName);
 	patientHistoryDiv.appendChild(gArrow);
 	patientHistoryDiv.appendChild(gPatientName);
 
-	if(gMedicineFor !== undefined){
-		gMedicineForSpan.innerText = `${gMedicineFor}`;
-	} else{
-		gMedicineForSpan.innerText = 'Other';
-	}
-
-	patientHistoryDiv.appendChild(gMedicineForSpan);
-
 	patientNamesHistory.appendChild(patientHistoryDiv);
-	patientNamesHistory.appendChild(gMedicineDate);
-	patientHistoryHolder.prepend(patientNamesHistory);
+	patientNamesHistory.appendChild(gMedicineTime);
+	patientHistoryHolder.appendChild(patientNamesHistory);
 });
 
 const darkModeBtn = document.getElementById("darkMode");
@@ -172,8 +116,6 @@ const setDarkMode = () => {
 	}
 	dbPathDarkMode.update(themeObj);
 };
-
-console.log('hihihihi');
 
 const applyDarkMode = (theme) => {
 	if(theme === 'dark') document.body.classList.add('dark-mode');
@@ -200,11 +142,15 @@ const pillsList = document.getElementById("pillsListInBoxes");
 
 const addHistoryButton = document.getElementById("addHistoryBtn");
 const patientNameInput = document.getElementById("patientName");
-const givenMedicineFor = document.getElementById("MedicineFor");
+const patientMedicineBoxNum = document.getElementById("MedicineBoxNum");
 
 const patientDetailsDiv = document.getElementById("captureHistoryModal");
 const patientMedicineName = document.getElementById("patientMedicineName");
 
+const medicineSections = document.querySelectorAll(".medicine-section");
+const tabButtons = document.querySelectorAll(".bottom-nav-btns");
+
+const maxBoxes = 8;
 
 const medicineBox = {
 
@@ -224,8 +170,6 @@ const medicineBox = {
 
 	'MedicineBox-8': ["PASSIFLORA IN", "HYOSCYAMUS", "ABROMA RAD", "VERBASCUM T", "TABACUM", "HYDRENGEA ARB", "CHOLESTRINUM", "GNAPHALLIUM", "COLLINSONIA", "JANOSIA ASH", "KALI NIT", "CHELIDONIUM M", "ANITM CRUD", "LUPULUS", "AESCULUS HIP", "AMBRA GRE", "SARSAPARILLA", "EUCALYPTUS", "OLEUM JAC AS", "COFFEA CRUD"]
 };
-
-const maxBoxes = Object.keys(medicineBox).length;
 
 Object.freeze(medicineBox);
 
@@ -250,7 +194,7 @@ const createHorizontalLine = (boxNumber) => {
 	listSearchedMedicines.appendChild(horizontalLine);	
 }
 	
-const createPills = (pillNumber, pillName, parent) => {
+const createPills = (pillNumber, pillName, boxNum, parent) => {
 	const mdNameDiv = document.createElement("li");
 	const smallBoxNum = document.createElement("div");
 	const mdNameSpn = document.createElement("span");
@@ -258,12 +202,16 @@ const createPills = (pillNumber, pillName, parent) => {
 	mdNameDiv.classList.add("md-name");
 	smallBoxNum.classList.add("small-box-number");
 
+	mdNameDiv.id = `${pillName}`;
+	mdNameDiv.dataset.boxNumber = `${boxNum}`;
+
 	smallBoxNum.innerText = `${pillNumber}`;
 	mdNameSpn.innerText = `${pillName}`;
 
 	mdNameDiv.addEventListener('click', function() {
 		patientDetailsDiv.classList.add("visible");
 		patientMedicineName.innerText = pillName.toTitleCase();
+		patientMedicineBoxNum.value = mdNameDiv.dataset.boxNumber;
 	});
 
 	mdNameDiv.appendChild(smallBoxNum);
@@ -279,9 +227,9 @@ const createHistory = () => {
 	} else{
 		errInfoSpn.classList.remove('show-error');
 		captureHistory(
-			patientMedicineName.innerText,
 			patientNameInput.value, 
-			givenMedicineFor.value,
+			patientMedicineName.innerText,
+			patientMedicineBoxNum.value,
 			createTimeStamp()
 		);
 		patientDetailsDiv.classList.remove("visible");
@@ -338,35 +286,32 @@ const searchMedicinesOnKeyup = (eventKey) => {
 	}
 }
 
-function boldSearchedText(element, textToReplace) {
-	element.innerHTML = element.innerHTML.replace(/<b>/g, '').replace(/<\/b>/g, '');
-	element.innerHTML = element.innerHTML.replace(textToReplace, `<b>${textToReplace}</b>`);
-}
-
 function searchMedicines(searchValue) {
 	const medicineName = document.getElementsByClassName("md-name");
 	const medicineNameLen = medicineName.length;
 
 	const searchValueUpperCase = searchValue.toUpperCase();
 
-	let timeout = null;
-
 	for(let i = 0; i < medicineNameLen; ++i) {		
-		timeout = setTimeout(function() {
-			const medicineNameSpans = medicineName[i].querySelector("span");
+		const medicineNameSpans = medicineName[i].querySelector("span");
+		
+		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replace(/<b>/g, '').replace(/<\/b>/g, '');
+		
+		const medicineNameText = medicineNameSpans.innerText;
 
-			boldSearchedText(medicineNameSpans, searchValueUpperCase);
+		const medicineNameTextReplaced = medicineNameText.replace(/<b>/g, '').replace(/<\/b>/g, ''); 
+		
+		medicineNameSpans.innerHTML = medicineNameSpans.innerHTML.replace(searchValueUpperCase, `<b>${searchValueUpperCase}</b>`);
 
-			if(medicineNameSpans.innerText.toUpperCase().indexOf(searchValueUpperCase) >= 0) {
-				medicineName[i].classList.add("show");
-				medicineName[i].classList.remove("hidden");
-			} else {
-				medicineName[i].classList.add("hidden");
-				medicineName[i].classList.remove("show");
-			}
-		}, 50); 
+		if(medicineNameText.toUpperCase().indexOf(searchValueUpperCase) >= 0) {
+			medicineName[i].classList.add("show");
+			medicineName[i].classList.remove("hidden");
+		} else {
+			medicineName[i].classList.add("hidden");
+			medicineName[i].classList.remove("show");
+		}
+
 	}
-	clearTimeout(timeout);
 }
 
 (function() {
@@ -397,7 +342,7 @@ const boxesCls = document.getElementsByClassName("boxes");
 		createHorizontalLine(boxNum);
 
 		for (let j = 0; j < medicineBoxContainerLen; ++j) {
-			createPills((j+1), medicineBoxContainer[j], listSearchedMedicines);
+			createPills((j+1), medicineBoxContainer[j], boxNum, listSearchedMedicines);
 		}
 	}
 })();
@@ -413,7 +358,7 @@ function openMedineBoxList(boxNum) {
 	const medicineBoxId = medicineBox[boxesId];
 
 	for(let j = 0; j < medicineBoxId.length; ++j) {
-		createPills((j+1), medicineBoxId[j], pillsList);
+		createPills((j+1), medicineBoxId[j], boxNum, pillsList);
 	}
 }
 
@@ -426,6 +371,26 @@ function openMedineBoxList(boxNum) {
 	}
 })();
 
+const openTab = function(btnTarget, tabId) {
+	const activeTab = document.getElementById(`${tabId}`);
+
+	medicineSections.forEach((section)=>{
+		section.classList.remove("active-tab");
+	});
+	tabButtons.forEach((tabBtn)=>{
+		tabBtn.classList.remove("default-btn");
+	})
+	activeTab.classList.add("active-tab");
+	btnTarget.classList.add("default-btn");
+}
+
+const tabIds = ["medicineHomeSection", "medicineSearchSection", "medicinePatientsSection"];
+
+tabButtons.forEach(function(btn, index){
+	btn.addEventListener("click", function() {
+		openTab(this, tabIds[index]);
+	});
+});
 
 medicineSearch.addEventListener("keyup", searchMedicinesOnKeyup);
 topNavBtn.addEventListener("click", goBack);
