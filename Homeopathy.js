@@ -9,7 +9,7 @@ const firebaseConfig = {
 };
 
 window.addEventListener("error", function(e){
-	document.getElementById('debug').innerText = `${e.message}`;
+	document.getElementById('debug').innerText = `${e.lineNumber}`;
 	console.log(e);
 });
 
