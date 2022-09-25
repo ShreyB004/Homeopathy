@@ -8,12 +8,6 @@ const firebaseConfig = {
   measurementId: "G-E0GXS6V491"
 };
 
-window.addEventListener("error", function(e){
-	document.getElementById('debug').innerText = `${e.lineNumber}`;
-	console.log(e);
-});
-
-
 const fireBaseInit = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 // const cldStorage = firebase.storage();
