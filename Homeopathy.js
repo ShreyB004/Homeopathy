@@ -76,8 +76,8 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	const gPatientNameDB = await medicineObjValue.Patient;
 	const gMedicineNameDB = await medicineObjValue.PillName;
 	const gMedicineFor = await medicineObjValue.MedicinePillFor;
-	const medicineDate = await (medicineObjValue.TimeStamp?.Date).split(' ');
-	const medicineTime = await (medicineObjValue.TimeStamp?.Time);
+	const medicineDate = await (medicineObjValue.TimeStamp.Date).split(' ');
+	const medicineTime = await (medicineObjValue.TimeStamp.Time);
 
 	const patientNamesHistory = document.createElement('div'); 
 	const patientHistoryDiv = document.createElement('div');
