@@ -1,6 +1,5 @@
 :root{
 	--theme-color: #fff;
-	--svg-stroke: #222;
 	--theme-text-color: #222;
 	--theme-box-num-color: #0f9d58;
 }
@@ -16,12 +15,6 @@
 	src: url('https://github.com/ShreyB004/homeopathy/blob/e2c60d7191b65a3f978b3da7a64278ee8d2d85e8/Fonts/sofiapro-light.otf');
 }
 
-@keyframes RiseUp {
-	100%{
-		opacity: 1;
-		transform: translateY(0px);
-	}
-}
 @keyframes ScaleIn {	
 	100%{
 		opacity: 1;
@@ -41,7 +34,6 @@
 }
 body.dark-mode {
 	--theme-color: #222;
-	--svg-stroke: #ffdf77;
 	--theme-text-color: #eee;
 	--theme-box-num-color: #fff;
 }
@@ -161,7 +153,7 @@ body.dark-mode {
 	padding: 8px;
 	top: 0;
 	background-color: var(--theme-color);
-	margin-top: 24px;
+	margin-top: 30px;
 	margin-bottom: 8px;
 	border-radius: 8px;
 	color: var(--theme-text-color);
@@ -173,11 +165,18 @@ body.dark-mode {
 	background-color: rgba(0, 0, 0, .1);
 }
 
+.medicine-section .patients-lists .patient-names-div .patients-name.show{
+	display: block;
+}
+.medicine-section .patients-lists .patient-names-div .patients-name.hidden{
+	display: none;
+}
+
 .medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details{
 	position: relative;
 	display: flex;
 	align-items: flex-start;
-	height: 60px;
+	height: 65px;
 }
 
 .medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details 
@@ -196,7 +195,7 @@ body.dark-mode {
 	position: relative;
 	top: 5px;
 	padding: 2px 5px;
-	text-align: center;
+	text-align: left;
 	min-width: 100px;
 	max-width: 125px;
 	overflow: hidden;
@@ -211,26 +210,22 @@ body.dark-mode {
 .medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details .arrow{
 	position: absolute;
 	left: 55%;
-	top: 50%;
+	top: 30%;
 	translate: -50% -50%;
 	color: #1a8cff;
-	padding: 6px;
-	font-size: 1.6em;
+	padding: 4px;
+	font-size: 1.5em;
 	background-color: var(--theme-color);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
 	border-radius: 50%;
 }
 .medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details 
 .given-patient-name{
 	position: absolute;
-	top: 50%;
-	translate: 0px -50%;
 	right: 0;
 	color: var(--theme-text-color);
 	padding: 5px;
 	font-size: 1rem;
 	background-color: var(--theme-color);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .43);
 	border-radius: 12px;
 }
 
@@ -261,7 +256,11 @@ body.dark-mode {
 }
 
 .medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div time{
-	letter-spacing: 0;
+	padding: 2px 8px;
+	background-color: #333;
+	color: #0f9d58;
+	font-weight: bold;
+	letter-spacing: 1px;
 	text-transform: lowercase;
 }
 
@@ -359,13 +358,7 @@ body.dark-mode {
 	background-color: var(--theme-color);
 	box-shadow: 0 1px 1px var(--theme-text-color);
 	border-radius: 6px;
-	opacity: 0;
-	transform: translateY(5px);
 	transition: all .15s ease-in-out;
-	animation-name: RiseUp;
-	animation-duration: .15s;
-	animation-fill-mode: forwards;
-	animation-timing-function: ease-in-out;
 	z-index: 1;
 }
 
@@ -445,7 +438,7 @@ body.dark-mode {
 
 .medicine-section .box-holder .history-box .main-history-box{
 	position: relative;	
-	height: 135px;
+	height: 200px;
 	width: 300px;
 	border-radius: 25px;
 	background-color: var(--theme-color);
@@ -474,8 +467,7 @@ body.dark-mode {
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section .error-info{
 	position: relative;
 	display: none;
-	left: 5%;
-	text-align: left;
+	line-height: 0;
 	font-weight: lighter;
 	font-size: .6em;
 	color: #db373a;
@@ -505,6 +497,7 @@ body.dark-mode {
  > button {
 	position: relative;
 	display: inline-flex;
+	top: 12px;
 	align-items: center;
 	border-radius: 15px;
 	background-color: #11aa88;
@@ -512,6 +505,100 @@ body.dark-mode {
 	color: #fff;
 	padding: 4px 8px;
 	z-index: 5;
+}
+
+.medicine-section .user-page-div{
+	position: relative;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+.medicine-section .user-page-div .user-page-sections{
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	padding: 12px;
+	top: 12px;
+	width: 90%;
+	background-color: var(--theme-color);
+	border-radius: 8px;
+	box-shadow: 0 0 24px 2px rgba(0, 0, 0, .3);
+}
+
+.medicine-section .user-page-div .user-settings-holder{
+	height: 55%;
+	align-items: center;
+	flex-direction: column;
+}
+.medicine-section .user-page-div .user-settings-holder header h2{
+	color: var(--theme-text-color);
+}
+.medicine-section .user-page-div .user-settings-holder .user-setting-div{
+	position: relative;
+	display: flex;
+	width: 100%;
+	margin-top: 12px;
+	border-radius: 12px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+	background-color: var(--theme-color);
+}
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings{
+	position: relative;
+	display: flex;
+	padding: 12px;
+	width: 100%;
+	height: 100%;
+}
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings span{
+	position: relative;
+	display: flex;
+	align-items: center;
+	color: var(--theme-text-color);
+}
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings span > i{
+	position: relative;
+	margin-right: 5px;
+}
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
+input[type='checkbox']{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 80%;
+	opacity: 0;
+}
+
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
+.dark-mode-checkbox{
+	position: absolute;
+	top: 50%;
+	translate: 0px -50%;
+	right: 12px;
+	height: 15px;
+	width: 25px;
+	border-radius: 35px;
+	background-color: #333;
+	transition: all .25s ease-in-out;
+}
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
+.dark-mode-checkbox::after{
+	position: absolute;
+	content: "";
+	height: 15px;
+	width: 15px;
+	background-color: #fff;
+	border-radius: 50%;
+	transition: all .25s ease-in-out;
+}
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings input:checked + .dark-mode-checkbox{
+	background-color: #0f9d58;
+}
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
+input:checked + .dark-mode-checkbox::after{
+	translate: 12px 0px;
 }
 .bottom-nav {
 	position: fixed;
