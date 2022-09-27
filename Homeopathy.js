@@ -34,6 +34,12 @@ const captureHistory = function(nameOfPill, patientName, medicineFor, getTime) {
 	dbPath.push(historyObject);
 }
 
+const padZero = (number) => {
+	if(number === undefined || number === null) return;
+
+	return (number < 10)?`0${number}`:number;
+};
+
 const createTimeStamp = function() {
 	const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sept', 'oct', 'nov', 'dec'];
 	const weekNames = ['sun', 'mon', 'tue', 'wed', 'thur', 'fri', 'sat'];
@@ -51,11 +57,10 @@ const createTimeStamp = function() {
 
 	let median = (currHour > 12)?'pm':'am';
 
-	currHour = (((currHour > 12)?(currHour-12):currHour) < 10)?`0${currHour}`:currHour;
-	currMins = (currMins < 10)?`0${currMins}`:currMins;
+	currHour = ((currHour > 12)?(currHour - 12):currHour);
 
 	const createdDate = `${currDate} ${currMonName} ${currYear}`;
-	const createdTime = `${currHour} : ${currMins} ${median}`;
+	const createdTime = `${padZero(currHour)} : ${padZero(currMins)} ${median}`;
 
 	return {
 		date: createdDate,
@@ -143,11 +148,14 @@ const setDarkMode = () => {
 	dbPathDarkMode.update(themeObj);
 };
 
-console.log('hihihihi');
-
 const applyDarkMode = (theme) => {
-	if(theme === 'dark') document.body.classList.add('dark-mode');
-	else document.body.classList.remove('dark-mode');
+	if(theme === 'dark') {
+		darkModeBtn.checked = true;
+		document.body.classList.add('dark-mode');
+	}	else {
+		darkModeBtn.checked = false;
+		document.body.classList.remove('dark-mode');
+	}
 };
 
 database.ref("Theme").on("value", function(themeSnap) {
@@ -157,7 +165,7 @@ database.ref("Theme").on("value", function(themeSnap) {
 
 darkModeBtn.addEventListener("click", setDarkMode);
 
-const medicineSearch = document.getElementById("medicineSearch");
+const searchMedicinesInput = document.getElementById("medicineSearch");
 
 const allMedicinesListsDiv = document.getElementById("allMedicinesLists");
 const topNavBtn = document.getElementById("topNavButton");
@@ -186,7 +194,7 @@ const medicineBox = {
 
 	'MedicineBox-3': ["CACTUS", "BELLADONNA", "ARUNDO MAVRI", "DROSERA", "ARS ALB", "STANNUM MET", "SENEGA", "RUMAX C", "ALLUM SAT", "ANTIM FUR", "CINNA MAR", "BARYTA MUR", "BELLADONNA", "BENZA ACID", "AMYLE NRT", "KALI BICH", "PULSATILLA", "HEPAR SULPH", "CALADIUM SEG", "SPONGIA", "NAT MUR", "CACTUS-CACTI", "CRATAEGUS OXY", "BRYONIA ALB"],
 
-	'MedicineBox-4': ["LACHESIS", "CALC PHOS", "FERRUM MET", "URTICA URENS", "GELSEMIUM", "ABROMA AUG", "ALOE SOC", "SECALE CORN", "IGNATIA", "PHOS ACID", "SYZYGIUM JAMBULUM", "CONIUM MAC", "ANACARDIUM" , "ZINCUM MET", "RHODODENDRONS", "RUTA GRVO", "GRAPHITES", "CALC CARB", "CONIUM MAC", "IGNATIA MM", "AGNUS CAST", "CLEMATIS ERTICA", "MEDORRHINUM C", "TRILLIUM PENDULUM", "SABINA", "GLONOINE", "CONUM MAC", "SEPIA" , "KALI BICH", "LACHESIS", "THLASPI B.P", "BORAX", "USTILAGO", "BARYTA CARB", "CALC CARB", "GYMNEMA SYLIM", "MERC SOL", "CICUTA VIR", "SULFUR", "CROTON TIG", "MAG PHOS", "SILICEA", "STRAMONIUM", "CHAMOMILLA", "CALADIUM SEG", "HYOSCYAMUS N", "LAC CANINUM", "ROBINIA", "CAUSTICUM", "STAPHYSAGRIA", "CALC FLUOR", "MARK SOL", "CALC PHOS"],
+	'MedicineBox-4': ["LACHESIS", "CALC PHOS", "FERRUM MET", "URTICA URENS", "GELSEMIUM", "ABROMA AUG", "ALOE SOC", "SECALE CORN", "IGNATIA", "PHOS ACID", "SYZYGIUM JAMBULUM", "CONIUM MAC", "ANACARDIUM" , "ZINCUM MET", "RHODODENDRONS", "RUTA GRVO", "GRAPHITES", "CALC CARB", "CONIUM MAC", "IGNATIA MM", "AGNUS CAST", "CLEMATIS ERTICA", "MEDORRHINUM C", "TRILLIUM PENDULUM", "SABINA", "GLONOINE", "CONUM MAC", "SEPIA" , "KALI BICH", "LACHESIS", "THLASPI B.P", "BORAX", "USTILAGO", "BARYTA CARB", "CALC CARB", "GYMNEMA SYLIM", "MERC SOL", "CICUTA VIR", "SULFUR", "CROTON TIG", "MAG PHOS", "SILICEA", "STRAMONIUM", "CHAMOMILLA", "CALADIUM SEG", "HYOSCYAMUS N", "LAC CANINUM", "ROBINIA", "CAUSTICUM", "STAPHYSAGRIA", "CALC FLUOR", "MERC SOL", "CALC PHOS"],
 
 	'MedicineBox-5': ["LYCOPODIUM", "LEGNA MINUR", "RHUS TOX   1M", "PETRO", "ARNICA", "ALUMINA SILICA", "EPIPHEGUS VIRGINIA", "HAMAMELIS VIRGINIA", "PALLADIUM", "ASAFOETICA", "AMBROSIA", "THUJA   1 CM 10 CM", "NITRIC ACID", "SULPHURIC ACID", "CAULOPHYLLUM", "CIMICIFUGA RACEMOSA", "NUPHAR LUTEUM", "RHUS TOX   10 M", "RHUS TOX   200", "CHELIDONIUM MAJUS", "CARDUUS MARIANUS"],
 
@@ -212,7 +220,7 @@ const showButton = function(btnIndex) {
 };
 
 const clearText = () => {
-	if (medicineSearch.value) medicineSearch.value = '';
+	if (searchMedicinesInput.value) searchMedicinesInput.value = '';
 };
 
 const createHorizontalLine = (boxNumber) => {
@@ -244,8 +252,8 @@ const createPills = (pillNumber, pillName, parent) => {
 	parent.appendChild(mdNameDiv);	
 }
 
+const errInfoSpn = document.getElementById("errorInfoSpan");
 const createHistory = () => {
-	const errInfoSpn = document.getElementById("errorInfoSpan");
 	if(patientNameInput.value === '') {
 		errInfoSpn.classList.add('show-error');
 	} else{
@@ -260,7 +268,12 @@ const createHistory = () => {
 	}
 };
 
-addHistoryButton.addEventListener("click", createHistory);
+addHistoryButton.addEventListener("click", function(){
+	createHistory();
+	errInfoSpn.classList.remove('show-error');
+	patientNameInput.value = '';
+	givenMedicineFor.value = '';
+});
 
 const goBack = () => {
 	const getVisibleSvg = document.getElementsByClassName("active-btn");
@@ -282,6 +295,7 @@ const goBack = () => {
 		|| !patientDetailsDiv.classList.contains("visible")) {
 		showButton(0);
 	}
+	searchMedicinesInput.value = '';
 };
 
 const searchMedicinesSection = () => {
@@ -302,9 +316,9 @@ const searchMedicinesOnKeyup = (eventKey) => {
 
 	if(!eventsKeysArr.includes(eventKey.key)) {
 		searchMedicinesSection();
-		searchMedicines(medicineSearch.value);
+		linearSearch(searchMedicinesInput, ['span'], 'md-name', true);
 	}
-	if(medicineSearch.value === "") {
+	if(searchMedicinesInput.value === "") {
 		showButton(0);
 		goBack();
 	}
@@ -315,30 +329,33 @@ function boldSearchedText(element, textToReplace) {
 	element.innerHTML = element.innerHTML.replace(textToReplace, `<b>${textToReplace}</b>`);
 }
 
-function searchMedicines(searchValue) {
-	const medicineName = document.getElementsByClassName("md-name");
-	const medicineNameLen = medicineName.length;
+function generateCssQueries(query) {
+	return query.join(',');
+}
 
-	const searchValueUpperCase = searchValue.toUpperCase();
+function linearSearch(searchedQuery, requiredQuery, className, searchedQueryAction) {
+	const elemClasses = document.getElementsByClassName(`${className}`);
+	const elemClassesLen = elemClasses.length;
 
-	let timeout = null;
+	const queryInSearch = generateCssQueries(requiredQuery);
 
-	for(let i = 0; i < medicineNameLen; ++i) {		
-		timeout = setTimeout(function() {
-			const medicineNameSpans = medicineName[i].querySelector("span");
+	const searchedQryUpperCase = searchedQuery.value.toUpperCase();
 
-			boldSearchedText(medicineNameSpans, searchValueUpperCase);
+	for(let i = 0; i < elemClassesLen; ++i) {
+		let searchElements = elemClasses[i].querySelector(`${requiredQuery[0]}`)
+		
+		if(searchedQueryAction !== false && typeof searchedQueryAction === 'boolean') {
+			boldSearchedText(searchElements, searchedQryUpperCase);
+		}
 
-			if(medicineNameSpans.innerText.toUpperCase().indexOf(searchValueUpperCase) >= 0) {
-				medicineName[i].classList.add("show");
-				medicineName[i].classList.remove("hidden");
-			} else {
-				medicineName[i].classList.add("hidden");
-				medicineName[i].classList.remove("show");
-			}
-		}, 50); 
+		if (searchElements.innerText.toUpperCase().indexOf(searchedQryUpperCase) >= 0) {
+			elemClasses[i].classList.add('show');
+			elemClasses[i].classList.remove('hidden');
+		} else {
+			elemClasses[i].classList.add('hidden');
+			elemClasses[i].classList.remove('show');
+		}
 	}
-	clearTimeout(timeout);
 }
 
 (function() {
@@ -411,7 +428,7 @@ const openTab = function(btnTarget, tabId) {
 	btnTarget.classList.add("default-btn");
 }
 
-const tabIds = ["medicineHomeSection", "medicineSearchSection", "medicinePatientsSection"];
+const tabIds = ["medicineHomeSection", "medicineSearchSection", "medicinePatientsSection", "userSettingsSection"];
 
 tabButtons.forEach(function(btn, index){
 	btn.addEventListener("click", function() {
@@ -419,5 +436,11 @@ tabButtons.forEach(function(btn, index){
 	});
 });
 
-medicineSearch.addEventListener("keyup", searchMedicinesOnKeyup);
+const searchHistoryInput = document.getElementById('HistorySearch');
+
+searchHistoryInput.addEventListener('keyup', function() {
+	linearSearch(searchHistoryInput, ['div.patients-history-details'], 'patients-name', false);
+});
+
+searchMedicinesInput.addEventListener("keyup", searchMedicinesOnKeyup);
 topNavBtn.addEventListener("click", goBack);
