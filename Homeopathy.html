@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>HomeoPathy Medicines</title>
-	<link rel="icon" href="https://t4.ftcdn.net/jpg/01/29/07/99/360_F_129079911_rgjzs0I5F2nBSrmm10UT5AGYCCWSXKNE.jpg">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	<link rel="stylesheet" type="text/css" href="Homeopathy.css">
+	<link rel="icon" href="https://t4.ftcdn.net/jpg/01/29/07/99/360_F_129079911_rgjzs0I5F2nBSrmm10UT5AGYCCWSXKNE.jpg">
 	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 
 <body>
 
-<div id="medicineHomeSection" class="medicine-section active-tab">
+<div id="medicineHomeSection" class="medicine-section">
 	<nav class="top-nav">
 		<button>
 			<svg height="24" width="24" viewBox="0 0 32 32">
@@ -25,7 +25,7 @@
 	</div>
 </div>
 
-<div id="medicineSearchSection" class="medicine-section">
+<div id="medicineSearchSection" class="medicine-section active-tab">
 	<nav class="top-nav">
 		<button id="topNavButton">
 			<svg class="button-svg active-btn" height="24" width="24" viewBox="0 0 32 32">
@@ -36,7 +36,6 @@
 			</svg>
 		</button>
 		<input type="text" id="medicineSearch" placeholder="Search Medicines . . ." autocomplete="off" name="search_medicines">
-		<button class="dark-mode-btn material-icons" id="darkMode">brightness_2</button>
 	</nav>
 	<div class="box-holder" id="boxHolder">
 		
@@ -53,9 +52,9 @@
 				<div class="patient-details-section">
 					<span id="patientMedicineName"></span>
 					<input type="text" id="patientName" placeholder="Patient name" name="patient_name">
-					<input type="text" id="MedicineFor" placeholder="Medicine For..." name="medicine_cause">
+					<input type="text" id="MedicineFor" placeholder="Medicine For" name="medicine_cause">
+					<p class="error-info" id="errorInfoSpan">Patient Name Cannot Be Empty</p>
 					<button id="addHistoryBtn">Add to History<span class="material-icons">arrow_forward</span></button>
-					<p class="error-info" id="errorInfoSpan">Patient Name cannot be empty</p>
 				</div>
 			</div>			
 		</div>
@@ -73,24 +72,54 @@
 	</nav>
 </div>
 
+<div id="userSettingsSection" class="medicine-section">
+	<div class="user-page-div">
+		<div class="user-settings-holder user-page-sections">
+			<header>
+				<h2>Settings</h2>
+			</header>
+			<div class="user-setting-div">
+				<div class="user-main-settings">
+					<span><i class="material-icons">brightness_2</i> Dark Mode</span>
+					<input type="checkbox" name="Switch" id="darkMode">
+					<div class="dark-mode-checkbox"></div>
+				</div>
+			</div>
+			<div class="user-setting-div">
+				<div class="user-main-settings">
+					<span><i class="material-icons">backup</i> Backup Database</span>
+				</div>
+			</div>
+			<div class="user-setting-div">
+				<div class="user-main-settings">
+					<span><i class="material-icons">help_outline</i> Help</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <nav class="bottom-nav">
 
-	<button class="bottom-nav-btns default-btn">
+	<button class="bottom-nav-btns">
 		<svg height="30" width="30" viewBox="0 0 24 24">
 			<path d="M9 3.984v1.406q-1.266-0.516-2.625-0.516-1.313 0-2.602 0.516t-2.32 1.547l3.328 3.328h1.078v1.125q0.656 0.609 1.477 0.961t1.664 0.398v2.25h-3v3q0 0.844 0.586 1.43t1.43 0.586h9.984q0.844 0 1.523-0.422t1.078-1.102 0.398-1.477v-13.031h-12zM7.875 10.406v-2.156h-2.25l-1.078-1.031q0.891-0.328 1.828-0.328 2.063 0 3.563 1.453l1.406 1.406-0.188 0.188q-0.797 0.797-1.922 0.797-0.703 0-1.359-0.328zM18.984 17.016q0 0.375-0.281 0.68t-0.703 0.305-0.703-0.305-0.281-0.68v-2.016h-6v-2.578q0.891-0.375 1.547-1.031l0.188-0.188 2.859 2.813h1.406v-1.406l-6-6v-0.609h7.969v11.016z"></path>
 		</svg>
 	</button>
 
-	<button class="bottom-nav-btns" id="MedicineBoxesHolder">
+	<button class="bottom-nav-btns default-btn" id="MedicineBoxesHolder">
 		<svg height="25" width="25" viewBox="0 0 24 24">
 			<path d="M20.016 6h-4.031v-2.016q0-0.797-0.586-1.383t-1.383-0.586h-4.031q-0.797 0-1.383 0.586t-0.586 1.383v2.016h-4.031q-0.797 0-1.383 0.586t-0.586 1.43v12q0 0.797 0.586 1.383t1.383 0.586h16.031q0.797 0 1.383-0.586t0.586-1.383v-12q0-0.844-0.586-1.43t-1.383-0.586zM9.984 3.984h4.031v2.016h-4.031v-2.016zM15.984 15h-3v3h-1.969v-3h-3v-2.016h3v-3h1.969v3h3v2.016z"></path>
 		</svg>
 	</button>
-
 	<button class="bottom-nav-btns">
-		<svg height="25" width="25" viewBox="0 0 24 24">
-			<path d="M17 9c0-1.381-0.56-2.631-1.464-3.535s-2.155-1.465-3.536-1.465-2.631 0.56-3.536 1.465c-0.904 0.904-1.464 2.154-1.464 3.535s0.56 2.631 1.464 3.535c0.905 0.905 2.155 1.465 3.536 1.465s2.631-0.56 3.536-1.465c0.904-0.904 1.464-2.154 1.464-3.535z"></path>
-			<path d="M6 19c0 1 2.25 2 6 2 3.518 0 6-1 6-2 0-2-2.354-4-6-4-3.75 0-6 2-6 4z"></path>
+		<svg height="25" width="25"viewBox="0 0 22 28">
+			<path d="M6 21c0 0.547-0.453 1-1 1s-1-0.453-1-1 0.453-1 1-1 1 0.453 1 1zM22 21.953c0 2.547-1.672 4.047-4.172 4.047h-13.656c-2.5 0-4.172-1.5-4.172-4.047 0-3.109 0.625-8.016 4.344-8.828-0.25 0.594-0.344 1.234-0.344 1.875v3.172c-1.203 0.422-2 1.563-2 2.828 0 1.656 1.344 3 3 3s3-1.344 3-3c0-1.266-0.812-2.406-2-2.828v-3.172c0-0.516 0.047-1.031 0.391-1.453 1.313 1.031 2.938 1.625 4.609 1.625s3.297-0.594 4.609-1.625c0.344 0.422 0.391 0.938 0.391 1.453v1c-2.203 0-4 1.797-4 4v1.391c-0.313 0.281-0.5 0.688-0.5 1.109 0 0.828 0.672 1.5 1.5 1.5s1.5-0.672 1.5-1.5c0-0.422-0.187-0.828-0.5-1.109v-1.391c0-1.094 0.906-2 2-2s2 0.906 2 2v1.391c-0.313 0.281-0.5 0.688-0.5 1.109 0 0.828 0.672 1.5 1.5 1.5s1.5-0.672 1.5-1.5c0-0.422-0.187-0.828-0.5-1.109v-1.391c0-1.422-0.766-2.75-2-3.453 0-1.141 0.109-2.359-0.344-3.422 3.719 0.812 4.344 5.719 4.344 8.828zM17 8c0 3.313-2.688 6-6 6s-6-2.688-6-6 2.688-6 6-6 6 2.688 6 6z"></path>
+		</svg>
+	</button>
+	<button class="bottom-nav-btns">
+		<svg height="25" width="25"viewBox="0 0 32 32">
+			<path d="M25.995 19.068h-1.324c-0.215 0.779-0.523 1.518-0.918 2.203l1.224 1.223c0.783 0.783 0.783 2.053 0 2.836l-0.709 0.709c-0.783 0.783-2.053 0.783-2.836 0l-1.232-1.231c-0.683 0.389-1.419 0.692-2.194 0.903v1.284c0 1.107-0.897 2.005-2.005 2.005h-1.002c-1.107 0-2.006-0.897-2.006-2.005v-1.284c-0.774-0.211-1.511-0.515-2.194-0.903l-1.231 1.231c-0.782 0.783-2.052 0.783-2.835 0l-0.71-0.709c-0.783-0.783-0.783-2.053 0-2.836l1.224-1.223c-0.395-0.686-0.703-1.424-0.919-2.203h-1.323c-1.108 0-2.005-0.897-2.005-2.004v-1.003c0-1.107 0.897-2.005 2.005-2.005h1.308c0.207-0.771 0.503-1.505 0.887-2.186l-1.177-1.176c-0.783-0.783-0.783-2.053 0-2.836l0.709-0.708c0.783-0.783 2.053-0.783 2.835 0l1.153 1.153c0.706-0.411 1.468-0.731 2.272-0.95v-1.348c0.001-1.108 0.9-2.005 2.007-2.005h1.002c1.107 0 2.005 0.897 2.005 2.005v1.347c0.806 0.22 1.567 0.54 2.272 0.951l1.153-1.153c0.783-0.783 2.053-0.783 2.836 0l0.709 0.708c0.783 0.783 0.783 2.053 0 2.836l-1.176 1.176c0.384 0.681 0.68 1.415 0.888 2.187h1.308c1.107 0 2.005 0.898 2.005 2.005v1.003c-0.001 1.106-0.898 2.003-2.006 2.003zM15.5 11.080c-3.045 0-5.514 2.469-5.514 5.514s2.469 5.514 5.514 5.514 5.514-2.469 5.514-5.514-2.469-5.514-5.514-5.514zM15.5 19.037c-1.384 0-2.507-1.121-2.507-2.506 0-1.384 1.123-2.506 2.507-2.506s2.506 1.122 2.506 2.506c0 1.385-1.122 2.506-2.506 2.506z"></path>
 		</svg>
 	</button>
 </nav>
