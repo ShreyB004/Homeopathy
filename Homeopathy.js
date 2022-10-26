@@ -158,6 +158,8 @@ const applyDarkMode = (theme) => {
 	}
 };
 
+applyDarkMode(localStorage.getItem('AppTheme'));
+
 database.ref("Theme").on("value", function(themeSnap) {
 	const themeValue = themeSnap.val().AppTheme;
 	applyDarkMode(themeValue);
@@ -196,7 +198,7 @@ const medicineBox = {
 
 	'MedicineBox-4': ["LACHESIS", "CALC PHOS", "FERRUM MET", "URTICA URENS", "GELSEMIUM", "ABROMA AUG", "ALOE SOC", "SECALE CORN", "IGNATIA", "PHOS ACID", "SYZYGIUM JAMBULUM", "CONIUM MAC", "ANACARDIUM" , "ZINCUM MET", "RHODODENDRONS", "RUTA GRVO", "GRAPHITES", "CALC CARB", "CONIUM MAC", "IGNATIA MM", "AGNUS CAST", "CLEMATIS ERTICA", "MEDORRHINUM C", "TRILLIUM PENDULUM", "SABINA", "GLONOINE", "CONUM MAC", "SEPIA" , "KALI BICH", "LACHESIS", "THLASPI B.P", "BORAX", "USTILAGO", "BARYTA CARB", "CALC CARB", "GYMNEMA SYLIM", "MERC SOL", "CICUTA VIR", "SULFUR", "CROTON TIG", "MAG PHOS", "SILICEA", "STRAMONIUM", "CHAMOMILLA", "CALADIUM SEG", "HYOSCYAMUS N", "LAC CANINUM", "ROBINIA", "CAUSTICUM", "STAPHYSAGRIA", "CALC FLUOR", "MERC SOL", "CALC PHOS"],
 
-	'MedicineBox-5': ["LYCOPODIUM", "LEGNA MINUR", "RHUS TOX   1M", "PETRO", "ARNICA", "ALUMINA SILICA", "EPIPHEGUS VIRGINIA", "HAMAMELIS VIRGINIA", "PALLADIUM", "ASAFOETICA", "AMBROSIA", "THUJA   1 CM 10 CM", "NITRIC ACID", "SULPHURIC ACID", "CAULOPHYLLUM", "CIMICIFUGA RACEMOSA", "NUPHAR LUTEUM", "RHUS TOX   10 M", "RHUS TOX   200", "CHELIDONIUM MAJUS", "CARDUUS MARIANUS"],
+	'MedicineBox-5': ["LYCOPODIUM", "LEGNA MINUR", "RHUS TOX   1M", "ARNICA", "PETRO", "ALUMINA SILICA", "EPIPHEGUS VIRGINIA", "HAMAMELIS VIRGINIA", "PALLADIUM", "ASAFOETICA", "AMBROSIA", "THUJA   1 CM 10 CM", "NITRIC ACID", "SULPHURIC ACID", "CAULOPHYLLUM", "CIMICIFUGA RACEMOSA", "NUPHAR LUTEUM", "RHUS TOX   10 M", "RHUS TOX   200", "CHELIDONIUM MAJUS", "CARDUUS MARIANUS", "SABADILLA", "COCCULUS INDICUS", "AMMON CARB", "CANNABIS INDICA", "STELLARIA MED", "PICRIC ACID", "BAPTISIA", "LYCOPODIUM", "AGRAPHIS NUT", "FERRUM MET", "THUJA OCC", "NUX MOSCH", "LACTIC ACID"],
 
 	'MedicineBox-6': ["NUX VOMICA", "SANG CAN", "KALI PHOS" , "PLANTAGO", "ARNICA", "FERRUM MET", "CASTOR EQ", "PLUMBUM MET", "VERBASCUM T", "EUPAT PERF", "CHENOPODIUM", "PODOPHYLLUM", "OPIUM", "MEZEREUM", "DULCAMARA", "SOLIDAGO V", "SYMPHYTUM", "ACTEA SPI", "PURRANNOVA", "STELLARIA", "TUCCA F", "URTICA", "MED RRHH UNUM CM", "MERC SOL", "KALI MUR", "AGAAPHIS NUTIM", "GUAIACUM"],
 
@@ -316,7 +318,13 @@ const searchMedicinesOnKeyup = (eventKey) => {
 
 	if(!eventsKeysArr.includes(eventKey.key)) {
 		searchMedicinesSection();
-		linearSearch(searchMedicinesInput, ['span'], 'md-name', true);
+		linearSearch({
+			QrySearch: searchMedicinesInput, 
+			searchInClass: 'md-name', 
+			childQuery: ['span'], 
+			actionForSearchQry: true,
+			letterCase: 'Upper'
+		});
 	}
 	if(searchMedicinesInput.value === "") {
 		showButton(0);
@@ -333,22 +341,43 @@ function generateCssQueries(query) {
 	return query.join(',');
 }
 
-function linearSearch(searchedQuery, requiredQuery, className, searchedQueryAction) {
+function linearSearch({
+	QrySearch: searchedQuery, 
+	searchInClass: className, 
+	childQuery: requiredQuery, 
+	actionForSearchQry: searchedQueryAction,
+	letterCase: caseOfletter
+}) {
 	const elemClasses = document.getElementsByClassName(`${className}`);
 	const elemClassesLen = elemClasses.length;
 
 	const queryInSearch = generateCssQueries(requiredQuery);
 
-	const searchedQryUpperCase = searchedQuery.value.toUpperCase();
-
 	for(let i = 0; i < elemClassesLen; ++i) {
 		let searchElements = elemClasses[i].querySelector(`${requiredQuery[0]}`)
-		
-		if(searchedQueryAction !== false && typeof searchedQueryAction === 'boolean') {
-			boldSearchedText(searchElements, searchedQryUpperCase);
+
+		let tempText = '';
+		let value = '';
+
+		switch (caseOfletter) {
+			default: 
+				tempText = searchElements.innerText;
+				value = searchedQuery.value;
+			case 'Upper': 
+				tempText = searchElements.innerText.toLocaleUpperCase();
+				value = searchedQuery.value.toLocaleUpperCase();
+				break;
+			case 'Lower':
+				tempText = searchElements.innerText.toLocaleLowerCase();
+				value = searchedQuery.value.toLocaleLowerCase();
+				break;
 		}
 
-		if (searchElements.innerText.toUpperCase().indexOf(searchedQryUpperCase) >= 0) {
+		if(searchedQueryAction === true) {
+			boldSearchedText(searchElements, value);
+		}
+
+		if (tempText.indexOf(value) >= 0) {
 			elemClasses[i].classList.add('show');
 			elemClasses[i].classList.remove('hidden');
 		} else {
@@ -439,7 +468,25 @@ tabButtons.forEach(function(btn, index){
 const searchHistoryInput = document.getElementById('HistorySearch');
 
 searchHistoryInput.addEventListener('keyup', function() {
-	linearSearch(searchHistoryInput, ['div.patients-history-details'], 'patients-name', false);
+	linearSearch({
+		QrySearch: searchHistoryInput, 
+		searchInClass: 'patients-name', 
+		childQuery: ['div.patients-history-details'], 
+		actionForSearchQry: true,
+		letterCase: ''
+	});
+});
+
+const searchPatients = document.getElementById("patientSearch");
+
+searchPatients.addEventListener('keyup', function() {
+	linearSearch({
+		QrySearch: searchPatients, 
+		searchInClass: 'patients-names-lists', 
+		childQuery: ['span'], 
+		actionForSearchQry: true,
+		letterCase: 'Lower'
+	});
 });
 
 searchMedicinesInput.addEventListener("keyup", searchMedicinesOnKeyup);
