@@ -129,7 +129,6 @@ body.dark-mode {
 	overflow-y: auto;
 	transition: background-color .15s ease-in-out;
 }
-
 .medicine-section .patients-lists {
 	position: relative;
 	display: flex;
@@ -141,13 +140,13 @@ body.dark-mode {
 	overflow: auto;
 }
 
-.medicine-section .patients-lists .patient-names-div {
+.medicine-section .patients-lists .patient-details-div {
 	position: relative;
 	height: 100%;
 	width: 90%;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name {
+.medicine-section .patients-lists .patient-details-div .patients-name {
 	position: relative;
 	width: 100%;
 	padding: 8px;
@@ -161,25 +160,24 @@ body.dark-mode {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name:hover{
+.medicine-section .patients-lists .patient-details-div .patients-name:hover{
 	background-color: rgba(0, 0, 0, .1);
 }
-
-.medicine-section .patients-lists .patient-names-div .patients-name.show{
+.medicine-section .patients-lists .patient-details-div .patients-name.show{
 	display: block;
 }
-.medicine-section .patients-lists .patient-names-div .patients-name.hidden{
+.medicine-section .patients-lists .patient-details-div .patients-name.hidden{
 	display: none;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details{
+.medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details{
 	position: relative;
 	display: flex;
 	align-items: flex-start;
 	height: 65px;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details 
+.medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details 
 .medicine-for{
 	position: absolute;
 	bottom: 0;
@@ -191,7 +189,7 @@ body.dark-mode {
 	border-radius: 12px;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name .given-medicine-name{
+.medicine-section .patients-lists .patient-details-div .patients-name .given-medicine-name{
 	position: relative;
 	top: 5px;
 	padding: 2px 5px;
@@ -207,7 +205,7 @@ body.dark-mode {
 	text-transform: capitalize;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details .arrow{
+.medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details .arrow{
 	position: absolute;
 	left: 55%;
 	top: 30%;
@@ -218,7 +216,7 @@ body.dark-mode {
 	background-color: var(--theme-color);
 	border-radius: 50%;
 }
-.medicine-section .patients-lists .patient-names-div .patients-name .patients-history-details 
+.medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details 
 .given-patient-name{
 	position: absolute;
 	right: 0;
@@ -229,20 +227,20 @@ body.dark-mode {
 	border-radius: 12px;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div{
+.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div{
 	position: absolute;
 	display: flex;
 	align-items: center;
 	top: -12px;
 	border-radius: 25px;
 }
-.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div span.material-icons{
+.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div span.material-icons{
 	position: relative;
 	font-size: .9em;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div span,
-.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div time{
+.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div span,
+.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div time{
 	position: relative;
 	padding: 2px 4px;
 	margin-left: 5px;
@@ -255,9 +253,9 @@ body.dark-mode {
 	font-size: .7rem;
 }
 
-.medicine-section .patients-lists .patient-names-div .patients-name .patient-medicine-time-div time{
+.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div time{
 	padding: 2px 8px;
-	background-color: #333;
+	background-color: var(--theme-color);
 	color: #0f9d58;
 	font-weight: bold;
 	letter-spacing: 1px;
@@ -507,6 +505,37 @@ body.dark-mode {
 	z-index: 5;
 }
 
+.medicine-section .patient-names-holder{
+	position: relative;
+	top: 50px;
+	height: 82%;
+	max-height: 82%;
+	width: 100%;
+	flex-direction: column;
+	overflow: auto;
+}
+.medicine-section .patient-names-holder .patients-names-lists{
+	position: relative;
+	display: inline-flex;
+	margin-left: 10px;
+	width: calc(50% - 16px);
+	align-items: center;
+	background-color: var(--theme-color);
+	padding: 6px;
+	margin-top: 8px;
+	border-radius: 8px;
+	box-shadow: 0 1px 2px var(--theme-text-color);
+}
+.medicine-section .patient-names-holder .patients-names-lists span{
+	position: relative;
+	color: var(--theme-text-color);
+}
+.medicine-section .patient-names-holder .patients-names-lists.show{
+	display: inline-flex;
+}
+.medicine-section .patient-names-holder .patients-names-lists.hidden{
+	display: none;
+}
 .medicine-section .user-page-div{
 	position: relative;
 	display: flex;
@@ -599,6 +628,7 @@ input[type='checkbox']{
 .medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
 input:checked + .dark-mode-checkbox::after{
 	translate: 12px 0px;
+	-webkit-transform: translateX(1px);
 }
 .bottom-nav {
 	position: fixed;
