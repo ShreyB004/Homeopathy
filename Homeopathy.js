@@ -12,7 +12,7 @@ const fireBaseInit = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 // const cldStorage = firebase.storage();
 
-const createNotifOfPatient = function(medicineName, patientName, options={}) {
+/*const createNotifOfPatient = function(medicineName, patientName, options={}) {
 	Notification.requestPermission().then(getPerm => {
 		navigator.serviceWorker.register('sw.js');
 		if(getPerm === 'granted') {
@@ -21,7 +21,7 @@ const createNotifOfPatient = function(medicineName, patientName, options={}) {
 			});
 		}
 	});
-};
+};*/
 
 String.prototype.toTitleCase = function() {
 	let splitStr = this.toLowerCase().split(' ');
@@ -42,12 +42,13 @@ const captureHistory = function(nameOfPill, patientName, medicineFor, getTime) {
 			Time: getTime.time
 		}
 	};
-	dbPath.push(historyObject).then(()=>{
+	dbPath.push(historyObject);
+		/*.then(()=>{
 		createNotifOfPatient(nameOfPill, patientName, {
 			body: `Given For ${medicineFor}`,
 			icon: 'https://t4.ftcdn.net/jpg/01/29/07/99/360_F_129079911_rgjzs0I5F2nBSrmm10UT5AGYCCWSXKNE.jpg'
-		})
-	});
+		});
+	});*/
 }
 
 const padZero = (number) => {
