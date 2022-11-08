@@ -2,7 +2,17 @@
 	--theme-color: #fff;
 	--theme-text-color: #222;
 	--theme-box-num-color: #0f9d58;
+	--theme-color-alpha_34: rgba(255, 255, 255, .34);
+	--theme-color-alpha_83: rgba(255, 255, 255, .83);
 }
+body.dark-mode {
+	--theme-color: #222;
+	--theme-text-color: #eee;
+	--theme-box-num-color: #fff;
+	--theme-color-alpha_34: rgba(0, 0, 0, .34);
+	--theme-color-alpha_83: rgba(0, 0, 0, .83);
+}
+
 :focus, :active{
 	outline: none;
 }
@@ -31,11 +41,6 @@
 *{
 	box-sizing: border-box;
 	font-family: 'Quicksand', sans-serif;
-}
-body.dark-mode {
-	--theme-color: #222;
-	--theme-text-color: #eee;
-	--theme-box-num-color: #fff;
 }
 
 .medicine-section{
@@ -152,12 +157,11 @@ body.dark-mode {
 	padding: 8px;
 	top: 0;
 	background-color: var(--theme-color);
-	margin-top: 30px;
-	margin-bottom: 8px;
-	border-radius: 8px;
+	margin: 24px 0;
+	border-radius: 18px;
 	color: var(--theme-text-color);
 	transition: background-color .15s ease-in-out;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+	box-shadow: 0 0 3px rgba(15, 157, 88, .5);
 }
 
 .medicine-section .patients-lists .patient-details-div .patients-name:hover{
@@ -194,7 +198,7 @@ body.dark-mode {
 	top: 5px;
 	padding: 2px 5px;
 	text-align: left;
-	min-width: 100px;
+	min-width: fit-content;
 	max-width: 125px;
 	overflow: hidden;
 	white-space: nowrap;
@@ -213,7 +217,6 @@ body.dark-mode {
 	color: #1a8cff;
 	padding: 4px;
 	font-size: 1.5em;
-	background-color: var(--theme-color);
 	border-radius: 50%;
 }
 .medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details 
@@ -351,11 +354,11 @@ body.dark-mode {
 	width: 235px;
 	padding: 8px;
 	font-weight: lighter;
-	margin-top: 8px;
+	margin: 12px 0;
 	color: var(--theme-text-color);
 	background-color: var(--theme-color);
-	box-shadow: 0 1px 1px var(--theme-text-color);
-	border-radius: 6px;
+	box-shadow: 0 0 0 2px rgba(15, 157, 88, .35);
+	border-radius: 24px;
 	transition: all .15s ease-in-out;
 	z-index: 1;
 }
@@ -380,25 +383,13 @@ body.dark-mode {
 	left: -15%;
 	top: 50%;
 	transform: translateY(-50%);
-	height: 24px;
-	width: 24px;
-	padding: 4px;
-	border-radius: 8px;
+	height: 26px;
+	width: 26px;
+	padding: 6px;
+	border-radius: 24px;
 	background-color: #0f9d58bb;
 	color: var(--theme-text-color);
 	font-weight: lighter;
-}
-
-.medicine-section .box-holder > div > ol .md-name .small-box-number::after {
-	content: "";
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: -12px;
-	width: 13px;
-	height: 10px;
-	background-color: #0f9d58bb;
-	z-index: -1;
 }
 
 .medicine-section .box-holder > div > ol .space{
@@ -426,7 +417,8 @@ body.dark-mode {
 	width: 100%;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(0, 0, 0, .5);
+	background-color: var(--theme-color-alpha_34);
+	backdrop-filter: blur(2px);
 	z-index: 99;
 }
 
@@ -439,7 +431,8 @@ body.dark-mode {
 	height: 200px;
 	width: 300px;
 	border-radius: 25px;
-	background-color: var(--theme-color);
+	background-color: var(--theme-color-alpha_83);
+	box-shadow: 0 0 12px 8px rgba(0, 0, 0, .4);
 	transition: background-color .15s ease-in-out;
 	z-index: 100;
 }
@@ -460,6 +453,7 @@ body.dark-mode {
 	position: relative;
 	font-weight: bold;
 	font-size: 1.5em;
+	text-shadow: 1px 1px 2px var(--theme-text-color);
 	color: var(--theme-text-color);
 }
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section .error-info{
@@ -484,25 +478,42 @@ body.dark-mode {
 	position: relative;
 	display: block;
 	padding: 8px;
-	top: -10px;
-	border-radius: 10px;
+	top: 8px;
 	border: none;
-	margin-top: 12px;
-	box-shadow: 0 1px 2px var(--theme-text-color);
+	margin: 6px 0;
+	background-color: transparent;
+	color: var(--theme-text-color);
+	font-weight: bold;
+	border-radius: 8px;
+	letter-spacing: .5px;
+	box-shadow: 0 0 0 2px rgba(15, 157, 88, .4);
+	transition: all .25s ease-in;
+}
+
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section 
+> input:focus{
+	box-shadow: 0 0 0 2px #0f9d58;
 }
 
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section
- > button {
+ > button{
 	position: relative;
 	display: inline-flex;
 	top: 12px;
 	align-items: center;
-	border-radius: 15px;
-	background-color: #11aa88;
+	border-radius: 12px;
+	background-color: #0f9d58;
 	border: none;
 	color: #fff;
-	padding: 4px 8px;
+	padding: 8px;
+	column-gap: 4px;
 	z-index: 5;
+}
+
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section
+ > button span.material-icons{
+ 	position: relative;
+ 	font-size: 1em;
 }
 
 .medicine-section .patient-names-holder{
