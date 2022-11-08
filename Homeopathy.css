@@ -1,16 +1,28 @@
 :root{
-	--theme-color: #fff;
-	--theme-text-color: #222;
+	--theme-color: #ffffff;
+	--theme-background-image: url('Images/White Theme Image.jpg');
+	--theme-text-color: #111111;
 	--theme-box-num-color: #0f9d58;
+	--theme-hover-color: #ddd;
 	--theme-color-alpha_34: rgba(255, 255, 255, .34);
 	--theme-color-alpha_83: rgba(255, 255, 255, .83);
 }
 body.dark-mode {
-	--theme-color: #222;
-	--theme-text-color: #eee;
+	--theme-color: #111111;
+	--theme-background-image: url('Images/Black Theme Image.jpg');
+	--theme-text-color: #ffffff;
+	--theme-hover-color: #120000;
 	--theme-box-num-color: #fff;
 	--theme-color-alpha_34: rgba(0, 0, 0, .34);
 	--theme-color-alpha_83: rgba(0, 0, 0, .83);
+}
+
+body {
+	background-image: var(--theme-background-image);
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
 }
 
 :focus, :active{
@@ -50,25 +62,28 @@ body.dark-mode {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: var(--theme-color);
+	/* background-color: var(--theme-color); */
 	transition: background-color .15s ease-in-out;
 }
 
 .medicine-section.active-tab {
-	display: block;
+	display: flex;
+	align-items: center;
 }
 
 .medicine-section .top-nav {
 	position: fixed;
-	top: 0;
-	left: 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 8px;
-	width: 100%;
+	top: 5px;
+	left: 50%;
+	translate: -50% 0px;
+	width: 95%;
 	height: 50px;
-	box-shadow: 0 4px 6px -4px rgba(0, 0, 0, .35);
+	padding: 8px;
+	border-radius: 32px;
+	box-shadow: 0 8px 12px 4px rgba(0, 0, 0, .5);
 	background-color: var(--theme-color);
 	transition: background-color .15s ease-in-out;
 	z-index: 5;
@@ -121,24 +136,11 @@ body.dark-mode {
 	outline: none;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .34);
 }
-.medicine-section .box-holder{
-	position: relative;
-	max-height: 80%;
-	height: 80%;
-	width: 100%;
-	background-color: var(--theme-color);
-	padding: 12px;
-	top: 50px;
-	z-index: 2;
-	border-radius: 12px;
-	overflow-y: auto;
-	transition: background-color .15s ease-in-out;
-}
+
 .medicine-section .patients-lists {
 	position: relative;
 	display: flex;
 	justify-content: center;
-	top: 50px;
 	height: 82%;
 	max-height: 82%;
 	width: 100%;
@@ -265,21 +267,32 @@ body.dark-mode {
 	text-transform: lowercase;
 }
 
+
+.medicine-section .box-holder{
+	position: relative;
+	margin: auto 0;
+	height: 85%;
+	width: 100%;
+	padding: 12px;
+	z-index: 2;
+	border-radius: 12px;
+	overflow-y: auto;
+	transition: background-color .15s ease-in-out;
+}
+
 .medicine-section .box-holder .boxes {
 	position: relative;
-	padding: 8px;
-	margin-top: 10px;
-	margin-left: 15px;
-	background-color: var(--theme-color);
-	border: 2px solid #0f9d58;
-	top: -10px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 150px;
-	height: 90px;
-	border-radius: 8px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	margin-top: 10px;
+	margin-left: 15px;
+	top: -10px;
+	width: 100px;
+	height: 100px;
+	padding: 8px;
+	background-color: var(--theme-color);
+	border-radius: 38px;
 	transition: all .15s ease-in-out;
 }
 .medicine-section .box-holder .boxes:hover{
@@ -322,7 +335,11 @@ body.dark-mode {
 	transition: all .15s ease-in-out;
 	overflow-y: auto;
 	opacity: 0;
-	background-color: var(--theme-color);
+	background-image: var(--theme-background-image);
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
 	transform: translateY(100%);
 	transition: background-color .15s ease-in-out;
 }
@@ -357,14 +374,14 @@ body.dark-mode {
 	margin: 12px 0;
 	color: var(--theme-text-color);
 	background-color: var(--theme-color);
-	box-shadow: 0 0 0 2px rgba(15, 157, 88, .35);
+	box-shadow: 0 4px 16px -2px rgba(0, 0, 0, .5);
 	border-radius: 24px;
 	transition: all .15s ease-in-out;
 	z-index: 1;
 }
 
 .medicine-section .box-holder > div > ol .md-name:hover {
-	background-color: rgba(15, 157, 88, .2);
+	background-color: var(--theme-hover-color);
 }
 
 .medicine-section .box-holder > div > ol .md-name.show {
@@ -387,7 +404,7 @@ body.dark-mode {
 	width: 26px;
 	padding: 6px;
 	border-radius: 24px;
-	background-color: #0f9d58bb;
+	background-color: #0f9d58;
 	color: var(--theme-text-color);
 	font-weight: lighter;
 }
@@ -469,13 +486,12 @@ body.dark-mode {
 	display: block;
 }
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section
- > label {
+  label {
 	position: relative;
 	font-size: 14px;
 	color: var(--theme-text-color);
 }
-.medicine-section .box-holder .history-box .main-history-box .patient-details-section
- > input {
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section input {
 	position: relative;
 	display: block;
 	padding: 8px;
@@ -492,12 +508,12 @@ body.dark-mode {
 }
 
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section 
-> input:focus{
+ input:focus{
 	box-shadow: 0 0 0 2px #0f9d58;
 }
 
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section
- > button{
+ button{
 	position: relative;
 	display: inline-flex;
 	top: 12px;
@@ -514,6 +530,9 @@ body.dark-mode {
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section
  > button span.material-icons{
  	position: relative;
+ 	padding: 4px;
+ 	background-color: rgba(0, 0, 0, .5);
+ 	border-radius: 50%;
  	font-size: 1em;
 }
 
@@ -641,18 +660,18 @@ input[type='checkbox']{
 input:checked + .dark-mode-checkbox::after{
 	translate: 12px 0px;
 	-webkit-translate: 12px 0px;
-	
 }
 .bottom-nav {
 	position: fixed;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	bottom: 0;
-	left: 0;
-	margin: 0;
-	width: 100%;
+	bottom: 8px;
+	left: 50%;
+	translate: -50% 0px;
+	width: 95%;
 	height: 50px;
+	border-radius: 32px;
 	background-color: var(--theme-color);
 	transition: background-color .15s ease-in-out;
 	box-shadow: 0 0 12px 0 rgba(0, 0, 0, .34);
@@ -664,9 +683,9 @@ input:checked + .dark-mode-checkbox::after{
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	margin-left: 10px;
+	margin: 0 10px;
 	height: 50px;
-	width: 150px;
+	width: calc(calc(100% - 12px) / 4);
 	padding: 8px 12px;
 	border-radius: 8px;
 	background-color: var(--theme-color);
