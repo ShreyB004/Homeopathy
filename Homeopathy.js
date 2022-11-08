@@ -18,7 +18,7 @@ const createNotifOfPatient = function(medicineName, patientName, options={}) {
 		if(getPerm === 'granted') {
 			navigator.serviceWorker.ready.then((reg)=>{
 				reg.showNotification(`You've given ${medicineName} to ${patientName}`, options);
-			})
+			});
 		}
 	});
 };
