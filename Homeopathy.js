@@ -14,8 +14,11 @@ const database = firebase.database();
 
 const createNotifOfPatient = function(medicineName, patientName, options={}) {
 	Notification.requestPermission().then(getPerm => {
+		navigator.serviceWorker.register('sw.js');
 		if(getPerm === 'granted') {
-			const notification = new Notification(`You've given ${medicineName} to ${patientName}`, options);
+			navigator.serviceWorker.ready.then((reg)=>{
+				reg.showNotification(`You've given ${medicineName} to ${patientName}`, options);
+			})
 		}
 	});
 };
