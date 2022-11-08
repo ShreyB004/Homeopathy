@@ -640,7 +640,8 @@ input[type='checkbox']{
 .medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
 input:checked + .dark-mode-checkbox::after{
 	translate: 12px 0px;
-	-webkit-transform: translateX(1px);
+	-webkit-translate: 12px 0px;
+	
 }
 .bottom-nav {
 	position: fixed;
