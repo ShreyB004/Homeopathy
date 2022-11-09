@@ -74,11 +74,7 @@ body {
 		scale: 1 1;
 	}
 }
-@keyframes IncZoomIn {
-	to {
-		scale: 1 1;
-	}
-}
+
 @keyframes RiseUp {
 	from {
 		translate: 0px 50%;
@@ -482,10 +478,6 @@ body {
 	border-radius: 24px;
 	scale: 0 0;
 	transition: all .15s ease-in-out;
-	animation-name: IncZoomIn;
-	animation-fill-mode: forwards;
-	animation-duration: .2s;
-	animation-timing-function: ease-in;
 	z-index: 1;
 }
 
