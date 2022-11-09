@@ -18,10 +18,32 @@ const database = firebase.database();
 		if(getPerm === 'granted') {
 			navigator.serviceWorker.ready.then((reg)=>{
 				reg.showNotification(`You've given ${medicineName} to ${patientName}`, options);
-			});
+			})
 		}
 	});
-};*/
+};
+*/
+
+const snackBar = document.getElementById('snackBarDiv');
+const snackBarIcon = document.getElementById('snackIcon');
+const snackBarText = document.getElementById('snackText');
+
+const showSnackBarNotif = function(snackType) {
+	if (snackType === 'success') {
+		snackBarIcon.innerText = 'done';
+		snackBarText.innerText = 'Added Successfully!';
+	} else if(snackType === 'error') {
+		snackBarIcon.innerText = 'Close';
+		snackBarText.innerText = 'Error Occured!';
+	} else{
+		console.error('Unexpected (snackType) in function showSnackBarNotif()');
+	}
+	snackBar.classList.add('show-snack');
+	
+	const snackBarVisibleTimer = setTimeout(function() {
+		snackBar.classList.remove('show-snack');
+	}, 3500);
+};
 
 String.prototype.toTitleCase = function() {
 	let splitStr = this.toLowerCase().split(' ');
@@ -42,13 +64,9 @@ const captureHistory = function(nameOfPill, patientName, medicineFor, getTime) {
 			Time: getTime.time
 		}
 	};
-	dbPath.push(historyObject);
-		/*.then(()=>{
-		createNotifOfPatient(nameOfPill, patientName, {
-			body: `Given For ${medicineFor}`,
-			icon: 'https://t4.ftcdn.net/jpg/01/29/07/99/360_F_129079911_rgjzs0I5F2nBSrmm10UT5AGYCCWSXKNE.jpg'
-		});
-	});*/
+	dbPath.push(historyObject).then(()=>{
+		showSnackBarNotif('success');
+	});
 }
 
 const padZero = (number) => {
@@ -288,6 +306,7 @@ const createHistory = () => {
 };
 
 addHistoryButton.addEventListener("click", function(){
+	goBack();
 	createHistory();
 	errInfoSpn.classList.remove('show-error');
 	patientNameInput.value = '';
@@ -301,8 +320,8 @@ const goBack = () => {
 		pillsInBoxesDiv.classList.remove("visible");
 	}
 
-	if(allMedicinesLists.classList.contains("visible")) { 
-		allMedicinesLists.classList.remove("visible");
+	if(allMedicinesListsDiv.classList.contains("visible")) { 
+		allMedicinesListsDiv.classList.remove("visible");
 	}
 
 	if(patientDetailsDiv.classList.contains("visible")) {
@@ -310,7 +329,7 @@ const goBack = () => {
 	}
 
 	if(!pillsInBoxesDiv.classList.contains("visible") 
-		|| !allMedicinesLists.classList.contains("visible")
+		|| !allMedicinesListsDiv.classList.contains("visible")
 		|| !patientDetailsDiv.classList.contains("visible")) {
 		showButton(0);
 	}
@@ -318,7 +337,7 @@ const goBack = () => {
 };
 
 const searchMedicinesSection = () => {
-	allMedicinesLists.classList.add("visible");
+	allMedicinesListsDiv.classList.add("visible");
 	showButton(1);
 }
 
