@@ -148,10 +148,9 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	/* background-color: var(--theme-color); */
 	transition: background-color .15s ease-in-out;
-	animation-name: GelatineBounce;
-	animation-duration: .25s;
+	animation-name: FadeIn;
+	animation-duration: .15s;
 	animation-timing-function: ease-in-out;
 	animation-iteration-count: 1;
 }
