@@ -177,8 +177,9 @@ body {
 	justify-content: center;
 	top: 5px;
 	left: 50%;
-	translate: -50% 0px;
+	/* translate: -50% 0px; */
 	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
 	width: 95%;
 	height: 55px;
 	padding: 8px;
@@ -794,8 +795,8 @@ input:checked + .dark-mode-checkbox::after{
 	justify-content: center;
 	bottom: 8px;
 	left: 50%;
-	translate: -50% 0px;
 	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
 	width: 95%;
 	height: 50px;
 	border-radius: 32px;
