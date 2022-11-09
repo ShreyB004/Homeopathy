@@ -126,6 +126,11 @@ body {
 	animation-delay: .05s, 3s;
 	animation-fill-mode: forwards;
 	animation-timing-function: ease-out, ease-in;
+	-webkit-animation-name: RiseUp, SetDown;
+	-webkit-animation-duration: .25s, .25s;
+	-webkit-animation-delay: .05s, 3s;
+	-webkit-animation-fill-mode: forwards;
+	-webkit-animation-timing-function: ease-out, ease-in;
 }
 .snackbar.success > span{
 	color: limegreen;
@@ -154,6 +159,10 @@ body {
 	animation-duration: .15s;
 	animation-timing-function: ease-in-out;
 	animation-iteration-count: 1;
+	-webkit-animation-name: FadeIn;
+	-webkit-animation-duration: .15s;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: 1;
 }
 
 .medicine-section.active-tab {
@@ -169,6 +178,7 @@ body {
 	top: 5px;
 	left: 50%;
 	translate: -50% 0px;
+	-webkit-transform: translateX(-50%);
 	width: 95%;
 	height: 55px;
 	padding: 8px;
@@ -207,6 +217,10 @@ body {
 	animation-duration: .15s;
 	animation-timing-function: ease-in-out;
 	animation-fill-mode: forwards;
+	-webkit-animation-name: ScaleIn;
+	-webkit-animation-duration: .15s;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-fill-mode: forwards;
 }
 
 .medicine-section .top-nav .button-svg.active-btn{
@@ -441,6 +455,10 @@ body {
 	animation-duration: .25s;
 	animation-iteration-count: 1;
 	animation-timing-function: ease-in-out;
+	-webkit-animation-name: SlideIn;
+	-webkit-animation-duration: .25s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: ease-in-out;
 	transition: background-color .15s ease-in-out;
 }
 
@@ -555,6 +573,9 @@ body {
 	animation-name: ZoomIn;
 	animation-duration: .25s;
 	animation-timing-function: ease-in-out;
+	-webkit-animation-name: ZoomIn;
+	-webkit-animation-duration: .25s;
+	-webkit-animation-timing-function: ease-in-out;
 	z-index: 100;
 }
 
@@ -774,6 +795,7 @@ input:checked + .dark-mode-checkbox::after{
 	bottom: 8px;
 	left: 50%;
 	translate: -50% 0px;
+	-webkit-transform: translateX(-50%);
 	width: 95%;
 	height: 50px;
 	border-radius: 32px;
@@ -808,6 +830,9 @@ input:checked + .dark-mode-checkbox::after{
 	animation-name: GelatineBounce;
 	animation-duration: .25s;
 	animation-timing-function: ease-in-out;
+	-webkit-animation-name: GelatineBounce;
+	-webkit-animation-duration: .25s;
+	-webkit-animation-timing-function: ease-in-out;
 }
 
 .bottom-nav .bottom-nav-btns.default-btn svg{
