@@ -4,6 +4,7 @@
 	--theme-text-color: #111111;
 	--theme-box-num-color: #0f9d58;
 	--theme-hover-color: #ddd;
+	--theme-inverse-alpha_5: rgba(0, 0, 0, .5);
 	--theme-color-alpha_34: rgba(255, 255, 255, .34);
 	--theme-color-alpha_83: rgba(255, 255, 255, .83);
 }
@@ -13,6 +14,7 @@ body.dark-mode {
 	--theme-text-color: #ffffff;
 	--theme-hover-color: #120000;
 	--theme-box-num-color: #fff;
+	--theme-inverse-alpha_5: rgba(255, 255, 255, .5);
 	--theme-color-alpha_34: rgba(0, 0, 0, .34);
 	--theme-color-alpha_83: rgba(0, 0, 0, .83);
 }
@@ -37,22 +39,106 @@ body {
 	src: url('https://github.com/ShreyB004/homeopathy/blob/e2c60d7191b65a3f978b3da7a64278ee8d2d85e8/Fonts/sofiapro-light.otf');
 }
 
-@keyframes ScaleIn {	
-	100%{
-		opacity: 1;
-		transform: scale(1);
-	}
-}
 @keyframes GelatineBounce {
   from, to { transform: scale(1, 1); }
   25% { transform: scale(0.9, 1.1); }
   50% { transform: scale(1.1, 0.9); }
   75% { transform: scale(0.95, 1.05); }
 }
+@keyframes ScaleIn {	
+	to{
+		scale: 1 1;
+	}
+}
+@keyframes SlideIn {
+	from{
+		translate: 0px 100%;
+	}
+	to{
+		translate: 0px 0px;
+	}
+}
+@keyframes FadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes ZoomIn {
+	from {
+		scale: 0 0;
+	}
+	to {
+		scale: 1 1;
+	}
+}
+@keyframes RiseUp {
+	from {
+		translate: 0px 50%;
+		opacity: 0;
+	}
+	to {
+		translate: 0px 0px;
+		opacity: 1;
+	}
+}
+@keyframes SetDown {
+	from {
+		translate: 0px 0px;
+		opacity: 1;
+	}
+	to {
+		translate: 0px 50%;
+		opacity: 0;
+	}	
+}
 
 *{
 	box-sizing: border-box;
 	font-family: 'Quicksand', sans-serif;
+}
+
+.snackbar{
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	column-gap: .75em;
+	bottom: 65px;
+	left: 15%;
+	width: 70%;
+	height: 50px;
+	padding: 12px;
+	visibility: hidden;
+	border-radius: 12px;
+	background-color: var(--theme-color);
+	box-shadow: 0 0 50px 8px rgba(0, 0, 0, .3);
+	z-index: 99;
+}
+.snackbar.show-snack{
+	visibility: visible;
+	animation-name: RiseUp, SetDown;
+	animation-duration: .25s, .25s;
+	animation-delay: .05s, 3s;
+	animation-fill-mode: forwards;
+	animation-timing-function: ease-out, ease-in;
+}
+.snackbar.success > span{
+	color: limegreen;
+}
+.snackbar.success > span.material-icons{
+	box-shadow: 0 0 0 2px limegreen;
+}
+.snackbar > span.material-icons{
+	font-size: 1em;
+	position: relative;
+	font-weight: bold;
+	border-radius: 50%;
+	background-color: transparent;
+	padding: 5px;
 }
 
 .medicine-section{
@@ -64,6 +150,10 @@ body {
 	height: 100%;
 	/* background-color: var(--theme-color); */
 	transition: background-color .15s ease-in-out;
+	animation-name: GelatineBounce;
+	animation-duration: .25s;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: 1;
 }
 
 .medicine-section.active-tab {
@@ -80,30 +170,39 @@ body {
 	left: 50%;
 	translate: -50% 0px;
 	width: 95%;
-	height: 50px;
+	height: 55px;
 	padding: 8px;
 	border-radius: 32px;
-	box-shadow: 0 8px 12px 4px rgba(0, 0, 0, .5);
-	background-color: var(--theme-color);
-	transition: background-color .15s ease-in-out;
-	z-index: 5;
+	box-shadow: 0 8px 12px 0 rgba(0, 0, 0, .5);
+	background-color: var(--theme-color-alpha_34);
+	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
+	transition: all .25s ease-in-out;
+	z-index: 15;
 }
-.medicine-section .top-nav button {
+.medicine-section .top-nav:focus-within{
+	background-color: var(--theme-color);
+	box-shadow: 0 0 0 2px rgba(15, 157, 88, .5), 0 8px 14px 0 rgba(0, 0, 0, .5);
+}
+
+.medicine-section .top-nav > button {
 	position: relative;
 	height: 40px;
 	width: 40px;
 	border-radius: 50%;
-	background-color: var(--theme-color);
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, .34);
+	background-color: transparent;
+	box-shadow: 0 1px 2px var(--theme-inverse-alpha_5);
 	padding: 8px;
 	border: none;
-	margin-right: 5px;
-	transition: background-color .15s ease-in-out;
+	transition: all .15s ease-in-out;
+}
+.medicine-section .top-nav > button > svg > path {
+	fill: var(--theme-text-color);
 }
 .medicine-section .top-nav button .button-svg {
 	position: relative;
 	display: none;
-	transform: scale(0);
+	scale: 0 0;
 	animation-name: ScaleIn;
 	animation-duration: .15s;
 	animation-timing-function: ease-in-out;
@@ -123,18 +222,15 @@ body {
 .medicine-section .top-nav input {
 	position: relative;
 	border: none;
-	background-color: var(--theme-color);
+	background-color: transparent;
 	padding: 1em;
 	height: 80%;
 	width: 100%;
-	border-radius: 8px;
+	border-radius: 0 32px 32px 0;
 	font-size: 1.25em;
-	transition: all .15s ease-in-out;
+	font-weight: bold;
+	transition: all .25s ease-in-out;
 	color: var(--theme-text-color);
-}
-.medicine-section .top-nav input:focus{
-	outline: none;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .34);
 }
 
 .medicine-section .patients-lists {
@@ -163,7 +259,7 @@ body {
 	border-radius: 18px;
 	color: var(--theme-text-color);
 	transition: background-color .15s ease-in-out;
-	box-shadow: 0 0 3px rgba(15, 157, 88, .5);
+	box-shadow: 0 0 5px 2px rgba(15, 157, 88, .5);
 }
 
 .medicine-section .patients-lists .patient-details-div .patients-name:hover{
@@ -267,16 +363,15 @@ body {
 	text-transform: lowercase;
 }
 
-
 .medicine-section .box-holder{
 	position: relative;
 	margin: auto 0;
-	height: 85%;
+	height: 82%;
 	width: 100%;
 	padding: 12px;
-	z-index: 2;
 	border-radius: 12px;
 	overflow-y: auto;
+	z-index: 2;
 	transition: background-color .15s ease-in-out;
 }
 
@@ -292,7 +387,9 @@ body {
 	height: 95px;
 	padding: 8px;
 	background-color: var(--theme-color);
+	box-shadow: 0 0 24px 8px rgba(0, 0, 0, .24);
 	border-radius: 38px;
+	z-index: 1;
 	transition: all .15s ease-in-out;
 }
 .medicine-section .box-holder .boxes:hover{
@@ -332,7 +429,7 @@ body {
 	height: 100%;
 	max-height: 100%;
 	width: 100%;
-	transition: all .15s ease-in-out;
+	transition: all .25s ease-in-out;
 	overflow-y: auto;
 	opacity: 0;
 	background-image: var(--theme-background-image);
@@ -340,7 +437,10 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
-	transform: translateY(100%);
+	animation-name: SlideIn;
+	animation-duration: .25s;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in-out;
 	transition: background-color .15s ease-in-out;
 }
 
@@ -350,10 +450,10 @@ body {
 	overflow-x: visible;
 	height: 600px;
 }
-.medicine-section .box-holder .box-modal.visible, .medicine-section .box-holder .medicines-lists.visible{
+.medicine-section .box-holder .box-modal.visible, 
+.medicine-section .box-holder .medicines-lists.visible{
 	opacity: 1;
 	display: flex;
-	transform: translateY(0px);
 }
 
 .medicine-section .box-holder .box-modal.visible{
@@ -452,6 +552,9 @@ body {
 	background-color: var(--theme-color-alpha_83);
 	box-shadow: 0 0 12px 8px rgba(0, 0, 0, .4);
 	transition: background-color .15s ease-in-out;
+	animation-name: ZoomIn;
+	animation-duration: .25s;
+	animation-timing-function: ease-in-out;
 	z-index: 100;
 }
 
@@ -582,7 +685,9 @@ body {
 	padding: 12px;
 	top: 12px;
 	width: 90%;
-	background-color: var(--theme-color);
+	background-color: var(--theme-color-alpha_83);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
 	border-radius: 8px;
 	box-shadow: 0 0 24px 2px rgba(0, 0, 0, .3);
 }
@@ -602,7 +707,7 @@ body {
 	margin-top: 12px;
 	border-radius: 12px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
-	background-color: var(--theme-color);
+	background-color: var(--theme-color-alpha_34);
 }
 .medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings{
 	position: relative;
