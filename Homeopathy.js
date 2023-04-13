@@ -69,6 +69,24 @@ const captureHistory = function(nameOfPill, patientName, medicineFor, getTime) {
 	});
 }
 
+const reloadButton = document.getElementById('reloadButton');
+
+reloadButton.addEventListener("click", function() {
+	window.location.reload();
+});
+
+const captureNewPill = function(pillName, pillMeasure) {
+	const dpPillsPath = database.ref('Medicines');
+	const pillObject = {
+		PillName: pillName.toTitleCase(),
+		PillMeasure: pillMeasure.replace(/ /g, '')
+	};
+	dpPillsPath.push(pillObject).then(()=>{
+		showSnackBarNotif('success');
+		reloadButton.classList.add('show');
+	})
+} 
+
 const padZero = (number) => {
 	if(number === undefined || number === null) return;
 
@@ -104,13 +122,12 @@ const createTimeStamp = function() {
 };
 
 const patientHistoryHolder = document.getElementById("patientHistoryDiv");
-
 database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	const medicineObjValue = medicineSnap.val();
 	const gPatientNameDB = await medicineObjValue.Patient;
 	const gMedicineNameDB = await medicineObjValue.PillName;
 	const gMedicineFor = await medicineObjValue.MedicinePillFor;
-	const medicineDate = await (medicineObjValue.TimeStamp.Date).split(' ');
+	const medicineDate = await (medicineObjValue.TimeStamp.Date);
 	const medicineTime = await (medicineObjValue.TimeStamp.Time);
 
 	const patientNamesHistory = document.createElement('div'); 
@@ -123,7 +140,7 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 	const gMedicineTimeSpan = document.createElement("time");
 	const gMedicineDate = document.createElement('div');
 
-	patientNamesHistory.classList.add('patients-name');
+	patientNamesHistory.classList.add('patients-history-captured-div');
 	patientHistoryDiv.classList.add('patients-history-details');
 
 	gMedicineName.classList.add('given-medicine-name');
@@ -139,11 +156,10 @@ database.ref('MedicineHistory').on("child_added", async function(medicineSnap){
 
 	gMedicineTimeSpan.innerText = `${medicineTime}`;
 
-	for (let i = 0; i < medicineDate.length; ++i) {
-		const dateSpans = document.createElement('span');
-		dateSpans.innerText = `${medicineDate[i]}`;
-		gMedicineDate.appendChild(dateSpans);
-	}
+	const dateSpans = document.createElement('span');
+	dateSpans.innerText = `${medicineDate}`;
+	gMedicineDate.appendChild(dateSpans);
+
 	gMedicineDate.appendChild(gMedicineTimeSpan);
 
 	if(gMedicineTimeSpan.innerText === 'undefined') gMedicineTimeSpan.remove(); 
@@ -204,7 +220,6 @@ darkModeBtn.addEventListener("click", setDarkMode);
 
 const searchMedicinesInput = document.getElementById("medicineSearch");
 
-const allMedicinesListsDiv = document.getElementById("allMedicinesLists");
 const topNavBtn = document.getElementById("topNavButton");
 const listSearchedMedicines = document.getElementById("searchedMedicinesList");
 
@@ -213,6 +228,10 @@ const boxesHolder = document.getElementById("boxHolder");
 const pillsInBoxesDiv = document.getElementById("pillsInBoxes");
 const pillsList = document.getElementById("pillsListInBoxes");
 
+const addNewPillBtn = document.getElementById("addNewPillBtn");
+
+const addPillBtn = document.getElementById("addPillBtn");
+
 const addHistoryButton = document.getElementById("addHistoryBtn");
 const patientNameInput = document.getElementById("patientName");
 const givenMedicineFor = document.getElementById("MedicineFor");
@@ -220,40 +239,367 @@ const givenMedicineFor = document.getElementById("MedicineFor");
 const patientDetailsDiv = document.getElementById("captureHistoryModal");
 const patientMedicineName = document.getElementById("patientMedicineName");
 
+const pillAddDiv = document.getElementById("capturePillModal");
+
 const medicineSections = document.querySelectorAll(".medicine-section");
 const tabButtons = document.querySelectorAll(".bottom-nav-btns");
 
-const medicineBox = {
+/*let dataArr = [
 
-	'MedicineBox-1': ["COLCHICUM", "ACONITE NAP", "APIS MEL", "CAPSICUM", "STAPHYSAGRIA", "ACONITE - N", "RHUS TOX", "HYPERICUM", "ARNICA", "IPECAC", "ALLIUM CEPA"],
+	'Abies Nig 1m',
+	'Abroma Aug 1m',
+	'Abroma Rad 1m',
+	'Absinthium A Cm',
+	'Acid Card 1m',
+	'Acid Nit Cm',
+	'Aconite N Cm',
+	'Aconite Nap Cm',
+	'Actea Spi 1m',
+	'Aesculus Hip Cm',
+	'Agnus Cast Cm',
+	'Agraphis Nut 1m',
+	'Agraphis Nut 1m',
+	'Agraphis Nut 1m',
+	'Alfalfa 1m',
+	'Allium Cepa Cm',
+	'Allium Sat 1m',
+	'Aloe Soc cm',
+	'Alumina Silic 1m',
+	'Ambra Gre Cm',
+	'Ambrosia A 1m',
+	'Ammon Carb Cm',
+	'Ammon Carb Cm',
+	'Amyle Nit 1m',
+	'Anacardium Cm',
+	'Antim Crud 1m',
+	'Antim Crud Cm',
+	'Antim Tart Cm',
+	'Apis Mel Cm',
+	'Apocynum Can 1m',
+	'Aralia RAce Cm',
+	'Argen Nit 1m',
+	'Arnica Mont Cm',
+	'Arnica Mont Cm',
+	'Arnica Mont Cm',
+	'Ars Alb Cm',
+	'Ars Alb Cm',
+	'Ars Alv cm',
+	'Arundo Mauri 1m',
+	'Asafoetida 1m',
+	'Asterias Rub Cm',
+	'Aurm Met Cm',
+	'Baptisia T Cm',
+	'Baryta Carb Cm',
+	'Baryta Iod 1m',
+	'Baryta Mur 1m',
+	'Baryta Mur Cm',
+	'Baryta Mur Cm',
+	'Belladonna',
+	'Belladonna Cm',
+	'Belladonna Cm',
+	'Benz Acid Cm',
+	'Berberis Vul Cm',
+	'Berberris AQ 1m',
+	'Borax Cm',
+	'Bovista 10m',
+	'Bromium 1m',
+	'Bryonia Alb Cm',
+	'Buf Rana Cm',
+	'Cactus Gr Cm',
+	'Caladium Seg Cm',
+	'Caladium Seg Cm',
+	'Calc Carb Cm',
+	'Calc Carb Cm',
+	'Calc Fluor Cm',
+	'Calc Iod Cm',
+	'Calc Phos Cm',
+	'Calc Phos Cm',
+	'Calc Phos Cm',
+	'Caniharis Cm',
+	'Cannabis Ind 1m',
+	'Capsicum A Cm',
+	'Carbo Veg Cm',
+	'Carduus Mar 1m',
+	'Castor Eoo 1m',
+	'Caulophyllum 1m',
+	'Causticum Cm',
+	'Chamomilla 1m',
+	'Chamomilla Cm',
+	'Chelidonium Cm',
+	'Chelidonium M Cm',
+	'Chenopodium A 1m',
+	'Chenopodium A 1m',
+	'Chinin Sulph 1m',
+	'Chirata 1m',
+	'Cholestrinum Cm',
+	'Cholestrinum Cm',
+	'Cicuta Cm',
+	'Cicuta Vir Cm',
+	'Cimicifuga R 1cm',
+	'Cinna Mur 1m',
+	'Clematis Er 1m',
+	'Cocculus Ind 1m',
+	'Coccus Cacti Cm',
+	'Coffea Crud Cm',
+	'Colchicum Cm',
+	'Collinsonia Cm',
+	'Collinsonta Cm',
+	'Colocynthis 1m',
+	'Conium Mac Cm',
+	'Conium Mac Cm',
+	'Conium Mac Cm',
+	'Crataegus Oxy 1m',
+	'Croton Tig Cm',
+	'Drosera R Cm',
+	'Dulcamara Cm',
+	'Epiphegus V 1m',
+	'Eucalyptus G 1m',
+	'Eupat Perf Cm',
+	'Euphrasia Cm',
+	'Euphrasia Off Cm',
+	'Ferrum Met Cm',
+	'Ferrum Met Cm',
+	'Ferrum Met Cm',
+	'Ferrum Phos Cm',
+	'Fluor Acid Cm',
+	'Gelsemium Cm',
+	'Gelsemium Cm',
+	'Glonine Cm',
+	'Glonoine Cm',
+	'Gnaphallium V Cm',
+	'Graphites Cm',
+	'Guaiacum Cm',
+	'Guaicum Cm',
+	'Gymnema Syl 1m',
+	'Hamamelis V Cm',
+	'Hecla Lava Cm',
+	'Hepar Sulph 1m',
+	'Hepar Sulph Cm',
+	'Hydrengea Arb 1m',
+	'Hyoscyamus N Cm',
+	'Hyoscyamus N Cm',
+	'Hyoscyamus N Cm',
+	'Hypericum P Cm',
+	'Ignatia Am Cm',
+	'Ignatia Am Cm',
+	'Ipecac Cm',
+	'Janosia Ash 1m',
+	'Kali Bich Cm',
+	'Kali Bichom',
+	'Kali Carb Cm',
+	'Kali Iod Cm',
+	'Kali Mur Cm',
+	'Kali Nit 1m',
+	'Kali Phos Cm',
+	'Kali Phos Cm',
+	'Lac Can Cm',
+	'Lachesis Cm',
+	'Lacmesis Cm',
+	'Lactic Acid 1m',
+	'Lapis Alb Cm',
+	'Ledum Pal Cm',
+	'Lemna Minor 1m',
+	'Lithium Carb',
+	'Lupulus 1m',
+	'Lycopodium 1m',
+	'Lycopodium Cm',
+	'Lycopodium Cm',
+	'Mag Phos Cm',
+	'Mag Phos Cm',
+	'Meddrrhinum Cm',
+	'Medorrhinum Cm',
+	'Merc Sol Cm',
+	'Merc Sol Cm',
+	'Merc Sol Cm',
+	'Mezerium Cm',
+	'Mur Acid Cm',
+	'Nat Mur Cm',
+	'Nat Mur Cm',
+	'Nat Phos Cm',
+	'Naza 1m',
+	'Nuphur Lut 1m',
+	'Nux Mosch Cm',
+	'Nux Vom Cm',
+	'Nux Vomica Cm',
+	'Oeanantha Cro 1m',
+	'Oleum Jac As 1m',
+	'Opium Cm',
+	'Paladium Cm',
+	'Passiflora In Cm',
+	'Passiflora In Cm',
+	'Petroleum Cm',
+	'Phos Acid 1m',
+	'Phos Phorus Cm',
+	'Pic Acid Cm',
+	'Plantago Maj Cm',
+	'Platilago 1m',
+	'Plumbum Met Cm',
+	'Podophyllum Cm',
+	'Pulsatilia Cm',
+	'Purannava 1m',
+	'Ratanhia Cm',
+	'Rhododendon Cm',
+	'Rhus Tox 1m',
+	'Rhus Tox 1m',
+	'Rhus Tox 200',
+	'Rhus Tox Cm',
+	'Rhus Tox Cm',
+	'Robinia P Cm',
+	'Robinia P Cm',
+	'Rubia T 1m',
+	'Rumex C Cm',
+	'Ruta Grva Cm',
+	'Sabadilla Cm',
+	'Sabina 1m',
+	'Sabina Cm',
+	'Sang Can Cm',
+	'Sarsaparilla Cm',
+	'Sarsparilla Cm',
+	'Secale Cor Cm',
+	'Senecio Aur 1m',
+	'Senega Cm',
+	'Sepia Cm',
+	'Silicea Cm',
+	'Silicea Cm',
+	'Sinapis Nig 1m',
+	'Solidago V 1m',
+	'Spongia T Cm',
+	'Stannum Met Cm',
+	'Staphysagra Cm',
+	'Staphysagria Cm',
+	'Stellaria Med 1m',
+	'Stellaria Med 1m',
+	'Stigmata M 1m',
+	'Stramonium 1cm',
+	'Sulph Acid 1cm',
+	'Sulphus Cm',
+	'Symphytum Cm',
+	'Syzygium Jam 1m',
+	'Syzygium Jam Cm',
+	'Tabacum Cm',
+	'Tabacum N Cm',
+	'Thlaspi B P 1m',
+	'Thuja Occ 1m',
+	'Thuja Occ 1m',
+	'Thuja Occ200',
+	'Thuja Occ Cm',
+	'Trillium P 1m',
+	'Urtica Urens Cm',
+	'Verbascum T 1m',
+	'Verbascum T Cm',
+	'Yucca F 1m',
+	'Zincum Met Cm'
+];*/
 
-	'MedicineBox-2': ["TABACUM", "NUX VOMICA", "PHOSPHORUS", "GUAICUM CM", "KALI PHOS", "NAJA", "EUPHRASIA", "ARUNM MET", "ARS ALB", "EUPHRASIA OFF", "CARBO VEG", "LITHIUM CARB", "SILICEA", "LEDUM PAL", "SLONINE", "ARALIA RACEMOSA", "NAT MUR"],
+/*dataArr.forEach((arr) => {
+	const fullNamePath = arr.replace(/ /g, '_');
 
-	'MedicineBox-3': ["CACTUS", "BELLADONNA", "ARUNDO MAVRI", "DROSERA", "ARS ALB", "STANNUM MET", "SENEGA", "RUMAX C", "ALLUM SAT", "ANTIM FUR", "CINNA MAR", "BARYTA MUR", "BELLADONNA", "BENZA ACID", "AMYLE NRT", "KALI BICH", "PULSATILLA", "HEPAR SULPH", "CALADIUM SEG", "SPONGIA", "NAT MUR", "CACTUS-CACTI", "CRATAEGUS OXY", "BRYONIA ALB"],
+	const getNameFromPath = arr.slice(0, -3);
 
-	'MedicineBox-4': ["LACHESIS", "CALC PHOS", "FERRUM MET", "URTICA URENS", "GELSEMIUM", "ABROMA AUG", "ALOE SOC", "SECALE CORN", "IGNATIA", "PHOS ACID", "SYZYGIUM JAMBULUM", "CONIUM MAC", "ANACARDIUM" , "ZINCUM MET", "RHODODENDRONS", "RUTA GRVO", "GRAPHITES", "CALC CARB", "CONIUM MAC", "IGNATIA MM", "AGNUS CAST", "CLEMATIS ERTICA", "MEDORRHINUM C", "TRILLIUM PENDULUM", "SABINA", "GLONOINE", "CONUM MAC", "SEPIA" , "KALI BICH", "LACHESIS", "THLASPI B.P", "BORAX", "USTILAGO", "BARYTA CARB", "CALC CARB", "GYMNEMA SYLIM", "MERC SOL", "CICUTA VIR", "SULFUR", "CROTON TIG", "MAG PHOS", "SILICEA", "STRAMONIUM", "CHAMOMILLA", "CALADIUM SEG", "HYOSCYAMUS N", "LAC CANINUM", "ROBINIA", "CAUSTICUM", "STAPHYSAGRIA", "CALC FLUOR", "MERC SOL", "CALC PHOS"],
+	const getMeasurement = arr.slice(-3).replace(' ','');
 
-	'MedicineBox-5': ["LYCOPODIUM", "LEGNA MINUR", "RHUS TOX   1M", "ARNICA", "PETRO", "ALUMINA SILICA", "EPIPHEGUS VIRGINIA", "HAMAMELIS VIRGINIA", "PALLADIUM", "ASAFOETICA", "AMBROSIA", "THUJA   1 CM 10 CM", "NITRIC ACID", "SULPHURIC ACID", "CAULOPHYLLUM", "CIMICIFUGA RACEMOSA", "NUPHAR LUTEUM", "RHUS TOX   10 M", "RHUS TOX   200", "CHELIDONIUM MAJUS", "CARDUUS MARIANUS", "SABADILLA", "COCCULUS INDICUS", "AMMON CARB", "CANNABIS INDICA", "STELLARIA MED", "PICRIC ACID", "BAPTISIA", "LYCOPODIUM", "AGRAPHIS NUT", "FERRUM MET", "THUJA OCC", "NUX MOSCH", "LACTIC ACID"],
+	const object = {
+		PillName: getNameFromPath,
+		PillMeasure: getMeasurement
+	};
 
-	'MedicineBox-6': ["NUX VOMICA", "SANG CAN", "KALI PHOS" , "PLANTAGO", "ARNICA", "FERRUM MET", "CASTOR EQ", "PLUMBUM MET", "VERBASCUM T", "EUPAT PERF", "CHENOPODIUM", "PODOPHYLLUM", "OPIUM", "MEZEREUM", "DULCAMARA", "SOLIDAGO V", "SYMPHYTUM", "ACTEA SPI", "PURRANNOVA", "STELLARIA", "TUCCA F", "URTICA", "MED RRHH UNUM CM", "MERC SOL", "KALI MUR", "AGAAPHIS NUTIM", "GUAIACUM"],
+	database.ref('Medicines').push(object);
+});
+*/
+const pillLoader = document.getElementById('pillLoader');
+let pillNumber = 0;
 
-	'MedicineBox-7': ["BUFO RANA" ,"KALI IOD" ,"BRAYAT IOD" ,"CALC IOD" ,"ALFALFA" ,"BARBARIES AQ" ,"LYCOPODIUM" ,"CHININ SULPH" ,"CHENOPODIUM" ,"BERBERIS VUL" ,"ARGEN NIT" ,"CANTHARIS" ,"CHAMOMILLA" ,"SINAPIS NIG" ,"AGRAPHIS NUT" ,"BOVISTA" ,"ACID CARB" ,"HELLICA LAVA" ,"COLOCYNTHIS" ,"HEPAR SULPH" ,"BELLADONNA 1M" ,"ANTIM CRUD"],
+const medicines = database.ref('Medicines').orderByChild("PillName");
+console.log("medicines", medicines);
 
-	'MedicineBox-8': ["PASSIFLORA IN", "HYOSCYAMUS", "ABROMA RAD", "VERBASCUM T", "TABACUM", "HYDRENGEA ARB", "CHOLESTRINUM", "GNAPHALLIUM", "COLLINSONIA", "JANOSIA ASH", "KALI NIT", "CHELIDONIUM M", "ANITM CRUD", "LUPULUS", "AESCULUS HIP", "AMBRA GRE", "SARSAPARILLA", "EUCALYPTUS", "OLEUM JAC AS", "COFFEA CRUD"]
-};
+medicines.on("child_added", function(medicineSnap, prevChildKey){
+	if (pillLoader) pillLoader.remove();
 
-const maxBoxes = Object.keys(medicineBox).length;
+	++pillNumber;
+	const getMedicines = medicineSnap.val();
+	const medicinePillName = getMedicines.PillName;
+	const medicinePillMeasure = getMedicines.PillMeasure;
 
-Object.freeze(medicineBox);
+	database.ref("Medicines").child(`${prevChildKey}`).on("value", function(prevSnap) {
+		
+		if(prevChildKey === null 
+			|| !(medicinePillName[0] === prevSnap.val().PillName[0]) 
+			|| !(medicinePillName[0].toLowerCase() === prevSnap.val().PillName[0].toLowerCase())){
+			pillNumber = 1;
 
-const showButton = function(btnIndex) {
-   if(btnIndex < 0 || btnIndex > 1) return;
+			const breaker = document.createElement('div');
+			breaker.classList.add('horizontal-line');
+			breaker.innerText = medicinePillName[0];
+			listSearchedMedicines.appendChild(breaker);
+		}	
+	});
 
-   const buttonSvg = document.querySelectorAll(".button-svg");
-   
-   buttonSvg.forEach((btns)=>btns.classList.remove("active-btn"));
 
-   buttonSvg[btnIndex].classList.add("active-btn");
+	const mdNameDiv = document.createElement("li");
+	const smallBoxNum = document.createElement("div");
+	const mdNameSpn = document.createElement("span");
+	const mdMeasureSpn = document.createElement('span');
+
+	mdNameDiv.classList.add("md-name");
+	smallBoxNum.classList.add("small-box-number");
+	mdNameSpn.classList.add("medicine-name");
+	mdMeasureSpn.classList.add("md-measure");
+
+	smallBoxNum.innerText = `${pillNumber}`;
+	mdNameSpn.innerText = `${medicinePillName}`;
+	mdMeasureSpn.innerText = `${medicinePillMeasure}`;
+
+	mdNameDiv.addEventListener('click', function() {
+		patientDetailsDiv.classList.add("visible");
+		showButton(true);
+		patientMedicineName.innerText = medicinePillName.toTitleCase();
+	});
+
+	mdNameDiv.appendChild(smallBoxNum);
+	mdNameDiv.appendChild(mdNameSpn);
+	mdNameDiv.appendChild(mdMeasureSpn);
+
+	listSearchedMedicines.appendChild(mdNameDiv);
+});
+/*
+setTimeout(function() {
+	medicines.on('value', function() {
+		sortList();	
+	});
+	alert('sorted');
+}, 3000);*/
+
+/*function sortList() {
+  let list, i, switching, b, shouldSwitch;
+  list = document.getElementById("searchedMedicinesList");
+  switching = true;
+  while (switching) {
+    switching = false;
+    b = list.getElementsByTagName("li");
+    for (i = 0; i < (b.length - 1); i++) {
+      shouldSwitch = false;
+      if (b[i].querySelector('span.medicine-name').innerText.toLowerCase() > b[i + 1].querySelector('span.medicine-name').innerText.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      b[i].parentNode.insertBefore(b[i + 1], b[i]);
+      switching = true;
+    }
+  }
+}*/
+
+const showButton = function(showBool) {
+	// if(btnIndex < 0 || btnIndex > 1) return;
+
+	const btnIndex = (showBool === true)?1:0;
+
+	const buttonSvg = document.querySelectorAll(".button-svg");
+
+	buttonSvg.forEach((btns)=>btns.classList.remove("active-btn"));
+
+	buttonSvg[btnIndex].classList.add("active-btn");
 };
 
 const clearText = () => {
@@ -266,80 +612,79 @@ const createHorizontalLine = (boxNumber) => {
 	horizontalLine.innerText = `Box ${boxNumber}`;
 	listSearchedMedicines.appendChild(horizontalLine);	
 }
-	
-const createPills = (pillNumber, pillName, parent) => {
-	const mdNameDiv = document.createElement("li");
-	const smallBoxNum = document.createElement("div");
-	const mdNameSpn = document.createElement("span");
-
-	mdNameDiv.classList.add("md-name");
-	smallBoxNum.classList.add("small-box-number");
-
-	smallBoxNum.innerText = `${pillNumber}`;
-	mdNameSpn.innerText = `${pillName}`;
-
-	mdNameDiv.addEventListener('click', function() {
-		patientDetailsDiv.classList.add("visible");
-		patientMedicineName.innerText = pillName.toTitleCase();
-	});
-
-	mdNameDiv.appendChild(smallBoxNum);
-	mdNameDiv.appendChild(mdNameSpn);
-
-	parent.appendChild(mdNameDiv);	
-}
 
 const errInfoSpn = document.getElementById("errorInfoSpan");
-const createHistory = () => {
-	if(patientNameInput.value === '') {
-		errInfoSpn.classList.add('show-error');
-	} else{
-		errInfoSpn.classList.remove('show-error');
+const validateHistoryInputs = () => {
+	return (patientNameInput.value.trim() !== '') && (givenMedicineFor.value.trim() !== '');
+};
+
+addHistoryButton.addEventListener("click", function(){
+	const isHistoryValid = validateHistoryInputs();
+	if(isHistoryValid) {
+		goBack();
 		captureHistory(
 			patientMedicineName.innerText,
 			patientNameInput.value, 
 			givenMedicineFor.value,
 			createTimeStamp()
 		);
-		patientDetailsDiv.classList.remove("visible");
+		errInfoSpn.classList.remove('show-error');
+		patientNameInput.value = '';
+		givenMedicineFor.value = '';
+	} else{
+		errInfoSpn.classList.add('show-error');
 	}
-};
 
-addHistoryButton.addEventListener("click", function(){
-	goBack();
-	createHistory();
-	errInfoSpn.classList.remove('show-error');
-	patientNameInput.value = '';
-	givenMedicineFor.value = '';
+});
+
+const pillNameInpt = document.getElementById('pillNameInpt');
+const pillMeasureInpt = document.getElementById('pillMeasureInpt');
+const pillErrorInfoSpan = document.getElementById("pillErrorInfoSpan");
+
+addPillBtn.addEventListener("click", function() {
+	if(pillNameInpt.value.trim() !== '' && pillMeasureInpt.value.trim() !== '') {
+		goBack();
+		captureNewPill(pillNameInpt.value, pillMeasureInpt.value);
+		pillErrorInfoSpan.classList.remove('show-error');
+		pillAddDiv.classList.remove('visible');
+		pillNameInpt.value = '';
+		pillMeasureInpt.value = '';
+	} else{
+		pillErrorInfoSpan.classList.add('show-error');
+	}
 });
 
 const goBack = () => {
 	const getVisibleSvg = document.getElementsByClassName("active-btn");
 
-	if(pillsInBoxesDiv.classList.contains("visible")) { 
-		pillsInBoxesDiv.classList.remove("visible");
-	}
-
-	if(allMedicinesListsDiv.classList.contains("visible")) { 
-		allMedicinesListsDiv.classList.remove("visible");
-	}
-
 	if(patientDetailsDiv.classList.contains("visible")) {
 		patientDetailsDiv.classList.remove("visible")
+	} 
+
+	if(pillAddDiv.classList.contains("visible")) {
+		pillAddDiv.classList.remove("visible");
 	}
 
-	if(!pillsInBoxesDiv.classList.contains("visible") 
-		|| !allMedicinesListsDiv.classList.contains("visible")
-		|| !patientDetailsDiv.classList.contains("visible")) {
-		showButton(0);
+	if(errInfoSpn.classList.contains('show-error')) {
+		errInfoSpn.classList.remove('show-error');
 	}
+
+	if(!pillAddDiv.classList.contains("visible")) {
+		showButton(false);
+	}
+
+	if(!patientDetailsDiv.classList.contains("visible")) {
+		showButton(false);
+	}
+
 	searchMedicinesInput.value = '';
 };
 
-const searchMedicinesSection = () => {
-	allMedicinesListsDiv.classList.add("visible");
-	showButton(1);
-}
+
+addNewPillBtn.addEventListener('click', function() {
+	showButton(true);
+	pillAddDiv.classList.add('visible');
+});
 
 const searchMedicinesOnKeyup = (eventKey) => {
 	const eventsKeysArr = [
@@ -351,20 +696,29 @@ const searchMedicinesOnKeyup = (eventKey) => {
 	];
 
 	Object.freeze(eventsKeysArr);
+	
+	const breakersElems = document.querySelectorAll('.horizontal-line');
 
 	if(!eventsKeysArr.includes(eventKey.key)) {
-		searchMedicinesSection();
+		breakersElems.forEach(elem=>{
+			elem.classList.add('hidden');
+		});
+
 		linearSearch({
 			QrySearch: searchMedicinesInput, 
 			searchInClass: 'md-name', 
 			childQuery: ['span'], 
-			actionForSearchQry: true,
-			letterCase: 'Upper'
+			actionForSearchQry: false,
+			letterCase: ''
 		});
 	}
 	if(searchMedicinesInput.value === "") {
-		showButton(0);
+		showButton(false);
 		goBack();
+
+		breakersElems.forEach(elem=>{
+			elem.classList.remove('hidden');
+		});
 	}
 }
 
@@ -423,7 +777,9 @@ function linearSearch({
 	}
 }
 
-(function() {
+/*(function() {
+	const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 	for (let i = 0; i < maxBoxes; ++i) {
 		const medicineBox = document.createElement("div");
 		const medicineBoxNumber = document.createElement("div");
@@ -431,17 +787,16 @@ function linearSearch({
 		medicineBox.classList.add("boxes");
 		medicineBoxNumber.classList.add("box-number");
 
-		medicineBoxNumber.innerText = `${i+1}`;
+		medicineBoxNumber.innerText = `${alphabets[i]}`;
 
 		medicineBox.appendChild(medicineBoxNumber);
 		boxesHolder.appendChild(medicineBox);
 	}
-})();
+})();*/
 
 const boxesCls = document.getElementsByClassName("boxes");
 
-(function() {
-
+/*(function() {
 	for (let i = 0; i < maxBoxes; ++i) {
 		const boxNum = i + 1;
 		const medicineBoxStr = `MedicineBox-${boxNum}`;
@@ -454,9 +809,9 @@ const boxesCls = document.getElementsByClassName("boxes");
 			createPills((j+1), medicineBoxContainer[j], listSearchedMedicines);
 		}
 	}
-})();
+})();*/
 
-function openMedineBoxList(boxNum) {
+/*function openMedineBoxList(boxNum) {
 	showButton(1);
 	pillsList.innerHTML = '';
 	pillsInBoxesDiv.classList.add("visible");
@@ -478,7 +833,7 @@ function openMedineBoxList(boxNum) {
 			openMedineBoxList(i);
 		});
 	}
-})();
+})();*/
 
 const openTab = function(btnTarget, tabId) {
 	const activeTab = document.getElementById(`${tabId}`);
@@ -506,9 +861,9 @@ const searchHistoryInput = document.getElementById('HistorySearch');
 searchHistoryInput.addEventListener('keyup', function() {
 	linearSearch({
 		QrySearch: searchHistoryInput, 
-		searchInClass: 'patients-name', 
+		searchInClass: 'patients-history-captured-div', 
 		childQuery: ['div.patients-history-details'], 
-		actionForSearchQry: true,
+		actionForSearchQry: false,
 		letterCase: ''
 	});
 });
@@ -518,7 +873,7 @@ const searchPatients = document.getElementById("patientSearch");
 searchPatients.addEventListener('keyup', function() {
 	linearSearch({
 		QrySearch: searchPatients, 
-		searchInClass: 'patients-names-lists', 
+		searchInClass: '.patients-history-captured-divs-lists', 
 		childQuery: ['span'], 
 		actionForSearchQry: true,
 		letterCase: 'Lower'
