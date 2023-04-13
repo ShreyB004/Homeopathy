@@ -6,7 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	<link rel="stylesheet" type="text/css" href="Homeopathy.css">
 	<link rel="icon" href="https://t4.ftcdn.net/jpg/01/29/07/99/360_F_129079911_rgjzs0I5F2nBSrmm10UT5AGYCCWSXKNE.jpg">
-	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 
 <body>
@@ -42,14 +43,18 @@
 		</button>
 		<input type="text" id="medicineSearch" placeholder="Search Medicines . . ." autocomplete="off" name="search_medicines">
 	</nav>
+	
 	<div class="box-holder" id="boxHolder">
-		
-		<div class="medicines-lists" id="allMedicinesLists">
-			<ol id="searchedMedicinesList"></ol>
-		</div>
-
-		<div class="box-modal" id="pillsInBoxes">
-			<ol id="pillsListInBoxes"></ol>
+		<button class="reload-button material-icons" id="reloadButton">refresh</button>
+		<div class="medicines-lists visible" id="allMedicinesLists">
+			<ol id="searchedMedicinesList">
+				<div class="loader" id="pillLoader">
+				    <svg class="circular-loader"viewBox="25 25 50 50" >
+				      <circle class="loader-path" cx="50" cy="50" r="20" fill="none" stroke="#0f9d58" stroke-width="3" />
+				    </svg>
+				</div>
+			</ol>
+			<button class="add-new-pill material-icons" id="addNewPillBtn">add</button>
 		</div>
 
 		<div class="history-box" id="captureHistoryModal">
@@ -58,7 +63,7 @@
 					<span id="patientMedicineName"></span>
 					<input type="text" id="patientName" placeholder="Patient name" name="patient_name">
 					<input type="text" id="MedicineFor" placeholder="Medicine For" name="medicine_cause">
-					<p class="error-info" id="errorInfoSpan">Patient Name Cannot Be Empty</p>
+					<p class="error-info" id="errorInfoSpan">Input(s) Cannot Be Empty</p>
 					<button id="addHistoryBtn">
 						<span class="material-icons">done</span>
 						<span>Done</span>
@@ -66,6 +71,20 @@
 				</div>
 			</div>			
 		</div>
+		<div class="new-pills-box" id="capturePillModal">
+			<div class="main-new-pills-box">
+				<div class="add-new-pills-section">
+					<input type="text" id="pillNameInpt" placeholder="Pill Name" name="pill_name">
+					<input type="text" id="pillMeasureInpt" placeholder="Meausre" name="pill_measure">
+					<p class="error-info" id="pillErrorInfoSpan">Input(s) Cannot Be Empty</p>
+					<button id="addPillBtn">
+						<span class="material-icons">done</span>
+						<span>Done</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>
 
