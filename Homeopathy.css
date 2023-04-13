@@ -1,30 +1,37 @@
 :root{
 	--theme-color: #ffffff;
-	--theme-background-image: url('Images/White Theme Image.jpg');
+/* 	--theme-background-image: url('Images/White Theme Image.jpg'); */
+	--theme-history-shadow: 0 0 18px -4px rgba(0,0,0,.5);
+	--theme-medicine-shadow: 0 1px 3px rgba(0, 0, 0, .56);
 	--theme-text-color: #111111;
 	--theme-box-num-color: #0f9d58;
 	--theme-hover-color: #ddd;
 	--theme-inverse-alpha_5: rgba(0, 0, 0, .5);
+	--theme-color-inverse-alpha_34: rgba(0, 0, 0,.34);
 	--theme-color-alpha_34: rgba(255, 255, 255, .34);
 	--theme-color-alpha_83: rgba(255, 255, 255, .83);
 }
 body.dark-mode {
-	--theme-color: #111111;
-	--theme-background-image: url('Images/Black Theme Image.jpg');
+	--theme-color: #0b0a16;
+/* 	--theme-background-image: url('Images/Black Theme Image.jpg'); */
 	--theme-text-color: #ffffff;
 	--theme-hover-color: #120000;
 	--theme-box-num-color: #fff;
+	--theme-medicine-shadow: 0 1px 3px rgba(255, 255, 255, .56);
+	--theme-history-shadow: 0 0 3px rgba(255,255,255,.5);
 	--theme-inverse-alpha_5: rgba(255, 255, 255, .5);
+	--theme-color-inverse-alpha_34: rgba(255, 255, 255,.34);
 	--theme-color-alpha_34: rgba(0, 0, 0, .34);
 	--theme-color-alpha_83: rgba(0, 0, 0, .83);
 }
 
 body {
-	background-image: var(--theme-background-image);
+	background-color: var(--theme-color);
+/* 	background-image: var(--theme-background-image);
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
-	background-position: center;
+	background-position: center; */
 }
 
 :focus, :active{
@@ -66,6 +73,11 @@ body {
 		opacity: 1;
 	}
 }
+@keyframes LoaderFade {
+	50%{
+		opacity: 0;
+	}	
+}
 @keyframes ZoomIn {
 	from {
 		scale: 0 0;
@@ -101,6 +113,136 @@ body {
 	font-family: 'Quicksand', sans-serif;
 }
 
+.loader {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	height: 50px;
+	width: 50px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .54);
+	opacity: 1;
+}
+
+
+.circular-loader {
+  -webkit-animation: rotate 2s linear infinite;
+          animation: rotate 2s linear infinite;
+  height: 100%;
+  -webkit-transform-origin: center center;
+      -ms-transform-origin: center center;
+          transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: auto;
+}
+
+.loader-path {
+  stroke-dasharray: 150,200;
+  stroke-dashoffset: -10;
+  -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+          animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -124;
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -124;
+  }
+}
+@-webkit-keyframes color {
+  0% {
+    stroke: #70c542;
+  }
+  40% {
+    stroke: #0f9d58;
+  }
+  66% {
+    stroke: #70c542;
+  }
+  80%, 90% {
+    stroke: #0f9d58;
+  }
+}
+@keyframes color {
+  0% {
+    stroke: #70c542;
+  }
+  40% {
+    stroke: #0f9d58;
+  }
+  66% {
+    stroke: #70c542;
+  }
+  80%, 90% {
+    stroke: #0f9d58;
+  }
+}
+
+
+.reload-button{
+	position: absolute;
+	padding: 8px;
+	visibility: hidden;
+	background-color: #1aacff;
+	color: #fff;
+	box-shadow: 0 0 24px 2px rgba(0, 0, 0, .8);
+	left: 50%;
+	top: 0;
+	border: none;
+	opacity: 0;
+	border-radius: 50%;
+/* 	translate: -50% 0px; */
+	transform: translateX(-50%) rotate(-180deg);
+	-webkit-transform: translateX(-50%) rotate(-180deg);
+	transition: all .5s ease-in-out;
+}
+.reload-button.show{
+	visibility: visible;
+	opacity: 1;
+	transform: translateX(-50%) rotate(0deg);
+	-webkit-transform: translateX(-50%) rotate(0deg);
+}
+
 .snackbar{
 	position: absolute;
 	display: flex;
@@ -109,14 +251,14 @@ body {
 	flex-direction: row;
 	column-gap: .75em;
 	bottom: 65px;
-	left: 15%;
-	width: 70%;
+	left: 22%;
+	width: 55%;
 	height: 50px;
-	padding: 12px;
+	padding: 4px;
 	visibility: hidden;
-	border-radius: 12px;
+	border-radius: 18px;
 	background-color: var(--theme-color);
-	box-shadow: 0 0 50px 8px rgba(0, 0, 0, .3);
+	box-shadow: 0 0 50px 8px rgba(0, 0, 0, .9);
 	z-index: 99;
 }
 .snackbar.show-snack{
@@ -133,10 +275,12 @@ body {
 	-webkit-animation-timing-function: ease-out, ease-in;
 }
 .snackbar.success > span{
-	color: limegreen;
+	color: #bbb;
+	font-weight: bold;
+	text-shadow: 0 0 1px #000;
 }
 .snackbar.success > span.material-icons{
-	box-shadow: 0 0 0 2px limegreen;
+	box-shadow: 0 0 0 2px #bbb;
 }
 .snackbar > span.material-icons{
 	font-size: 1em;
@@ -154,6 +298,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
+	background-color: var(--theme-color);
 	transition: background-color .15s ease-in-out;
 	animation-name: FadeIn;
 	animation-duration: .15s;
@@ -177,33 +322,32 @@ body {
 	justify-content: center;
 	top: 5px;
 	left: 50%;
-	/* translate: -50% 0px; */
-	-webkit-transform: translateX(-50%);
 	transform: translateX(-50%);
-	width: 95%;
-	height: 55px;
+	-webkit-transform: translateX(-50%);
+	width: 90%;
+	height: 50px;
 	padding: 8px;
-	border-radius: 32px;
-	box-shadow: 0 8px 12px 0 rgba(0, 0, 0, .5);
+	border-radius: 12px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
 	background-color: var(--theme-color-alpha_34);
-	backdrop-filter: blur(3px);
-	-webkit-backdrop-filter: blur(3px);
 	transition: all .25s ease-in-out;
 	z-index: 15;
 }
 .medicine-section .top-nav:focus-within{
 	background-color: var(--theme-color);
-	box-shadow: 0 0 0 2px rgba(15, 157, 88, .5), 0 8px 14px 0 rgba(0, 0, 0, .5);
+	box-shadow: 0 12px 0 -10px rgba(63, 133, 244, .95);
+}
+
+.medicine-section .top-nav:focus-within button{
+	box-shadow: 0 1px 2px #aaa;
 }
 
 .medicine-section .top-nav > button {
 	position: relative;
-	height: 40px;
-	width: 40px;
 	border-radius: 50%;
-	background-color: transparent;
-	box-shadow: 0 1px 2px var(--theme-inverse-alpha_5);
-	padding: 8px;
+	box-shadow: 0 1px 3px #aaa;
+	background-color: var(--theme-color-alpha_34);
+	padding: 7px;
 	border: none;
 	transition: all .15s ease-in-out;
 }
@@ -241,7 +385,6 @@ body {
 	padding: 1em;
 	height: 80%;
 	width: 100%;
-	border-radius: 0 32px 32px 0;
 	font-size: 1.25em;
 	font-weight: bold;
 	transition: all .25s ease-in-out;
@@ -264,37 +407,37 @@ body {
 	width: 90%;
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name {
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div {
 	position: relative;
 	width: 100%;
 	padding: 8px;
 	top: 0;
 	background-color: var(--theme-color);
-	margin: 24px 0;
+	margin: 18px 0;
 	border-radius: 18px;
 	color: var(--theme-text-color);
 	transition: background-color .15s ease-in-out;
-	box-shadow: 0 0 5px 2px rgba(15, 157, 88, .5);
+	box-shadow: var(--theme-history-shadow);
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name:hover{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div:hover{
 	background-color: rgba(0, 0, 0, .1);
 }
-.medicine-section .patients-lists .patient-details-div .patients-name.show{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div.show{
 	display: block;
 }
-.medicine-section .patients-lists .patient-details-div .patients-name.hidden{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div.hidden{
 	display: none;
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patients-history-details{
 	position: relative;
 	display: flex;
 	align-items: flex-start;
-	height: 65px;
+	height: 55px;
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details 
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patients-history-details 
 .medicine-for{
 	position: absolute;
 	bottom: 0;
@@ -303,10 +446,11 @@ body {
 	padding: 2px 8px;
 	color: var(--theme-text-color);	
 	background-color: #0f9d5866;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, .3);
 	border-radius: 12px;
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name .given-medicine-name{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .given-medicine-name{
 	position: relative;
 	top: 5px;
 	padding: 2px 5px;
@@ -316,13 +460,14 @@ body {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	font-weight: bold;
 	letter-spacing: 1px;
 	background-color: var(--theme-color);
 	border-radius: 6px;
 	text-transform: capitalize;
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details .arrow{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patients-history-details .arrow{
 	position: absolute;
 	left: 55%;
 	top: 30%;
@@ -332,44 +477,44 @@ body {
 	font-size: 1.5em;
 	border-radius: 50%;
 }
-.medicine-section .patients-lists .patient-details-div .patients-name .patients-history-details 
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patients-history-details 
 .given-patient-name{
 	position: absolute;
 	right: 0;
 	color: var(--theme-text-color);
-	padding: 5px;
+	padding: 2px 5px;
+	font-weight: bold;
+	border-bottom: 2px solid #1a8cff;
 	font-size: 1rem;
 	background-color: var(--theme-color);
-	border-radius: 12px;
+	border-radius: 6px;
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patient-medicine-time-div{
 	position: absolute;
 	display: flex;
 	align-items: center;
-	top: -12px;
+	bottom: 5px;
+	right: 5px;
 	border-radius: 25px;
 }
-.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div span.material-icons{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patient-medicine-time-div span.material-icons{
 	position: relative;
 	font-size: .9em;
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div span,
-.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div time{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patient-medicine-time-div span,
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patient-medicine-time-div time{
 	position: relative;
 	padding: 2px 4px;
-	margin-left: 5px;
-	border-radius: 12px;
-	background-color: #0f9d58;
 	letter-spacing: 1px;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
-	color: #fff;
+	font-weight: bold;
+	color: var(--theme-text-color);
 	text-transform: capitalize;
 	font-size: .7rem;
 }
 
-.medicine-section .patients-lists .patient-details-div .patients-name .patient-medicine-time-div time{
+.medicine-section .patients-lists .patient-details-div .patients-history-captured-div .patient-medicine-time-div time{
 	padding: 2px 8px;
 	background-color: var(--theme-color);
 	color: #0f9d58;
@@ -381,7 +526,7 @@ body {
 .medicine-section .box-holder{
 	position: relative;
 	margin: auto 0;
-	height: 82%;
+	height: 81%;
 	width: 100%;
 	padding: 12px;
 	border-radius: 12px;
@@ -433,10 +578,8 @@ body {
 	transition: all .15s ease-in-out;
 }
 
-.medicine-section .box-holder .box-modal, 
 .medicine-section .box-holder .medicines-lists{
 	position: absolute;
-	display: none;
 	justify-content: center;
 	align-items: flex-start;
 	top: 0;
@@ -445,30 +588,56 @@ body {
 	max-height: 100%;
 	width: 100%;
 	transition: all .25s ease-in-out;
-	overflow-y: auto;
+	overflow-y: hidden;
 	opacity: 0;
-	background-image: var(--theme-background-image);
+/* 	background-image: var(--theme-background-image);
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
-	background-position: center;
-	animation-name: SlideIn;
+	background-position: center; */
+/* 	animation-name: SlideIn;
 	animation-duration: .25s;
 	animation-iteration-count: 1;
 	animation-timing-function: ease-in-out;
 	-webkit-animation-name: SlideIn;
 	-webkit-animation-duration: .25s;
 	-webkit-animation-iteration-count: 1;
-	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-timing-function: ease-in-out; */
 	transition: background-color .15s ease-in-out;
 }
 
+.medicine-section .box-holder .medicines-lists .add-new-pill{
+	position: absolute;
+	right: 18px;
+	bottom: 24px;
+	padding: 5px;
+	border: 4px solid #fff;
+	border: none;
+	box-shadow:  0 0 0 4px #fff, 0 0 12px 8px rgba(0, 0, 0, .26);
+	color: #fff;
+	background-color: #0f9d58;
+	border-radius: 50%;
+	transition: all .25s;
+}
+.medicine-section .box-holder .medicines-lists .add-new-pill:hover,
+.medicine-section .box-holder .medicines-lists .add-new-pill:active{
+	background-color: #0fce58;
+}
 .medicine-section .box-holder .medicines-lists #searchedMedicinesList{
 	position: relative;
+	margin: 0 0;
 	align-items: flex-start;
 	overflow-x: visible;
-	height: 600px;
+	overflow-y: auto;
+	width: 245px;
+	height: 100%;
 }
+.medicine-section .box-holder .medicines-lists #searchedMedicinesList .loader{
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+}
+
 .medicine-section .box-holder .box-modal.visible, 
 .medicine-section .box-holder .medicines-lists.visible{
 	opacity: 1;
@@ -483,18 +652,36 @@ body {
 	z-index: 12;
 }
 
+.medicine-section .box-holder > div > ol .horizontal-line{
+	position: relative;
+	margin: 8px 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 3px 5px;
+	height: 35px;
+	width: 50px;
+	border-radius: 15px;
+	background-color: var(--theme-color);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+	color: #0f9d58;
+	font-weight: bold;
+}
+.medicine-section .box-holder > div > ol .horizontal-line.hidden{
+	display: none;
+}
 .medicine-section .box-holder > div > ol .md-name {
 	position: relative;
 	display: flex;
 	align-items: center;
-	width: 235px;
+	width: 200px;
 	padding: 8px;
-	font-weight: lighter;
 	margin: 12px 0;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .95);
 	color: var(--theme-text-color);
 	background-color: var(--theme-color);
-	box-shadow: 0 4px 16px -2px rgba(0, 0, 0, .5);
-	border-radius: 24px;
+	box-shadow: 0 1px 3px #000;
+	border-radius: 12px;
 	transition: all .15s ease-in-out;
 	z-index: 1;
 }
@@ -510,22 +697,34 @@ body {
 .medicine-section .box-holder > div > ol .md-name.hidden {
 	display: none;
 }
-
+.medicine-section .box-holder > div > ol .md-name .md-measure{
+	position: absolute;
+	right: 5px;
+	background-color: #1a8cff;
+	padding: 2px 5px;
+	text-transform: lowercase;
+	font-weight: bold;
+	font-size: .75rem;
+	letter-spacing: 1px;
+	border-radius: 5px;
+	color: #fff;
+}
 .medicine-section .box-holder > div > ol .md-name .small-box-number {
 	position: absolute;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	left: -15%;
+	left: -18%;
 	top: 50%;
 	transform: translateY(-50%);
-	height: 26px;
-	width: 26px;
+	height: 30px;
+	width: 30px;
 	padding: 6px;
 	border-radius: 24px;
 	background-color: #0f9d58;
-	color: var(--theme-text-color);
-	font-weight: lighter;
+	color: #fff;
+	text-shadow: 0 2px 3px rgba(0, 0, 0, .5);
+	font-weight: bold;
 }
 
 .medicine-section .box-holder > div > ol .space{
@@ -544,7 +743,8 @@ body {
 	border-radius: 12px;
 }
 
-.medicine-section .box-holder .history-box{
+.medicine-section .box-holder .history-box,
+.medicine-section .box-holder .new-pills-box{
 	position: absolute;
 	display: none;
 	top: 0;
@@ -553,34 +753,37 @@ body {
 	width: 100%;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--theme-color-alpha_34);
-	backdrop-filter: blur(2px);
-	-webkit-backdrop-filter: blur(2px);
+	background-color: var(--theme-color-alpha_83);
 	z-index: 99;
 }
 
-.medicine-section .box-holder .history-box.visible{
+.medicine-section .box-holder .history-box.visible,
+.medicine-section .box-holder .new-pills-box.visible{
 	display: flex;
 }
 
-.medicine-section .box-holder .history-box .main-history-box{
+.medicine-section .box-holder .history-box .main-history-box,
+.medicine-section .box-holder .new-pills-box .main-new-pills-box{
 	position: relative;	
 	height: 200px;
-	width: 300px;
+	width: 250px;
 	border-radius: 25px;
-	background-color: var(--theme-color-alpha_83);
-	box-shadow: 0 0 12px 8px rgba(0, 0, 0, .4);
+	background-color: var(--theme-color);
+	box-shadow: 0 0 12px 4px rgba(0, 0, 0, .4);
 	transition: background-color .15s ease-in-out;
 	animation-name: ZoomIn;
 	animation-duration: .25s;
 	animation-timing-function: ease-in-out;
 	-webkit-animation-name: ZoomIn;
-	-webkit-animation-duration: .25s;
-	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-duration: .15s;
+	-webkit-animation-timing-function: linear;
 	z-index: 100;
 }
-
-.medicine-section .box-holder .history-box .main-history-box .patient-details-section{
+.medicine-section .box-holder .new-pills-box .main-new-pills-box{
+	height: 150px;
+}
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section,
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section{
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -592,6 +795,7 @@ body {
 	text-align: center;
 	width: 100%;
 }
+
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section > span{
 	position: relative;
 	font-weight: bold;
@@ -599,24 +803,26 @@ body {
 	text-shadow: 1px 1px 2px var(--theme-text-color);
 	color: var(--theme-text-color);
 }
-.medicine-section .box-holder .history-box .main-history-box .patient-details-section .error-info{
-	position: relative;
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section .error-info,
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section .error-info{
+	position: absolute;
 	display: none;
-	line-height: 0;
-	font-weight: lighter;
-	font-size: .6em;
+	font-weight: bold;
+	font-size: .8em;
+	top: 72%;
 	color: #db373a;
 }
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section .error-info.show-error{
 	display: block;
 }
-.medicine-section .box-holder .history-box .main-history-box .patient-details-section
-  label {
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section label
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section label {
 	position: relative;
 	font-size: 14px;
 	color: var(--theme-text-color);
 }
-.medicine-section .box-holder .history-box .main-history-box .patient-details-section input {
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section input,
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section input{
 	position: relative;
 	display: block;
 	padding: 8px;
@@ -631,28 +837,40 @@ body {
 	box-shadow: 0 0 0 2px rgba(15, 157, 88, .4);
 	transition: all .25s ease-in;
 }
-
-.medicine-section .box-holder .history-box .main-history-box .patient-details-section 
- input:focus{
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section input{
+	display: inline-flex;
+}
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section 
+input:nth-child(2){
+	width: 100px;
+}
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section input:focus,
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section input:focus{
 	box-shadow: 0 0 0 2px #0f9d58;
 }
 
-.medicine-section .box-holder .history-box .main-history-box .patient-details-section
- button{
+.medicine-section .box-holder .history-box .main-history-box .patient-details-section button,
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section button{
 	position: relative;
 	display: inline-flex;
-	top: 12px;
+	top: 25px;
 	align-items: center;
 	border-radius: 12px;
 	background-color: #0f9d58;
 	border: none;
 	color: #fff;
-	padding: 8px;
+	padding: 5px 8px;
 	column-gap: 4px;
 	z-index: 5;
 }
 
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section button{
+	top: 20px;
+}
+
 .medicine-section .box-holder .history-box .main-history-box .patient-details-section
+ > button span.material-icons,
+.medicine-section .box-holder .new-pills-box .main-new-pills-box .add-new-pills-section
  > button span.material-icons{
  	position: relative;
  	padding: 4px;
@@ -707,16 +925,15 @@ body {
 	padding: 12px;
 	top: 12px;
 	width: 90%;
-	background-color: var(--theme-color-alpha_83);
-	backdrop-filter: blur(5px);
-	-webkit-backdrop-filter: blur(5px);
+	background-color: var(--theme-color);
 	border-radius: 8px;
 	box-shadow: 0 0 24px 2px rgba(0, 0, 0, .3);
 }
 
 .medicine-section .user-page-div .user-settings-holder{
-	height: 55%;
+	height: 50%;
 	align-items: center;
+	justify-content: flex-end;
 	flex-direction: column;
 }
 .medicine-section .user-page-div .user-settings-holder header h2{
@@ -726,7 +943,7 @@ body {
 	position: relative;
 	display: flex;
 	width: 100%;
-	margin-top: 12px;
+	margin-top: 8px;
 	border-radius: 12px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
 	background-color: var(--theme-color-alpha_34);
@@ -761,11 +978,15 @@ input[type='checkbox']{
 .medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
 .dark-mode-checkbox{
 	position: absolute;
+	display: flex;
+	align-items: center;
 	top: 50%;
-	translate: 0px -50%;
+/* 	translate: 0px -50%; */
+	transform: translate(0px, -50%);
+	-webkit-transform: translate(0px, -50%);
 	right: 12px;
-	height: 15px;
-	width: 25px;
+	height: 10px;
+	width: 30px;
 	border-radius: 35px;
 	background-color: #333;
 	transition: all .25s ease-in-out;
@@ -774,19 +995,21 @@ input[type='checkbox']{
 .dark-mode-checkbox::after{
 	position: absolute;
 	content: "";
-	height: 15px;
-	width: 15px;
+	height: 20px;
+	width: 20px;
 	background-color: #fff;
+	box-shadow: 0 0 24px 0 rgba(0, 0, 0, .5);
 	border-radius: 50%;
 	transition: all .25s ease-in-out;
 }
-.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings input:checked + .dark-mode-checkbox{
-	background-color: #0f9d58;
+.medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
+input:checked + .dark-mode-checkbox{
+	background-color: #1a8cff;
 }
 .medicine-section .user-page-div .user-settings-holder .user-setting-div .user-main-settings 
 input:checked + .dark-mode-checkbox::after{
-	translate: 12px 0px;
-	-webkit-translate: 12px 0px;
+	transform: translateX(12px);
+	-webkit-transform: translateX(12px);
 }
 .bottom-nav {
 	position: fixed;
@@ -797,12 +1020,12 @@ input:checked + .dark-mode-checkbox::after{
 	left: 50%;
 	-webkit-transform: translateX(-50%);
 	transform: translateX(-50%);
-	width: 95%;
-	height: 50px;
-	border-radius: 32px;
+	width: 90%;
+	height: 55px;
+	border-radius: 15px;
 	background-color: var(--theme-color);
 	transition: background-color .15s ease-in-out;
-	box-shadow: 0 0 12px 0 rgba(0, 0, 0, .34);
+	box-shadow: 0 0 24px 0 rgba(0, 0, 0, .7);
 	z-index: 9;
 }
 
@@ -827,7 +1050,6 @@ input:checked + .dark-mode-checkbox::after{
 
 .bottom-nav .bottom-nav-btns.default-btn {
 	background-color: #0f9d5866;
-	box-shadow: 0 0 8px 1px #0f9d58bb;
 	animation-name: GelatineBounce;
 	animation-duration: .25s;
 	animation-timing-function: ease-in-out;
